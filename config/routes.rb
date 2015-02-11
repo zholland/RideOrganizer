@@ -53,4 +53,12 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+
+  Rails.application.routes.draw do
+    root 'pages#home'
+    get 'pages/home'
+    get 'pages/about'
+    get 'pages/planner_output'
+    get 'pages/trip_planner'
+  end
 end

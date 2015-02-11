@@ -11,5 +11,8 @@
  * file per style scope.
  *
  *= require_tree .
+ *= require landing-page
+ *= require bootstrap
+ *= require general
  *= require_self
  */
