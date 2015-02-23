@@ -133,7 +133,7 @@
     <orderEntry type="library" scope="PROVIDED" name="arel (v6.0.0, ruby-2.0.0-p481) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="binding_of_caller (v0.7.2, ruby-2.0.0-p481) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="builder (v3.2.2, ruby-2.0.0-p481) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="bundler (v1.7.12, ruby-2.0.0-p481) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="bundler (v1.8.2, ruby-2.0.0-p481) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="byebug (v3.5.1, ruby-2.0.0-p481) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="coffee-rails (v4.1.0, ruby-2.0.0-p481) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="coffee-script (v2.3.0, ruby-2.0.0-p481) [gem]" level="application" />
@@ -143,7 +143,9 @@
     <orderEntry type="library" scope="PROVIDED" name="debugger-linecache (v1.2.0, ruby-2.0.0-p481) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="erubis (v2.7.0, ruby-2.0.0-p481) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="execjs (v2.3.0, ruby-2.0.0-p481) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="geocoder (v1.2.7, ruby-2.0.0-p481) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="globalid (v0.3.2, ruby-2.0.0-p481) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="gmaps4rails (v2.1.2, ruby-2.0.0-p481) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="hike (v1.2.3, ruby-2.0.0-p481) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="i18n (v0.7.0, ruby-2.0.0-p481) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="jbuilder (v2.2.6, ruby-2.0.0-p481) [gem]" level="application" />
