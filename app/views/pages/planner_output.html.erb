@@ -1,7 +1,9 @@
 
+<!-- all pages should render nav and header -->
 <%= render 'shared/nav' %>
 <%= render 'shared/header' %>
-    <div class="content-pages">
+
+<div class="content-pages">
   <div class="container">
     <div id="map-container">
       <div id="map-canvas"></div>
@@ -12,6 +14,7 @@
   </div>
 
 </div> <!-- /.content-pages -->
+
 
 <%= javascript_include_tag "loadmap" %>
 <%= javascript_include_tag "require google_maps_api" %>

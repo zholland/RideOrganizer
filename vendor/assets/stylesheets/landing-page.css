@@ -37,7 +37,7 @@ h6 {
     background: url(home/color-edited-map.png) no-repeat center center;
     background-size: cover;
     box-sizing: border-box;
-    border-bottom: 3px solid black;
+    border-bottom: 3px solid #f8f8f8;
 }
 
 .intro-message {

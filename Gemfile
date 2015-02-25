@@ -48,5 +48,10 @@ group :development, :test do
   # offical rails geocoder
   gem 'geocoder'
 
+  # A collection of useful Rails generator scripts for scaffolding, layout files, authentication, and more.
+  gem "nifty-generators", :group => :development
+
+  gem 'mocha'
+
 end
 

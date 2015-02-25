@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'pages_output/index'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -55,6 +57,8 @@ Rails.application.routes.draw do
   #   end
 
   Rails.application.routes.draw do
+  get 'pages_output/index'
+
     root 'pages#home'
     get 'pages/home'
     get 'pages/about'
