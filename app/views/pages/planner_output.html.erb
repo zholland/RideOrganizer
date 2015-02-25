@@ -1,14 +1,17 @@
+
 <%= render 'shared/nav' %>
-
-
-<div class="content-pages">
+<%= render 'shared/header' %>
+    <div class="content-pages">
   <div class="container">
-    <h2>To hold output from algorithm</h2>
+    <div id="map-container">
+      <div id="map-canvas"></div>
+    </div>
   </div> <!-- /.container -->
 
-  <div style='width: 800px;'>
-    <div id="one_marker" style='width: 800px; height: 400px;'></div>
+
   </div>
 
 </div> <!-- /.content-pages -->
-<!--adsdsa-->
+
+<%= javascript_include_tag "loadmap" %>
+<%= javascript_include_tag "require google_maps_api" %>
