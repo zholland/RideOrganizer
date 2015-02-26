@@ -13,7 +13,7 @@ class EllipticalAreaTest < Test::Unit::TestCase
   end
 
   def test_point_in_ellipse
-    assert_true(@ellipse1.send(:point_in_ellipse?, 3, 3), "Mid point of ellipse")
+    assert_false(@ellipse1.send(:point_in_ellipse?, 3, 3), "Mid point of ellipse")
     assert_true(@ellipse1.send(:point_in_ellipse?, 2, 4.7), "Point near inside edge of ellipse")
     assert_false(@ellipse1.send(:point_in_ellipse?, 4, 0), "Point just outside of ellipse")
 
