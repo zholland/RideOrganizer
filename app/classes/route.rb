@@ -5,6 +5,7 @@ class Route
 
   def initialize(driver)
     @driver=driver
+    @passengers=[]
   end
 
   def addPassenger(passenger)

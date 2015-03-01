@@ -8,9 +8,11 @@ class Trip
   def initialize(destination, date)
     @destination=destination
     @date=date
+    @routes=[]
   end
 
   def addRoute(route)
     @routes << route
   end
+
 end
