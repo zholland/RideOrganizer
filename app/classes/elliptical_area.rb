@@ -46,7 +46,13 @@ class EllipticalArea
     t2 = (t1 * t1)
     t7 = (o * o)
     t10 = (p * p)
-    t12 = Math.sqrt((t2 - 2 * o * t1 + 2 * t1 * p + t7 + 2 * o * p + t10))
+
+    if ((@x1 - @x2).abs > (@y1 - @y2).abs)
+      t12 = Math.sqrt(t2 + 2 * o * t1 - 2 * t1 * p + t7 + 2 * o * p + t10)
+    else
+      t12 = Math.sqrt(t2 - 2 * o * t1 + 2 * t1 * p + t7 + 2 * o * p + t10)
+    end
+
     b = Array.new
     b << -t + Math.sqrt(2) * Math.sqrt(t1 + o + p + t12) / 2
     b << -t - Math.sqrt(2) * Math.sqrt(t1 + o + p + t12) / 2
