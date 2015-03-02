@@ -1,0 +1,39 @@
+<h1>Destination#create</h1>
+<p>Find me in app/views/destination/create.html.erb</p>
+
+
+<%= form_tag do %>
+    Form contents
+
+<% end %>
+
+<form>
+  <input type="radio" name="New Destination" value="New Destination" checked>destination
+  <br>
+  <input type="radio" name="Update Destination" value="Update Destination">update
+  <br><br>
+    <input type="submit">
+</form>
+
+
+<%#
+    # hey Emily, i'm not sure this is how you want me to code for input?
+    # Also, not sure where I would be able to store this data into? if you can maybe help me with that by commenting here
+    # Furthermore, at first I was doing it a different way by using Ruby code, but Wade said to change it up and try this approach?
+    # also, if you like me to change the top form into a different way, tell me that as well?
+    # last thing, for the address? just wondering how i would store that? just as integers for address and String/integers for the street?
+    #thanks!
+    # %>
+
+<form action="action_page.php">
+  date_of_arrival:
+  <input type="date" name="date of arrival">
+  <input type="submit">
+</form>
+
+
+<form action="action_page.php">
+  Select a time:
+  <input type="time" name="time of arrival">
+  <input type="submit">
+</form>
