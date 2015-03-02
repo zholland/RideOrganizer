@@ -3,15 +3,34 @@
 <%= render 'shared/nav' %>
 <%= render 'shared/header' %>
 
+<script>jQuery(document).ready(function() {
+    jQuery(".tabs-menu a").click(function(event) {
+        event.preventDefault();
+        jQuery(this).parent().addClass("current");
+        jQuery(this).parent().siblings().removeClass("current");
+        var tab = jQuery(this).attr("href");
+        jQuery(".tab-content").not(tab).css("display", "none");
+        jQuery(tab).fadeIn();
+    });
+});</script>
+
 <div class="content-pages">
   <div class="container">
-    <div id="map-container">
-      <div id="map-canvas"></div>
-    </div>
 
     <div id="directionsPanel">
       <p>Total Distance: <span id="total"></span></p>
     </div>
+
+    <%= createTravellers %>
+
+    <div id="tabs-container">
+      <ul class="tabs-menu">
+      </ul>
+      <div class="tab">
+
+      </div>
+    </div>
+
   </div> <!-- /.container -->
 
 

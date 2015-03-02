@@ -57,5 +57,8 @@ group :development, :test do
 
   gem 'mocha'
 
+  # useful for using jquery ui, see jqueryui.com for more info
+  gem 'jquery-ui-rails'
+
 end
 
