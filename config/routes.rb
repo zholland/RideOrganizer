@@ -57,18 +57,21 @@ Rails.application.routes.draw do
   #   end
 
   Rails.application.routes.draw do
-  get 'pages_output/index'
+    get 'pages_output/index'
 
     root 'pages#home'
     get 'pages/home'
     get 'pages/about'
     get 'pages/planner_output'
-    get 'pages/trip_planner'
-  end
+#    get 'pages/trip_planner'
 
-  resources :pages do
-    member do
-      post :get_travellers
+    resources :trip_plans
+    resources :trip_plans do
+      member do
+        post :get_travellers
+      end
     end
   end
+
+
 end

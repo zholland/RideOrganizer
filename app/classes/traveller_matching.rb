@@ -8,7 +8,7 @@ include Geocoder
 # Matches passengers to drivers.
 class TravellerMatching
 
-  # Initializes the variables needed and geocodes the addresses for the travellers and the destination.
+  # Initializes the variables needed and geocodes the addresses for the travellers and the destinations.
   #
   # * *Args*    :
   #   - +trip+ -> the trip with the inputted information from the user
@@ -48,7 +48,7 @@ class TravellerMatching
     end
   end
 
-  # Debugging methods to show the corresponding coordinates to the given addresses for the destination and travellers.
+  # Debugging methods to show the corresponding coordinates to the given addresses for the destinations and travellers.
   #
   # * *Returns* :
   #   - a string of the addresses and coordinates
@@ -135,8 +135,8 @@ class TravellerMatching
     @trip
   end
 
-  # Finds the distance from driver to the passenger to the destination subtract the straight line distance
-  # from the driver to the destination.
+  # Finds the distance from driver to the passenger to the destinations subtract the straight line distance
+  # from the driver to the destinations.
   #
   # * *Args*    :
   #   - +driver_coordinates+ -> the drivers coordinates as a two element array in the format [latitude, longitude]
