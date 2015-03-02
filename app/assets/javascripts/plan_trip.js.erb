@@ -116,17 +116,14 @@ function getRoutes() {
                 for (var i = 0, len = tab.length; i < len; i++) {
                     if (tab[i] == '-') {
                         mapInt = tab.substring(i+1, tab.length);
-                        console.log("Map Int:" + mapInt);
                         break;
                     }
                 }
-
-                
-
-                google.maps.event.trigger("map_"+mapInt, 'resize');
-
-
+                google.maps.event.trigger(window['map_'+mapInt], 'resize');
+                window['map_'+mapInt].setCenter(kelowna);
+                window['map_'+mapInt].setZoom(10);
             });
+
         });
 
 

@@ -8,7 +8,7 @@ module PagesHelper
     end
   end
 
-  def createTravellers
+  def create_travellers
 
     t1 = Trip.new('Vernon, BC', '2015-03-29')
 
@@ -24,6 +24,11 @@ module PagesHelper
     p8 = Passenger.new("Gennadiz Hivkov", "gennadizhivkov@email.com", "1938 Kane Rd, Kelowna, BC")
     d2 = Driver.new("Denis Vasilyev", "denisvasilyev@email.com", "387 Bernard Avenue, Kelowna, BC", 5)
 
+    d3 = Driver.new('Luke', 'luke@gmail.com', '15 Upper Mission Drive, Kelowna, BC', 4)
+    p9 = Passenger.new('Joe', 'joe@gmail.com', '166 Summerhill Place, Kelowna, BC')
+    p10 = Passenger.new('John', 'john@gmail.com', '3333 University Way, Kelowna, BC')
+    p11 = Passenger.new('Mark', 'mark@gmail.com', '1 Ellis Street, Kelowna, BC')
+
     r1 = Route.new(d1)
     r1.add_passenger(p1)
     r1.add_passenger(p2)
@@ -36,8 +41,14 @@ module PagesHelper
     r2.add_passenger(p7)
     r2.add_passenger(p8)
 
+    r3 = Route.new(d3)
+    r3.add_passenger(p9)
+    r3.add_passenger(p10)
+    r3.add_passenger(p11)
+
     t1.add_route(r1)
     t1.add_route(r2)
+    t1.add_route(r3)
 
     return t1.to_json
   end
