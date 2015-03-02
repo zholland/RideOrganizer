@@ -57,8 +57,8 @@ group :development, :test do
 
   gem 'mocha'
 
-  # Simple forms, let's see how this one works
-  gem 'simple_form'
+  # useful for using jquery ui, see jqueryui.com for more info
+  gem 'jquery-ui-rails'
 
 end
 
