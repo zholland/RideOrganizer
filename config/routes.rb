@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'destination/new'
+
+  get 'destination/create'
+
   get 'pages_output/index'
 
   # The priority is based upon order of creation: first created -> highest priority.
@@ -57,6 +61,10 @@ Rails.application.routes.draw do
   #   end
 
   Rails.application.routes.draw do
+  get 'destination/new'
+
+  get 'destination/create'
+
   get 'pages_output/index'
 
     root 'pages#home'

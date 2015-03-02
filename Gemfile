@@ -57,5 +57,8 @@ group :development, :test do
 
   gem 'mocha'
 
+  # Simple forms, let's see how this one works
+  gem 'simple_form'
+
 end
 
