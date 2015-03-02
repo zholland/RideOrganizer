@@ -7,9 +7,6 @@ class PagesController < ApplicationController
   def about
   end
 
-  def planner_output
-  end
-
   def trip_planner
   end
 

@@ -62,7 +62,7 @@ Rails.application.routes.draw do
     root 'pages#home'
     get 'pages/home'
     get 'pages/about'
-    get 'pages/planner_output'
+    get 'trip_plans/planner_output'
 #    get 'pages/trip_planner'
 
     resources :trip_plans

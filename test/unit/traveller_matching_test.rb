@@ -54,7 +54,7 @@ class TravellerMatchingTest < Test::Unit::TestCase
     route_outputs[2] << Array.new
     route_outputs[2][1] << "Name: Manya Yakovlev, Email: manyayakovlev@email.com, Address: 1505 Gordon Dr, Kelowna, BC"
     route_outputs[2][1] << "Name: Mitrofan Pavlov, Email: mitrofanpavlov@email.com, Address: 5533 Airport Way, Kelowna, BC"
-    route_outputs[2][1] << "Name: Klara Utkin, Email: klarautkin@email.com, Address: 4346 Gordon Dr, Kelowna, B"
+    route_outputs[2][1] << "Name: Klara Utkin, Email: klarautkin@email.com, Address: 4346 Gordon Dr, Kelowna, BC"
 
     trip.routes.each_with_index do |route, r_index|
       assert_equal(route_outputs[r_index][0][0], route.driver.to_s)

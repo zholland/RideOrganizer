@@ -66,16 +66,19 @@ class TripPlansController < ApplicationController
     traveller_matching = TravellerMatching.new(trip)
     trip = traveller_matching.group_travellers.to_json
 
-    #session[:trip] = nil
-    #session[:trip] = trip
+    session[:trip] = nil
+    session[:trip] = trip
 
-    redirect_to pages_planner_output_path
+    redirect_to trip_plans_planner_output_path
   end
 
   def get_travellers
-    #trip = session[:trip]
-    #session[:trip] = nil
+    trip = session[:trip]
+    session[:trip] = nil
 
-    #return trip
+    render json: trip
+  end
+
+  def planner_output
   end
 end
