@@ -17,11 +17,6 @@
 }
 .map-canvas {
     height: 384px;
-    min-width: 100%;
-}
-
-#map-canvas-1 {
-    height: 384px;
 }
 
 body {
@@ -73,12 +68,13 @@ body {
     background-color: #fff;
     float: left;
     margin-bottom: 20px;
-    width: auto;
+    width: 100%;
 }
 
 .tab-content {
     padding: 20px;
     display: none;
+    width:100%;
 }
 
 #tab-1 {
