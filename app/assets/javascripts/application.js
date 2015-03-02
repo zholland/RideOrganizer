@@ -13,7 +13,6 @@
 //
 // DO NOT MESS WITH THE ORDER IN THIS FILE!!!! gmaps/google and the google maps api must be loaded before jquery!
 //
-//= require gmaps/google
 //= require google_maps_api
 //= require jquery
 //= require jquery_ujs
