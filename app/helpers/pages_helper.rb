@@ -8,7 +8,7 @@ module PagesHelper
     end
   end
 
-  def createTravellers
+  def create_travellers
     p1 = Passenger.new('Joe', 'joe@gmail.com', '166 Summerhill Place, Kelowna, BC')
     p2 = Passenger.new('John', 'john@gmail.com', '3333 University Way, Kelowna, BC')
     p3 = Passenger.new('Mark', 'mark@gmail.com', '1 Ellis Street, Kelowna, BC')
