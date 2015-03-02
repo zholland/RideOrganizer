@@ -27,6 +27,9 @@ gem 'test-unit'
 
 gem 'algorithms'
 
+# offical rails geocoder
+gem 'geocoder'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -48,9 +51,6 @@ group :development, :test do
 
   # for all aspects google maps
   gem 'gmaps4rails'
-
-  # offical rails geocoder
-  gem 'geocoder'
 
   # A collection of useful Rails generator scripts for scaffolding, layout files, authentication, and more.
   gem "nifty-generators", :group => :development

@@ -1,0 +1,81 @@
+/**
+ * Created by EmilyMillard on 15-02-22.
+ */
+        <% environment.context_class.instance_eval { include Rails.application.routes.url_helpers } %>
+         <% environment.context_class.instance_eval { include PagesHelper } %>
+
+var rendererOptions = {
+    draggable: true
+};
+
+var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);;
+var directionsService = new google.maps.DirectionsService();
+var map;
+
+var kelowna = new google.maps.LatLng(49.887952, -119.496011);
+
+function initialize() {
+
+    // Create a map and center it on Kelowna.
+    var mapOptions = {
+        zoom: 10,
+        center: kelowna
+    }
+
+    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+    directionsDisplay.setMap(map);
+    directionsDisplay.setPanel(document.getElementById('directionsPanel'));
+
+    google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
+        computeTotalDistance(directionsDisplay.getDirections());
+    });
+
+    getRoutes();
+
+    calcRoute();
+}
+
+function getRoutes() {
+    var tripsArray = <%= createTravellers %>;
+
+    var destination = tripsArray["destination"]
+    var date = tripsArray["date"]
+
+    var routesArray = tripsArray["routes"]
+    var numRoutes = routesArray.length
+
+
+    console.log(tripsArray)
+    console.log(destination)
+    console.log(date)
+    console.log(routes)
+
+
+}
+
+function calcRoute() {
+
+    var request = {
+        origin: 'Kelowna, BC',
+        destination: 'Kelowna, BC',
+        waypoints:[{location: '166 Summerhill Place, Kelowna, BC'}, {location: '3333 University Way, Kelowna, BC'}],
+        travelMode: google.maps.TravelMode.DRIVING
+    };
+    directionsService.route(request, function(response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+        }
+    });
+}
+
+function computeTotalDistance(result) {
+    var total = 0;
+    var myroute = result.routes[0];
+    for (var i = 0; i < myroute.legs.length; i++) {
+        total += myroute.legs[i].distance.value;
+    }
+    total = total / 1000.0;
+    document.getElementById('total').innerHTML = total + ' km';
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);

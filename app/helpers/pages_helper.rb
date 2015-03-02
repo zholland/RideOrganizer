@@ -8,4 +8,21 @@ module PagesHelper
     end
   end
 
+  def createTravellers
+    p1 = Passenger.new('Joe', 'joe@gmail.com', '166 Summerhill Place, Kelowna, BC')
+    p2 = Passenger.new('John', 'john@gmail.com', '3333 University Way, Kelowna, BC')
+    p3 = Passenger.new('Mark', 'mark@gmail.com', '1 Ellis Street, Kelowna, BC')
+    d1 = Driver.new('Luke', 'luke@gmail.com', '15 Upper Mission Drive, Kelowna, BC', 4)
+
+    r1 = Route.new(d1)
+    r1.addPassenger(p1)
+    r1.addPassenger(p2)
+    r1.addPassenger(p3)
+
+    t1 = Trip.new('Vernon, BC', '2015-03-29')
+    t1.addRoute(r1)
+
+    return t1.to_json
+  end
+
 end
