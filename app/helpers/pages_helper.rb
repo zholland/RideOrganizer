@@ -15,12 +15,13 @@ module PagesHelper
     d1 = Driver.new('Luke', 'luke@gmail.com', '15 Upper Mission Drive, Kelowna, BC', 4)
 
     r1 = Route.new(d1)
-    r1.addPassenger(p1)
-    r1.addPassenger(p2)
-    r1.addPassenger(p3)
+
+    r1.add_passenger(p2)
+    r1.add_passenger(p1)
+    r1.add_passenger(p3)
 
     t1 = Trip.new('Vernon, BC', '2015-03-29')
-    t1.addRoute(r1)
+    t1.add_route(r1)
 
     return t1.to_json
   end
