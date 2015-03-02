@@ -65,4 +65,10 @@ Rails.application.routes.draw do
     get 'pages/planner_output'
     get 'pages/trip_planner'
   end
+
+  resources :pages do
+    member do
+      post :get_travellers
+    end
+  end
 end

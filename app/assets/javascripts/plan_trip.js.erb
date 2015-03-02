@@ -2,7 +2,6 @@
  * Created by EmilyMillard on 15-02-22.
  */
   <% environment.context_class.instance_eval { include Rails.application.routes.url_helpers } %>
-  <% environment.context_class.instance_eval { include PagesHelper } %>
 
 var rendererOptions = {
     draggable: true
@@ -44,9 +43,18 @@ function initialize(routeNum) {
     calcRoute(directionsDisplay, directionsService);
 }
 
-function getRoutes() {
-    var tripsArray = <%= create_travellers %>;
+function loadTrip() {
+    $.ajax({
+        url: 'pages/get_travellers',
+        type: 'POST',
+        success: function (data) {
+            getRoutes(data);
+        }
+    });
+}
 
+function getRoutes(tripData) {
+    var tripsArray = tripData;
     tripDestination = tripsArray.destination_address;
     var date = tripsArray.date_time;
 
@@ -170,4 +178,4 @@ function computeTotalDistance(result) {
     document.getElementById('total').innerHTML = total + ' km';
 }
 
-google.maps.event.addDomListener(window, 'load', getRoutes);
+google.maps.event.addDomListener(window, 'load', loadTrip);
