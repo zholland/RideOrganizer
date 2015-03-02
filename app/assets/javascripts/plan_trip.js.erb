@@ -8,12 +8,14 @@ var rendererOptions = {
     draggable: true
 };
 
-var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
-var directionsService = new google.maps.DirectionsService();
+//var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+//var directionsService = new google.maps.DirectionsService();
 //var map;
 
 var routeArray = [];
 var tripDestination;
+//var map;
+
 
 var kelowna = new google.maps.LatLng(49.887952, -119.496011);
 
@@ -27,6 +29,11 @@ function initialize(routeNum) {
     }
 
     var map = new google.maps.Map(document.getElementById('map-canvas-'+routeNum), mapOptions);
+    window['map_'+routeNum]=map;
+
+    var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+    var directionsService = new google.maps.DirectionsService();
+
     directionsDisplay.setMap(map);
     directionsDisplay.setPanel(document.getElementById('directionsPanel-'+routeNum));
 
@@ -34,7 +41,7 @@ function initialize(routeNum) {
     //    computeTotalDistance(directionsDisplay.getDirections());
     });
 
-    calcRoute();
+    calcRoute(directionsDisplay, directionsService);
 }
 
 function getRoutes() {
@@ -71,10 +78,12 @@ function getRoutes() {
 
         var mapCon = document.createElement("div");
         mapCon.setAttribute("id", "map-container");
+        mapCon.setAttribute("style", "width:100%");
 
         var mapCan = document.createElement("div");
         mapCan.setAttribute("id", "map-canvas-"+currRoute);
         mapCan.setAttribute("class", "map-canvas");
+        mapCan.setAttribute("style", "width:100%");
 
         mapCon.appendChild(mapCan);
         tabDiv.appendChild(mapCon);
@@ -88,6 +97,7 @@ function getRoutes() {
 
         currRoute++;
 
+
     }
 
         jQuery(document).ready(function() {
@@ -98,12 +108,31 @@ function getRoutes() {
                 var tab = jQuery(this).attr("href");
                 jQuery(".tab-content").not(tab).css("display", "none");
                 jQuery(tab).fadeIn();
+
+                console.log(tab)
+
+                var mapInt = 0;
+
+                for (var i = 0, len = tab.length; i < len; i++) {
+                    if (tab[i] == '-') {
+                        mapInt = tab.substring(i+1, tab.length);
+                        console.log("Map Int:" + mapInt);
+                        break;
+                    }
+                }
+
+                
+
+                google.maps.event.trigger("map_"+mapInt, 'resize');
+
+
             });
         });
 
+
 }
 
-function calcRoute() {
+function calcRoute(directionsDisplay, directionsService) {
 
     var waypointsArray = [];
     var passengersArray = routeArray["passengers"];
@@ -127,7 +156,10 @@ function calcRoute() {
     directionsService.route(request, function(response, status) {
         if (status == google.maps.DirectionsStatus.OK) {
             directionsDisplay.setDirections(response);
+        } else {
+            console.log("directions didn't work");
         }
+
     });
 }
 
