@@ -8,7 +8,7 @@ module PagesHelper
     end
   end
 
-  def createTravellers
+  def create_travellers
 
     t1 = Trip.new('Vernon, BC', '2015-03-29')
 

@@ -17,7 +17,11 @@
 }
 .map-canvas {
     height: 384px;
-    width: 700px;
+    min-width: 100%;
+}
+
+#map-canvas-1 {
+    height: 384px;
 }
 
 body {

@@ -1,18 +1,21 @@
 /**
  * Created by EmilyMillard on 15-02-22.
  */
-  <% environment.context_class.instance_eval { include Rails.application.routes.url_helpers } %>
-  <% environment.context_class.instance_eval { include PagesHelper } %>
+        <% environment.context_class.instance_eval { include Rails.application.routes.url_helpers } %>
 
 var rendererOptions = {
     draggable: true
 };
 
-var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);;
+var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
 var directionsService = new google.maps.DirectionsService();
-var map;
+//var map;
+
+var routeArray = [];
+var tripDestination;
 
 var kelowna = new google.maps.LatLng(49.887952, -119.496011);
+
 
 function initialize(routeNum) {
 
@@ -22,21 +25,30 @@ function initialize(routeNum) {
         center: kelowna
     }
 
-    map = new google.maps.Map(document.getElementById('map-canvas-'+routeNum), mapOptions);
+    var map = new google.maps.Map(document.getElementById('map-canvas-' + routeNum), mapOptions);
     directionsDisplay.setMap(map);
-    directionsDisplay.setPanel(document.getElementById('directionsPanel-'+routeNum));
+    directionsDisplay.setPanel(document.getElementById('directionsPanel-' + routeNum));
 
-    google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
-    //    computeTotalDistance(directionsDisplay.getDirections());
+    google.maps.event.addListener(directionsDisplay, 'directions_changed', function () {
+        //    computeTotalDistance(directionsDisplay.getDirections());
     });
 
     calcRoute();
 }
 
-function getRoutes() {
-    var tripsArray = <%= create_travellers %>;
+function loadTrip() {
+    $.ajax({
+        url: 'pages/get_travellers',
+        type: 'POST',
+        success: function (data) {
+            getRoutes(data);
+        }
+    });
+}
 
-    var destination = tripsArray.destination_address;
+function getRoutes(tripData) {
+    var tripsArray = tripData;
+    tripDestination = tripsArray.destination_address;
     var date = tripsArray.date_time;
 
     var routesArray = tripsArray.routes;
@@ -44,12 +56,17 @@ function getRoutes() {
 
     var currRoute = 1;
 
-    for (var i=0; i<numRoutes; i++) {
+    for (var i = 0; i < numRoutes; i++) {
+        routeArray = routesArray[i];
 
         var liNode = document.createElement("li");
         var hrefNode = document.createElement("a");
-        hrefNode.setAttribute('href', "#tabs-"+currRoute);
-        var routeNumNode = document.createTextNode("Route: "+currRoute);
+        hrefNode.setAttribute('href', "#tab-" + currRoute);
+        var routeNumNode = document.createTextNode("Route: " + currRoute);
+
+        if (i == 0) {
+            liNode.setAttribute("class", "current");
+        }
 
         hrefNode.appendChild(routeNumNode);
         liNode.appendChild(hrefNode);
@@ -58,20 +75,20 @@ function getRoutes() {
 
         var tabDiv = document.createElement("div");
         tabDiv.setAttribute("class", "tab-content");
-        tabDiv.setAttribute("id", "tab-"+currRoute);
+        tabDiv.setAttribute("id", "tab-" + currRoute);
 
         var mapCon = document.createElement("div");
         mapCon.setAttribute("id", "map-container");
 
         var mapCan = document.createElement("div");
-        mapCan.setAttribute("id", "map-canvas-"+currRoute);
+        mapCan.setAttribute("id", "map-canvas-" + currRoute);
         mapCan.setAttribute("class", "map-canvas");
 
         mapCon.appendChild(mapCan);
         tabDiv.appendChild(mapCon);
 
         var directionsPan = document.createElement("div");
-        directionsPan.setAttribute("id", "directionsPanel-"+currRoute);
+        directionsPan.setAttribute("id", "directionsPanel-" + currRoute);
 
         document.getElementsByClassName("tab")[0].appendChild(tabDiv).appendChild(directionsPan);
 
@@ -81,23 +98,41 @@ function getRoutes() {
 
     }
 
-    console.log(tripsArray);
-    console.log(destination);
-    console.log(date);
-    console.log(routesArray);
-    console.log(numRoutes);
+    jQuery(document).ready(function () {
+        jQuery(".tabs-menu a").click(function (event) {
+            event.preventDefault();
+            jQuery(this).parent().addClass("current");
+            jQuery(this).parent().siblings().removeClass("current");
+            var tab = jQuery(this).attr("href");
+            jQuery(".tab-content").not(tab).css("display", "none");
+            jQuery(tab).fadeIn();
+        });
+    });
 
 }
 
 function calcRoute() {
 
+    var waypointsArray = [];
+    var passengersArray = routeArray["passengers"];
+
+    for (var i = 0; i < passengersArray.length; i++) {
+        console.log(passengersArray[i]);
+
+        waypointsArray.push({
+            location: passengersArray[i].address,
+            stopover: true
+        });
+    }
+
     var request = {
-        origin: 'Kelowna, BC',
-        destination: 'Kelowna, BC',
-        waypoints:[{location: '166 Summerhill Place, Kelowna, BC'}, {location: '3333 University Way, Kelowna, BC'}],
+        origin: routeArray.driver.address,
+        destination: tripDestination,
+        waypoints: waypointsArray,
+        optimizeWaypoints: true,
         travelMode: google.maps.TravelMode.DRIVING
     };
-    directionsService.route(request, function(response, status) {
+    directionsService.route(request, function (response, status) {
         if (status == google.maps.DirectionsStatus.OK) {
             directionsDisplay.setDirections(response);
         }
@@ -114,4 +149,4 @@ function computeTotalDistance(result) {
     document.getElementById('total').innerHTML = total + ' km';
 }
 
-google.maps.event.addDomListener(window, 'load', getRoutes);
+google.maps.event.addDomListener(window, 'load', loadTrip);
