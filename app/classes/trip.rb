@@ -28,18 +28,6 @@ class Trip
       return_string << "\n#{route.to_s}"
     end
 
-    # return_string << "\nDrivers:"
-    #
-    # @drivers.each do |driver|
-    #   return_string << "\n\t#{driver.to_s}"
-    # end
-    #
-    # return_string << "\nPassengers:"
-    #
-    # @passengers.each do |passenger|
-    #   return_string << "\n\t#{passenger.to_s}"
-    # end
-
     return_string
   end
 end

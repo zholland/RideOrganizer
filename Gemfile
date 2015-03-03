@@ -27,6 +27,8 @@ gem 'test-unit'
 
 gem 'algorithms'
 
+gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
+
 # offical rails geocoder
 gem 'geocoder'
 
@@ -56,9 +58,6 @@ group :development, :test do
   gem "nifty-generators", :group => :development
 
   gem 'mocha'
-
-  # useful for using jquery ui, see jqueryui.com for more info
-  gem 'jquery-ui-rails'
 
 end
 
