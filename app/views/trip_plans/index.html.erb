@@ -13,7 +13,13 @@
     <!--</ul>-->
     <!--<p class="lead">Note: pagination should also be added so that users do not have to scroll through very long list of travellers</p>-->
 
-    <%= form_tag '/trip_plans' do %>
+    <%= form_tag({action: :create}, multipart: true) do %>
+        <p>
+          <%= label_tag 'Upload a list of travellers' %>
+          <%= file_field_tag 'traveller_csv' %>
+        </p>
+        <br>
+
         <p>
           <%= label_tag 'Destination Address' %>
           <%= text_field_tag 'destination_address' %>
@@ -25,7 +31,7 @@
         </p>
 
         <p>
-          <%= submit_tag %>
+          <%= submit_tag 'Generate Trip' %>
         </p>
     <% end %>
   </div>
