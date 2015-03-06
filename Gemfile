@@ -59,5 +59,8 @@ group :development, :test do
 
   gem 'mocha'
 
+  gem 'tzinfo-data'
+
+  gem 'coffee-script-source', '1.8.0'
 end
 
