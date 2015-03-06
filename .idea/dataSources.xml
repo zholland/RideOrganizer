@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="0">
+  <component name="DataSourceManagerImpl" format="xml">
     <data-source source="LOCAL" name="Rails ride_organizer: test" uuid="85b72502-a1d7-4279-957d-b75b2ccbc2d6">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
