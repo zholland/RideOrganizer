@@ -60,5 +60,7 @@ group :development, :test do
   gem 'mocha'
 
   gem 'tzinfo-data'
+
+  gem 'devise'
 end
 

@@ -1,4 +1,3 @@
-
 <!-- Navigation -->
 <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
   <div class="container topnav">
@@ -10,20 +9,27 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <%=link_to 'RideOrganizer', root_path, html_options = {:class => 'navbar-brand topnav'} %>
+      <%= link_to 'RideOrganizer', root_path, html_options = {:class => 'navbar-brand topnav'} %>
     </div>
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
         <li>
-          <%= nav_link "about", pages_about_path%>
+          <%= nav_link 'about', pages_about_path %>
         </li>
         <li>
-          <%= nav_link "plan your trip", trip_plans_path%>
+          <%= nav_link 'plan your trip', trip_plans_path %>
         </li>
 
-        <!-- login/logout to be completed -->
-        <li><a>login</a></li>
+        <% if user_signed_in? %>
+            <li>
+              <%= link_to('logout', destroy_user_session_path, :method => :delete) %>
+            </li>
+        <% else %>
+            <li>
+              <%= link_to('login', new_user_session_path) %>
+            </li>
+        <% end %>
       </ul>
     </div>
     <!-- /.navbar-collapse -->
