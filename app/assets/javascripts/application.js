@@ -14,7 +14,6 @@
 // DO NOT MESS WITH THE ORDER IN THIS FILE!!!! gmaps/google and the google maps api must be loaded before jquery!
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
 //= require bootstrap
-//= require underscore
+//= require google_maps_api
 //= require_tree .
