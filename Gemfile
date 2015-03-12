@@ -55,9 +55,12 @@ group :development, :test do
   gem 'gmaps4rails'
 
   # A collection of useful Rails generator scripts for scaffolding, layout files, authentication, and more.
-  gem "nifty-generators", :group => :development
+  gem 'nifty-generators', :group => :development
 
   gem 'mocha'
 
+  gem 'tzinfo-data'
+
+  gem 'devise'
 end
 
