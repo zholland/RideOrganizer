@@ -6,6 +6,10 @@ class TripPlansController < ApplicationController
   def new
   end
 
+  def choose
+
+  end
+
   def create
     csv_file = params[:traveller_csv]
     # csv_file = "inputtest.csv"
