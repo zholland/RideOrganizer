@@ -1,81 +1,82 @@
+require 'csv'
+
 module TripPlansHelper
+
   DAYS_OF_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-  def process_trip_input
-    csv_file = params[:traveller_csv]
-    # csv_file = "inputtest.csv"
 
-    destination_address = params[:destination_address] # TODO: Need to verify by geocoding
+  # Written by Connor
+  # Reads in rows from a .csv file
+  # Columns should be in order of Name, Address, isDriver (boolean), Passengers
+  # Passengers should be 0 if isDriver == false
+  # persons is a 2D array that stores [row#][0-4],
+  # where 0 is name, 1 is email, 2 is address, 3 is isDriver, 4 is Passengers
+  # Size of persons[] is dynamic based on number of rows in .csv
+  # If .csv has a header, add true to head when calling load_csv.
+  def load_csv(file, head = false)
+    #Check that file name ends with .csv
+    #if path[path.to_s.length-4,4].to_s != ".csv"
+    # puts "Error: File is not a .csv"
+    #else
+    persons = Array.new
+    i = 0
 
-    year = params[:arrival_time][:year]
-    month = params[:arrival_time][:month]
-    day = params[:arrival_time][:day]
-    hour = params[:arrival_time][:hour]
-    minute = params[:arrival_time][:minute]
-
-    # Year
-    if year =~ /^[2][0-9]{3}$/
-      year = year.to_i
-
-      if year == 2010
-        return redirect_to :action => 'index'
+    CSV.foreach(file.path, col_sep: ',') do |row|
+      persons[i] = row
+      #Check each element of each row to make sure correct values are entered
+      #Check if name has a number in it
+      if /\d/.match(persons[i][0])
+        puts "Error: Name has Int value"
+      elsif persons[i][0] == nil
+        puts "Error: #{persons[i]} Name is nil"
       end
-    else
-      return redirect_to :action => 'index'
-    end
-
-    # Month
-    if month =~ /^([1][0-2]|[1-9])$/
-      month = month.to_i
-    else
-      return redirect_to :action => 'index'
-    end
-
-    # Day
-    if day =~ /^([0]?[1-9]|3[0-1]|[12][0-9])$/
-      day = day.to_i
-
-      if day > DAYS_OF_MONTH[month - 1]
-        if year % 4 != 0 || (year % 100 == 0 && year % 400 != 0) || day != 29 || month != 2
-          return redirect_to :action => 'index'
-        end
+      #Check that email is not nil
+      #Need to add a check that makes sure email has a @ in it
+      if (persons[i][1] == nil)
+        puts "Error: #{persons[i]} Email is nil"
       end
-    else
-      return redirect_to :action => 'index'
+      #Check that address is not nil
+      if (persons[i][2] == nil)
+        puts "Error: #{persons[i]} Address is nil"
+      end
+      #Check if isDriver has a value other than true or false
+      if (persons[i][3] != "TRUE" && persons[i][3] != "FALSE")
+        puts "Error: isDriver isnt a bool value"
+      elsif (persons[i][2] == nil)
+        puts "Error: #{persons[i]} isDriver is nil"
+      end
+      #Check if isDriver is false but is allowed to have passengers
+      if (persons[i][3] == "FALSE" && persons[i][4] != "0")
+        puts "Error: isDriver is false but has passengers"
+      elsif (persons[i][4] == nil)
+        puts "Error: #{persons[i]} Passengers is nil"
+      end
+      i += 1
     end
 
-    # Hour
-    if hour =~ /^([0]?[0-9]|2[0-3]|[1][0-9])$/
-      hour = hour.to_i
-    else
-      return redirect_to :action => 'index'
-    end
+    #session[:current_persons] = persons
+    return persons
+    #end
+  end
 
-    # Minutes
-    if minute =~ /^([0]?[0-9]|[1-5][0-9])$/
-      minute = minute.to_i
-    end
+  def process_trip_travellers(trip, csv_file)
 
-    arrival_time = DateTime.civil(year, month, day, hour, minute)
+    persons = load_csv(csv_file)
 
-    trip = Trip.new(destination_address, arrival_time)
-
-    persons = load_csv(csv_file.path)
+    drivers = []
+    passengers = []
 
     persons.each() do |person|
       if (person[3] == "TRUE")
-        trip.add_driver(Driver.new(person[0], person[1], person[2], person[4].to_i))
+        drivers << Driver.new(person[0], person[1], person[2], person[4].to_i)
       else
-        trip.add_passenger(Passenger.new(person[0], person[1], person[2]))
+        passengers << Passenger.new(person[0], person[1], person[2])
       end
     end
 
-    traveller_matching = TravellerMatching.new(trip)
-    trip = traveller_matching.group_travellers.to_json
+    trip.drivers=(drivers)
+    trip.passengers=(passengers)
 
-    session[:trip] = nil
-    session[:trip] = trip
-
-    redirect_to trip_plans_planner_output_path
+    trip.save
   end
 end

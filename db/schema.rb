@@ -11,12 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150312054023) do
-
-  create_table "routes", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
+ActiveRecord::Schema.define(version: 20150312194138) do
 
   create_table "sessions", force: :cascade do |t|
     t.string   "session_id", null: false
@@ -28,20 +23,8 @@ ActiveRecord::Schema.define(version: 20150312054023) do
   add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", unique: true
   add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at"
 
-  create_table "travellers", force: :cascade do |t|
-    t.string   "name"
-    t.string   "email"
-    t.string   "address"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "trips", force: :cascade do |t|
-    t.string   "destination_address"
-    t.datetime "date_time"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
-  end
+# Could not dump table "trips" because of following NoMethodError
+#   undefined method `[]' for nil:NilClass
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false

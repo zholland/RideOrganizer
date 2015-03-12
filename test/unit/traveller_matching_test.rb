@@ -1,6 +1,6 @@
 require 'test/unit'
 require_relative '../../app/classes/traveller_matching'
-require_relative '../../app/classes/trip'
+require_relative '../../app/classes/oldtrip'
 require_relative '../../app/classes/driver'
 require_relative '../../app/classes/passenger'
 
