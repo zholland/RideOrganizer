@@ -1,12 +1,23 @@
 <%= render 'shared/nav' %>
 <%= render 'shared/header' %>
+
 <div class="content-pages">
   <div class="container">
 
     <div class="row">
-      <div class="col-lg-12">
+      <div class="col-lg-6">
         <h2>Trips</h2>
 
+        <% if user_signed_in? %>
+            <div class="row">
+              <div class="col-lg-12">
+                <% @trips.each do |trip| %>
+                    <%= link_to(trip.destination_address, edit_trip_plan_path(trip), class: 'list-group-item') %>
+                <% end %>
+              </div>
+            </div>
+        <% end %>
+        <%= link_to('New Trip', trip_plans_new_path, html_options = {class: 'btn btn-default'}) %>
       </div>
     </div>
   </div>

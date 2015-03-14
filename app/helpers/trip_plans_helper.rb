@@ -63,20 +63,12 @@ module TripPlansHelper
 
     persons = load_csv(csv_file)
 
-    drivers = []
-    passengers = []
-
     persons.each() do |person|
       if (person[3] == "TRUE")
-        drivers << Driver.new(person[0], person[1], person[2], person[4].to_i)
+        trip.travellers << Driver.create(name: person[0], email: person[1], address: person[2], number_of_passengers: person[4].to_i)
       else
-        passengers << Passenger.new(person[0], person[1], person[2])
+        trip.travellers << Passenger.create(name: person[0], email: person[1], address: person[2])
       end
     end
-
-    trip.drivers=(drivers)
-    trip.passengers=(passengers)
-
-    trip.save
   end
 end

@@ -1,25 +1,25 @@
 require 'test/unit'
 require_relative '../../app/classes/traveller_matching'
-require_relative '../../app/classes/oldtrip'
-require_relative '../../app/classes/driver'
-require_relative '../../app/classes/passenger'
+require_relative '../../app/classes/trip_container'
+require_relative '../../app/classes/driver_container'
+require_relative '../../app/classes/passenger_container'
 
 class TravellerMatchingTest < Test::Unit::TestCase
   def setup
-    trip = Trip.new("3333 University Way, Kelowna, BC", Time.now)
-    trip.add_driver(Driver.new("Denis Vasilyev", "denisvasilyev@email.com", "387 Bernard Avenue, Kelowna, BC", 4))
-    trip.add_driver(Driver.new("Bronislava Matveev", "bronislavamatveev@email.com", "1901 Harvey Ave, Kelowna, BC", 2))
-    trip.add_driver(Driver.new("Feliks Konstantinov", "felikskonstantinov@email.com", "1000 K. L. O. Rd, Kelowna, BC", 3))
-    trip.add_passenger(Passenger.new("Klara Utkin", "klarautkin@email.com", "4346 Gordon Dr, Kelowna, BC"))
-    trip.add_passenger(Passenger.new("Rolan Pavlov", "rolanpavlov@email.com", "705 Kitch Rd, Kelowna, BC"))
-    trip.add_passenger(Passenger.new("Geert Alvarsson", "geertalvarsson@email.com", "820 Guy St, Kelowna, BC"))
-    trip.add_passenger(Passenger.new("Anina Madsen", "aninamadsen@email.com", "715 Rutland Road North, Kelowna, BC"))
-    trip.add_passenger(Passenger.new("Gennadiz Hivkov", "gennadizhivkov@email.com", "1938 Kane Rd, Kelowna, BC"))
-    trip.add_passenger(Passenger.new("Mitrofan Pavlov", "mitrofanpavlov@email.com", "5533 Airport Way, Kelowna, BC"))
-    trip.add_passenger(Passenger.new("Anna Sokolov", "annasokolov@email.com", "1959 K. L. O. Road, Kelowna, BC"))
-    trip.add_passenger(Passenger.new("Milena Volkov", "milenavolkov@email.com", "190 Aurora Crescent, Kelowna, BC"))
-    trip.add_passenger(Passenger.new("Manya Yakovlev", "manyayakovlev@email.com", "1505 Gordon Dr, Kelowna, BC"))
-    trip.add_passenger(Passenger.new("Feodora Petrov", "feodorapetrov@email.com", "1555 Burtch Road, Kelowna, BC"))
+    trip = TripContainer.new("3333 University Way, Kelowna, BC", Time.now)
+    trip.add_driver(DriverContainer.new("Denis Vasilyev", "denisvasilyev@email.com", "387 Bernard Avenue, Kelowna, BC", 4))
+    trip.add_driver(DriverContainer.new("Bronislava Matveev", "bronislavamatveev@email.com", "1901 Harvey Ave, Kelowna, BC", 2))
+    trip.add_driver(DriverContainer.new("Feliks Konstantinov", "felikskonstantinov@email.com", "1000 K. L. O. Rd, Kelowna, BC", 3))
+    trip.add_passenger(PassengerContainer.new("Klara Utkin", "klarautkin@email.com", "4346 Gordon Dr, Kelowna, BC"))
+    trip.add_passenger(PassengerContainer.new("Rolan Pavlov", "rolanpavlov@email.com", "705 Kitch Rd, Kelowna, BC"))
+    trip.add_passenger(PassengerContainer.new("Geert Alvarsson", "geertalvarsson@email.com", "820 Guy St, Kelowna, BC"))
+    trip.add_passenger(PassengerContainer.new("Anina Madsen", "aninamadsen@email.com", "715 Rutland Road North, Kelowna, BC"))
+    trip.add_passenger(PassengerContainer.new("Gennadiz Hivkov", "gennadizhivkov@email.com", "1938 Kane Rd, Kelowna, BC"))
+    trip.add_passenger(PassengerContainer.new("Mitrofan Pavlov", "mitrofanpavlov@email.com", "5533 Airport Way, Kelowna, BC"))
+    trip.add_passenger(PassengerContainer.new("Anna Sokolov", "annasokolov@email.com", "1959 K. L. O. Road, Kelowna, BC"))
+    trip.add_passenger(PassengerContainer.new("Milena Volkov", "milenavolkov@email.com", "190 Aurora Crescent, Kelowna, BC"))
+    trip.add_passenger(PassengerContainer.new("Manya Yakovlev", "manyayakovlev@email.com", "1505 Gordon Dr, Kelowna, BC"))
+    trip.add_passenger(PassengerContainer.new("Feodora Petrov", "feodorapetrov@email.com", "1555 Burtch Road, Kelowna, BC"))
 
     @traveller_matching = TravellerMatching.new(trip)
   end

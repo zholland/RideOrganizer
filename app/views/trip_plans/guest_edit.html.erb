@@ -29,9 +29,10 @@
               <%= f.datetime_select :date_time %>
             </p>
             <p>
-              <%= f.submit 'Create Trip'%>
+              <%= f.submit 'Save Changes'%>
             </p>
         <% end %>
+        <%= link_to('Compute Trip Routes', trip_plans_guest_planner_output_path, html_options = {class: 'btn btn-default'}) %>
       </div>
     </div>
   </div>

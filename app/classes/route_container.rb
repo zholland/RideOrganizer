@@ -1,4 +1,4 @@
-class Route
+class RouteContainer
   attr_accessor :passengers, :driver
 
   def initialize(driver)
