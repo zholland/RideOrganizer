@@ -11,9 +11,10 @@
 // about supported directives.
 //
 //
-// DO NOT MESS WITH THE ORDER IN THIS FILE!!!! gmaps/google and the google maps api must be loaded before jquery!
-//= require jquery
-//= require jquery_ujs
-//= require bootstrap
+//= require turbolinks
 //= require google_maps_api
+//= require plan_trip.js.erb
+//= require jquery
+//= require bootstrap
+//= require jquery_ujs
 //= require_tree .

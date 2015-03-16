@@ -1,6 +1,8 @@
+
 <!-- all pages should render nav and header -->
 <%= render 'shared/nav' %>
 <%= render 'shared/header' %>
+<%= javascript_include_tag "google_maps_api" %>
 
 
 <div class="content-pages">
@@ -9,6 +11,7 @@
       <div class="col-lg-12">
         <%= link_to('Edit Trip', trip_plans_guest_edit_path, html_options = {class: 'btn btn-default'}) %>
       </div>
+    </div>
     </div>
 
     <div id="tabs-container">
@@ -19,8 +22,7 @@
       </div>
     </div>
 
-  </div>
-  <!-- /.container -->
+  </div> <!-- /.container -->
 
 
 </div> <!-- /.content-pages -->

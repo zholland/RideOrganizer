@@ -40,13 +40,16 @@ function initialize(routeNum) {
 }
 
 function loadTrip() {
-    $.ajax({
-        url: 'get_travellers',
-        type: 'POST',
-        success: function (data) {
-            getRoutes(data);
-        }
-    });
+
+    if (document.getElementById('tabs-container') != null) {
+        $.ajax({
+            url: 'get_travellers',
+            type: 'POST',
+            success: function (data) {
+                getRoutes(data);
+            }
+        });
+    }
 }
 
 function getRoutes(tripData) {
