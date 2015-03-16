@@ -17,7 +17,7 @@
         <h2>New Trip</h2>
         <%= form_for :trip, url: trip_plans_path do |f| %>
             <p>
-              <%= label_tag 'Upload a list of travellers' %>
+              <%= label_tag 'Upload a list of travellers:' %>
               <%= f.file_field :traveller_csv %>
             </p>
             <p>
