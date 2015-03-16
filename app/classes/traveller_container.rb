@@ -1,4 +1,4 @@
-class Traveller
+class TravellerContainer
   attr_accessor :name, :email, :address
 
   def initialize(name, email, address)

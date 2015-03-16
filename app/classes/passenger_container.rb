@@ -1,4 +1,4 @@
-class Passenger < Traveller
+class PassengerContainer < TravellerContainer
   def initialize(name, email, address)
     super(name, email, address)
   end

@@ -1,39 +1,17 @@
-<html>
-
+<%= render 'shared/header' %>
 <%= render 'shared/nav' %>
 
 
 <div class="content-pages">
   <div class="container">
-    <!--<h2>To do on this page:</h2>-->
-    <!--<ul>-->
-      <!--<li>Create import button</li>-->
-      <!--<li>Create model to all users to add traveller information manually</li>-->
-      <!--<li>Based on the list of travellers uploaded allow user to add traveller preferences </li>-->
-    <!--</ul>-->
-    <!--<p class="lead">Note: pagination should also be added so that users do not have to scroll through very long list of travellers</p>-->
-
-    <%= form_tag({action: :create}, multipart: true) do %>
-        <p>
-          <%= label_tag 'Upload a list of travellers' %>
-          <%= file_field_tag 'traveller_csv' %>
-        </p>
-        <br>
-
-        <p>
-          <%= label_tag 'Destination Address' %>
-          <%= text_field_tag 'destination_address' %>
-        </p>
-
-        <p>
-          <%= label_tag 'Arrival Time' %>
-          <%= select_datetime Time.now, prefix: :arrival_time, ampm: true %>
-        </p>
-
-        <p>
-          <%= submit_tag 'Generate Trip' %>
-        </p>
-    <% end %>
+    <div class="row">
+      <div class="col-lg-6">
+        <h3>Sign in to view your trips</h3>
+        <%= link_to('Login', new_user_session_path, html_options = {class: 'btn btn-default'}) %>
+        <%= link_to('Create Account', new_user_registration_path, html_options = {class: 'btn btn-default'}) %>
+        <%= link_to('Continue as Guest', trip_plans_choose_path, html_options = {class: 'btn btn-default'}) %>
+      </div>
+    </div>
   </div>
 </div>
 </html>

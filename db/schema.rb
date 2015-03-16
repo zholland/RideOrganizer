@@ -11,7 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150306190547) do
+ActiveRecord::Schema.define(version: 20150313180325) do
+
+  create_table "routes", force: :cascade do |t|
+    t.integer "trip_id"
+    t.integer "driver_id"
+  end
+
+  add_index "routes", ["driver_id"], name: "index_routes_on_driver_id"
+  add_index "routes", ["trip_id"], name: "index_routes_on_trip_id"
+
+  create_table "routes_travellers", id: false, force: :cascade do |t|
+    t.integer "route_id",     null: false
+    t.integer "traveller_id", null: false
+  end
 
   create_table "sessions", force: :cascade do |t|
     t.string   "session_id", null: false
@@ -22,6 +35,30 @@ ActiveRecord::Schema.define(version: 20150306190547) do
 
   add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", unique: true
   add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at"
+
+  create_table "travellers", force: :cascade do |t|
+    t.string  "name"
+    t.string  "email"
+    t.string  "address"
+    t.integer "number_of_passengers"
+    t.string  "type"
+  end
+
+  create_table "travellers_trips", id: false, force: :cascade do |t|
+    t.integer "trip_id",      null: false
+    t.integer "traveller_id", null: false
+  end
+
+  create_table "trips", force: :cascade do |t|
+    t.string   "destination_address"
+    t.datetime "date_time"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.integer  "user_id"
+    t.string   "trip_json"
+  end
+
+  add_index "trips", ["user_id"], name: "index_trips_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false

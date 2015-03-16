@@ -1,6 +1,6 @@
-require_relative 'traveller'
+require_relative 'traveller_container'
 
-class Driver < Traveller
+class DriverContainer < TravellerContainer
   attr_accessor :number_of_passengers
 
   def initialize(name, email, address, number_of_passengers)

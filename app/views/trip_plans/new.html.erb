@@ -1,0 +1,39 @@
+<%= render 'shared/header' %>
+<%= render 'shared/nav' %>
+
+
+<div class="content-pages">
+  <div class="container">
+    <!--<h2>To do on this page:</h2>-->
+    <!--<ul>-->
+    <!--<li>Create import button</li>-->
+    <!--<li>Create model to all users to add traveller information manually</li>-->
+    <!--<li>Based on the list of travellers uploaded allow user to add traveller preferences </li>-->
+    <!--</ul>-->
+    <!--<p class="lead">Note: pagination should also be added so that users do not have to scroll through very long list of travellers</p>-->
+
+    <div class="row">
+      <div class="col-lg-12">
+        <h2>New Trip</h2>
+        <%= form_for :trip, url: trip_plans_path do |f| %>
+            <p>
+              <%= label_tag 'Upload a list of travellers:' %>
+              <%= f.file_field :traveller_csv %>
+            </p>
+            <p>
+              <%= f.label :destination_address %>
+              <%= f.text_field :destination_address %>
+            </p>
+
+            <p>
+              <%= f.label 'Arrival Time' %>
+              <%= f.datetime_select :date_time %>
+            </p>
+            <p>
+              <%= f.submit 'Create Trip'%>
+            </p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

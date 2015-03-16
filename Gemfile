@@ -61,6 +61,10 @@ group :development, :test do
 
   gem 'tzinfo-data'
 
+  # For user accounts
   gem 'devise'
+
+  # For local environment variables
+  gem 'figaro'
 end
 

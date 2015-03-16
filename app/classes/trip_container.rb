@@ -1,4 +1,4 @@
-class Trip
+class TripContainer
   attr_accessor :routes, :passengers, :drivers, :date_time, :destination_address
 
   def initialize(destination_address, date_time)

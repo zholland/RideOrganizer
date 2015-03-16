@@ -1,6 +1,5 @@
 require 'algorithms'
 require 'geocoder'
-require_relative 'route'
 
 include Containers
 include Geocoder
@@ -125,7 +124,7 @@ class TravellerMatching
 
     pairing.each do |passenger, driver|
       if driver_routes[driver].nil?
-        driver_routes[driver] = Route.new(driver)
+        driver_routes[driver] = RouteContainer.new(driver)
         @trip.add_route(driver_routes[driver])
       end
 

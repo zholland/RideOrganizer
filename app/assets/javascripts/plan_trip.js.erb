@@ -41,7 +41,7 @@ function initialize(routeNum) {
 
 function loadTrip() {
     $.ajax({
-        url: 'trip_plans/get_travellers',
+        url: 'get_travellers',
         type: 'POST',
         success: function (data) {
             getRoutes(data);
