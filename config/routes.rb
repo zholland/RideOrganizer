@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get 'trip_plans/guest_planner_output', to: 'trip_plans#guest_planner_output'
   post 'trip_plans/:id/get_travellers', to: 'trip_plans#get_travellers', as: 'get_travellers'
   post 'trip_plans/get_travellers', to: 'trip_plans#get_travellers', as: 'guest_get_travellers'
+  patch 'trip_plans/guest_update', to: 'trip_plans#guest_update'
 
 
   resources :trip_plans do

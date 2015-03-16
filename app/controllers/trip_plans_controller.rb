@@ -21,7 +21,7 @@ class TripPlansController < ApplicationController
     if current_user != nil
       @trip = Trip.find(params[:id])
     else
-      @trip = session[:trip]
+      redirect_to trip_plans_guest_edit_path
     end
   end
 
@@ -47,6 +47,26 @@ class TripPlansController < ApplicationController
       redirect_to trip_plans_guest_edit_path
     end
 
+  end
+
+  def update
+    if current_user != nil
+      @trip = Trip.find(params[:id])
+      @trip.update(trip_params)
+      redirect_to edit_trip_plan_path(@trip)
+    else
+      redirect_to new_user_session_path
+    end
+  end
+
+  def guest_update
+    @trip = session[:trip]
+    if @trip != nil
+      @trip.update(trip_params)
+      redirect_to trip_plans_guest_edit_path
+    else
+      redirect_to trip_plans_choose_path
+    end
   end
 
   def get_travellers
