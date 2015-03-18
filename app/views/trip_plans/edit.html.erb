@@ -35,7 +35,15 @@
               <%= f.submit 'Save Changes' %>
             </p>
         <% end %>
-        <%= link_to('Compute Trip Routes', planner_output_trip_plan_path(@trip), html_options = {class: 'btn btn-default'}) %>
+        <p>
+        <%= link_to('Delete Trip', trip_plan_path(@trip),
+                    method: :delete, class: 'btn btn-danger',
+                    data: {confirm: 'Are you sure?'}) %>
+        <%= link_to('Optimize Trip', planner_output_trip_plan_path(@trip), class: 'btn btn-default') %>
+        </p>
+        <p>
+        <%= link_to('Back To Trips', trip_plans_choose_path, class: 'btn btn-default')%>
+        </p>
       </div>
     </div>
   </div>

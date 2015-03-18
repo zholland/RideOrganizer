@@ -15,8 +15,34 @@
     margin-top: 25px;
     border-width: 7px;
 }
+
 .map-canvas {
     height: 384px;
+}
+
+.badge-label {
+    float: right;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.trip-destination-text {
+    font-size: 120%;
+}
+
+table.trips-table {
+    border: 1px solid #ddd;
+}
+
+.list-delete-link {
+    float: right;
+    display: inline-block;
+}
+
+.delete-button {
+    margin-top: 6px !important;
+    margin-bottom: 5.5px !important;
+    display: none !important;
 }
 
 body {
@@ -74,7 +100,7 @@ body {
 .tab-content {
     padding: 20px;
     display: none;
-    width:100%;
+    width: 100%;
 }
 
 #tab-1 {

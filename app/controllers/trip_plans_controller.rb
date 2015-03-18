@@ -69,6 +69,13 @@ class TripPlansController < ApplicationController
     end
   end
 
+  def destroy
+    @trip = Trip.find(params[:id])
+    @trip.destroy
+
+    redirect_to trip_plans_choose_path
+  end
+
   def get_travellers
     if current_user != nil
       @trip = Trip.find(params[:id])
