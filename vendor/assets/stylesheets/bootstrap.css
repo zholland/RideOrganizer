@@ -2489,7 +2489,7 @@ label {
     display: inline-block;
     max-width: 100%;
     margin-bottom: 5px;
-    font-weight: bold;
+    font-weight: 400;
 }
 input[type="search"] {
     -webkit-box-sizing: border-box;
@@ -3021,7 +3021,7 @@ fieldset[disabled] .btn {
 .btn-default {
     color: #000;
     background-color: #f8f8f8;
-    border: 2px solid black;
+    border: 2px solid #ccc;
 }
 .btn-default:hover,
 .btn-default:focus,

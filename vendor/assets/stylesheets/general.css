@@ -2,11 +2,36 @@
     padding-top: 100px;
 }
 
-/* about css */
+body {
+    /*padding: 20px;*/
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+.submit-button {
+    margin: 1em 0;
+}
+
+div#error_explanation h2 {
+    font-size: 1.7em;
+}
+
+div#error_explanation ul li {
+    font-weight: 100;
+}
+
+.field_with_errors {
+    display: inline-block;
+    color: #ff0000;
+}
+
+/* -- ABOUT -- */
 .about-image {
     border: 15px solid #f4e5d3;
 }
 
+/* -- PLANNER OUTPUT -- */
 .map-container {
     height: 400px;
     border-color: #fff;
@@ -17,13 +42,6 @@
 }
 .map-canvas {
     height: 384px;
-}
-
-body {
-    /*padding: 20px;*/
-    font-family: Arial, Helvetica, sans-serif;
-    line-height: 1.5;
-    font-size: 14px;
 }
 
 .tabs-menu {
@@ -103,3 +121,29 @@ body {
     font-weight: 100;
     font-size: smaller;
 }
+
+/* -- LOGIN -- */
+
+.field {
+    margin-top: 1em;
+}
+
+.login-button {
+    margin-bottom: 1em;
+}
+
+/* -- CREATE ACCOUNT -- */
+
+.signup-button {
+    margin-top: 1em;
+}
+
+/* -- TRIPS (new and edit) -- */
+.trip-form {
+  margin-top: 1.7em;
+}
+
+.save-button {
+    margin-top: 1em;
+}
+
