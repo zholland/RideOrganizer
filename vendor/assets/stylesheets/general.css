@@ -7,7 +7,7 @@
     border: 15px solid #f4e5d3;
 }
 
-#map-container {
+.map-container {
     height: 400px;
     border-color: #fff;
     border-style: solid;
@@ -79,4 +79,27 @@ body {
 
 #tab-1 {
     display: block;
+}
+
+.route-distance {
+    margin: 20px 0;
+    font-size: 1.3em;
+}
+
+.edit-trip-button {
+    float: right;
+    margin-bottom: 7px;
+    border-radius: 0;
+    border-color: #cccccc;
+}
+
+#trip-destination {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+}
+
+.travellers-container p {
+    margin: 0;
+    font-weight: 100;
+    font-size: smaller;
 }
