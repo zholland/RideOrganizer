@@ -1,0 +1,28 @@
+table.tablesorter {
+    width:100%;
+}
+th.header {
+    text-align: left;
+    background-image: url(tablesorter/bg.gif);
+    cursor: pointer;
+    font-weight: bold;
+    background-repeat: no-repeat;
+    background-position: center right;
+}
+
+th.headerSortDown {
+    background-image: url(tablesorter/desc.gif);
+}
+
+th.headerSortDown span {
+    background-color: #dbddff;
+}
+
+th.headerSortUp {
+    background-image: url(tablesorter/asc.gif);
+}
+
+th.headerSortUp span {
+    background-color: #dbddff;
+
+}

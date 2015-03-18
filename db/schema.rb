@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(version: 20150313180325) do
 
   create_table "trips", force: :cascade do |t|
     t.string   "destination_address"
-    t.datetime "date_time"
+    t.datetime "arrival_time"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
     t.integer  "user_id"

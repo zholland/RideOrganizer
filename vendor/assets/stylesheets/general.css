@@ -30,6 +30,19 @@
     font-size: 120%;
 }
 
+.trips-table td, th {
+    vertical-align: middle !important;
+}
+
+.trips-table td {
+    padding-left: 14px !important;
+}
+
+span.table-header {
+    padding: 3px 6px;
+    border-radius: 10px;
+}
+
 table.trips-table {
     border: 1px solid #ddd;
 }
@@ -37,6 +50,20 @@ table.trips-table {
 .list-delete-link {
     float: right;
     display: inline-block;
+}
+
+.table-button {
+    padding: 4px 4px !important;
+    width: 70px !important;
+    font-size: 14px !important;
+}
+
+.num-travellers-badge {
+    font-size: 13px !important;
+}
+
+.button-column {
+    width: 10%;
 }
 
 .delete-button {

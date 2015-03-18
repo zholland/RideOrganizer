@@ -10,27 +10,14 @@
         <% if user_signed_in? %>
             <div class="row">
               <div class="col-lg-6 col-md-8 col-sm-10 col-xs-10">
-                <div class="list-group">
-                  <% @trips.each do |trip| %>
-                      <%= link_to(edit_trip_plan_path(trip.id), html_options = {class: 'list-group-item'}) do %>
-                          <span class="trip-destination-text"><%= trip.destination_address %></span>
-
-                          <span class="badge"><%= trip.num_passengers %></span>
-                          <span class="badge-label">Passengers:</span>
-
-                          <span class="badge"><%= trip.num_drivers %></span>
-                          <span class="badge-label">Drivers:</span>
-                      <% end %>
-                  <% end %>
-                </div>
                 <% if @trips.empty? %>
-                <h3>You have no trips.</h3>
-                    <% else %>
-                    <table class="table trips-table">
+                    <h3>You have no trips.</h3>
+                <% else %>
+                    <table id="trips-table" class="table trips-table tablesorter">
                       <thead>
-                      <th>Destination</th>
-                      <th>Drivers</th>
-                      <th>Passengers</th>
+                      <th><span class="table-header">Destination</span></th>
+                      <th><span class="table-header">Drivers</span></th>
+                      <th><span class="table-header">Passengers</span></th>
                       <th></th>
                       <th></th>
                       </thead>
@@ -38,12 +25,12 @@
                       <% @trips.each do |trip| %>
                           <tr>
                             <td class="trip-destination-text"><%= trip.destination_address %></td>
-                            <td><span class="badge"><%= trip.num_drivers %></span></td>
-                            <td><span class="badge"><%= trip.num_passengers %></span></td>
-                            <td><%= link_to('Edit', edit_trip_plan_path(trip), class: 'btn btn-primary') %></td>
-                            <td><%= link_to('Delete', trip_plan_path(trip),
-                                            method: :delete, class: 'btn btn-danger',
-                                            data: {confirm: 'Are you sure?'}) %></td>
+                            <td><span class="badge num-travellers-badge"><%= trip.num_drivers %></span></td>
+                            <td><span class="badge num-travellers-badge"><%= trip.num_passengers %></span></td>
+                            <td class="button-column"><%= link_to('Edit', edit_trip_plan_path(trip), class: 'btn btn-primary table-button') %></td>
+                            <td class="button-column"><%= link_to('Delete', trip_plan_path(trip),
+                                                                  method: :delete, class: 'btn btn-danger table-button',
+                                                                  data: {confirm: 'Are you sure you want to delete the trip to' + trip.destination_address + '?'}) %></td>
                           </tr>
                       <% end %>
                       </tbody>
@@ -52,7 +39,7 @@
               </div>
             </div>
         <% end %>
-        <%= link_to('New Trip', trip_plans_new_path, html_options = {class: 'btn btn-default'}) %>
+        <%= link_to('New Trip', trip_plans_new_path, class: 'btn btn-default') %>
       </div>
     </div>
   </div>

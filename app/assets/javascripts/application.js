@@ -15,6 +15,8 @@
 //= require google_maps_api
 //= require plan_trip.js.erb
 //= require jquery
-//= require bootstrap
 //= require jquery_ujs
+//= require bootstrap
+//= require jquery.tablesorter.min
+//= require choose_trips_page
 //= require_tree .
