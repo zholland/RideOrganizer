@@ -6,7 +6,7 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12">
-        <h2>Log in</h2>
+        <h2>Login</h2>
 
         <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
             <div class="field">
@@ -27,7 +27,7 @@
             <% end -%>
 
             <div class="actions">
-              <%= f.submit "Log in" %>
+              <%= f.submit "login", :class => "btn btn-default login-button"%>
             </div>
         <% end %>
 

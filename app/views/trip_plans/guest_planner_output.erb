@@ -3,15 +3,13 @@
 <%= render 'shared/header' %>
 
 
-<div class="content-pages">
+<div id="output-page" class="content-pages">
 
   <div class="container">
 
     <div class="row">
-      <div class="col-lg-12">
-        <p>
-          <%= link_to('Edit Trip', trip_plans_guest_edit_path, html_options = {class: 'btn btn-default'}) %>
-        </p>
+      <div class="col-lg-12" id="trip-destination">
+        <%= link_to('Edit Trip', trip_plans_guest_edit_path, html_options = {class: 'btn btn-default edit-trip-button'}) %>
       </div>
     </div>
 

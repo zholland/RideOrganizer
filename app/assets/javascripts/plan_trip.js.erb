@@ -4,192 +4,271 @@
 
 <% environment.context_class.instance_eval { include Rails.application.routes.url_helpers } %>
 
-var rendererOptions = {
-    draggable: true
-};
+if (document.getElementById('output-page') != null) {
 
-var routeArray = [];
-var tripDestination;
-
-
-var kelowna = new google.maps.LatLng(49.887952, -119.496011);
-
-
-function initialize(routeNum) {
-
-    // Create a map and center it on Kelowna.
-    var mapOptions = {
-        zoom: 10,
-        center: kelowna
-    }
-
-    var map = new google.maps.Map(document.getElementById('map-canvas-'+routeNum), mapOptions);
-    window['map_'+routeNum]=map;
-
-    var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
-    var directionsService = new google.maps.DirectionsService();
-
-    directionsDisplay.setMap(map);
-    directionsDisplay.setPanel(document.getElementById('directionsPanel-'+routeNum));
-
-    google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
-        computeTotalDistance(directionsDisplay.getDirections(), routeNum);
-    });
-
-    calcRoute(directionsDisplay, directionsService);
-}
-
-function loadTrip() {
-
-    if (document.getElementById('tabs-container') != null) {
-        $.ajax({
-            url: 'get_travellers',
-            type: 'POST',
-            success: function (data) {
-                getRoutes(data);
-            }
-        });
-    }
-}
-
-function getRoutes(tripData) {
-    tripsArray = tripData;
-    tripDestination = tripsArray.destination_address;
-    var date = tripsArray.date_time;
-
-    var routesArray = tripsArray.routes;
-    var numRoutes = routesArray.length;
-
-    var currRoute = 1;
-
-    for (var i=0; i<numRoutes; i++) {
-        routeArray = routesArray[i];
-
-        var liNode = document.createElement("li");
-        var hrefNode = document.createElement("a");
-        hrefNode.setAttribute('href', "#tab-"+currRoute);
-        var routeNumNode = document.createTextNode("Route: "+currRoute);
-
-        if (i == 0) {
-            liNode.setAttribute("class", "current");
-        }
-
-        hrefNode.appendChild(routeNumNode);
-        liNode.appendChild(hrefNode);
-
-        document.getElementsByClassName("tabs-menu")[0].appendChild(liNode);
-
-        var tabDiv = document.createElement("div");
-        tabDiv.setAttribute("class", "tab-content");
-        tabDiv.setAttribute("id", "tab-"+currRoute);
-
-        var mapCon = document.createElement("div");
-        mapCon.setAttribute("id", "map-container");
-        mapCon.setAttribute("style", "width:100%");
-
-        var mapCan = document.createElement("div");
-        mapCan.setAttribute("id", "map-canvas-"+currRoute);
-        mapCan.setAttribute("class", "map-canvas");
-        mapCan.setAttribute("style", "width:100%");
-
-        mapCon.appendChild(mapCan);
-        tabDiv.appendChild(mapCon);
-
-        var routeDistanceEle = document.createElement("div");
-        routeDistanceEle.setAttribute("id", "routeDistance-"+currRoute);
-
-        var routeDistanceTextEle = document.createElement("p");
-        routeDistanceTextEle.appendChild(document.createTextNode("Total Distance: "));
-
-        var routeDistanceSpan = document.createElement("span");
-        routeDistanceSpan.setAttribute("id", "routeTotal-"+currRoute);
-
-        routeDistanceEle.appendChild(routeDistanceTextEle).appendChild(routeDistanceSpan);
-        tabDiv.appendChild(routeDistanceEle);
-
-        window['routeTotal-'+currRoute]=routeDistanceSpan;
-
-        var directionsPan = document.createElement("div");
-        directionsPan.setAttribute("id", "directionsPanel-"+currRoute);
-
-        document.getElementsByClassName("tab")[0].appendChild(tabDiv).appendChild(directionsPan);
-
-        initialize(currRoute);
-
-        currRoute++;
-
-
-    }
-
-    jQuery(document).ready(function() {
-        jQuery(".tabs-menu a").click(function(event) {
-            event.preventDefault();
-            jQuery(this).parent().addClass("current");
-            jQuery(this).parent().siblings().removeClass("current");
-            var tab = jQuery(this).attr("href");
-            jQuery(".tab-content").not(tab).css("display", "none");
-            jQuery(tab).fadeIn();
-
-            var mapInt = 0;
-
-            for (var i = 0, len = tab.length; i < len; i++) {
-                if (tab[i] == '-') {
-                    mapInt = tab.substring(i+1, tab.length);
-                    break;
-                }
-            }
-            google.maps.event.trigger(window['map_'+mapInt], 'resize');
-            window['map_'+mapInt].setCenter(kelowna);
-            window['map_'+mapInt].setZoom(10);
-        });
-
-    });
-
-
-}
-
-function calcRoute(directionsDisplay, directionsService) {
-
-    var waypointsArray = [];
-    var passengersArray = routeArray["passengers"];
-
-    for (var i=0; i<passengersArray.length; i++) {
-        waypointsArray.push({
-            location:passengersArray[i].address,
-            stopover:true
-        });
-    }
-
-    var request = {
-        origin: routeArray.driver.address,
-        destination: tripDestination,
-        waypoints:waypointsArray,
-        optimizeWaypoints: true,
-        travelMode: google.maps.TravelMode.DRIVING
+    var rendererOptions = {
+        draggable: true
     };
-    directionsService.route(request, function(response, status) {
-        if (status == google.maps.DirectionsStatus.OK) {
-            directionsDisplay.setDirections(response);
-        } else {
-            console.log("directions didn't work");
+
+    var routeArray = [];
+    var tripDestination;
+    var arrivalTime;
+
+    var kelowna = new google.maps.LatLng(49.887952, -119.496011);
+
+    // create an initial map, more will be potentially added later
+    // get directions services from google maps
+    function initialize(routeNum) {
+
+        var mapOptions = {
+            zoom: 10,
+            center: kelowna
         }
 
-    });
-}
+        var map = new google.maps.Map(document.getElementById('map-canvas-'+routeNum), mapOptions);
+        window['map_'+routeNum]=map;
 
-function computeTotalDistance(result, routeNum) {
-    var total = 0;
-    var myroute = result.routes[0];
-    for (var i = 0; i < myroute.legs.length; i++) {
-        total += myroute.legs[i].distance.value;
+        var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+        var directionsService = new google.maps.DirectionsService();
+
+        directionsDisplay.setMap(map);
+        directionsDisplay.setPanel(document.getElementById('directionsPanel-'+routeNum));
+
+        google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
+            computeTotalDistance(directionsDisplay.getDirections(), routeNum);
+        });
+
+        calcRoute(directionsDisplay, directionsService, routeNum);
     }
 
-    total = total / 1000.0;
+    // retrieves routes outputted by optimizer, only do this on planner_output page
+    function loadTrip() {
+        if (document.getElementById('output-page') != null) {
+            $.ajax({
+                url: 'get_travellers',
+                type: 'POST',
+                success: function (data) {
+                    getRoutes(data);
+                }
+            });
+        }
+    }
 
-    var totalText = document.createTextNode(total + " km");
+    // dynamically creates the approprite number of divs to hold all of the needed maps
+    function getRoutes(tripData) {
+        tripsArray = tripData;
+        tripDestination = tripsArray.destination_address;
+        arrivalTime = tripsArray.date_time;
 
-    document.getElementById('routeTotal-'+routeNum).innerHTML = total + " km";
 
+        var tripDestinationNode = document.createElement('h3').appendChild(document.createTextNode("Trip Destination: " + tripDestination));
+        var arrivalTime = document.createElement('h3').appendChild(document.createTextNode("Scheduled Arrival Time: " + arrivalTime));
+
+        document.getElementById('trip-destination').appendChild(tripDestinationNode);
+        document.getElementById('trip-destination').appendChild(document.createElement('br'));
+        document.getElementById('trip-destination').appendChild(arrivalTime);
+
+        var routesArray = tripsArray.routes;
+        var numRoutes = routesArray.length;
+
+        var currRoute = 1;
+
+        for (var i=0; i<numRoutes; i++) {
+            routeArray = routesArray[i];
+
+            var liNode = document.createElement("li");
+            var hrefNode = document.createElement("a");
+            hrefNode.setAttribute('href', "#tab-"+currRoute);
+            var routeNumNode = document.createTextNode("Route "+currRoute+": ");
+
+            if (i == 0) {
+                liNode.setAttribute("class", "current");
+            }
+
+            hrefNode.appendChild(routeNumNode);
+            liNode.appendChild(hrefNode);
+
+            document.getElementsByClassName("tabs-menu")[0].appendChild(liNode);
+
+            var tabDiv = document.createElement("div");
+            tabDiv.setAttribute("class", "tab-content");
+            tabDiv.setAttribute("id", "tab-"+currRoute);
+
+            var mapCon = document.createElement("div");
+            mapCon.setAttribute("id", "map-container-"+currRoute);
+            mapCon.setAttribute("class","map-container")
+            mapCon.setAttribute("style", "width:100%");
+
+            var mapCan = document.createElement("div");
+            mapCan.setAttribute("id", "map-canvas-"+currRoute);
+            mapCan.setAttribute("class", "map-canvas");
+            mapCan.setAttribute("style", "width:100%");
+
+            mapCon.appendChild(mapCan);
+            tabDiv.appendChild(mapCon);
+
+            var routeDistanceEle = document.createElement("div");
+            routeDistanceEle.setAttribute("id", "routeDistance-"+currRoute);
+            routeDistanceEle.setAttribute("class", "route-distance");
+
+            var routeDistanceTextEle = document.createElement("p");
+            routeDistanceTextEle.appendChild(document.createTextNode("Total Distance: "));
+
+            var routeDistanceSpan = document.createElement("span");
+            routeDistanceSpan.setAttribute("id", "routeTotal-"+currRoute);
+
+            routeDistanceEle.appendChild(routeDistanceTextEle).appendChild(routeDistanceSpan);
+            tabDiv.appendChild(routeDistanceEle);
+
+            window['routeTotal-'+currRoute]=routeDistanceSpan;
+
+            var directionsPan = document.createElement("div");
+            directionsPan.setAttribute("id", "directionsPanel-"+currRoute);
+
+            document.getElementsByClassName("tab")[0].appendChild(tabDiv).appendChild(directionsPan);
+
+            initialize(currRoute);
+
+            currRoute++;
+        }
+
+        // creates tab boxes (i.e. Route: 1, Route: 2, etc)
+        jQuery(document).ready(function() {
+            jQuery(".tabs-menu a").click(function(event) {
+                event.preventDefault();
+                jQuery(this).parent().addClass("current");
+                jQuery(this).parent().siblings().removeClass("current");
+                var tab = jQuery(this).attr("href");
+                jQuery(".tab-content").not(tab).css("display", "none");
+                jQuery(tab).fadeIn();
+
+                var mapInt = 0;
+
+                for (var i = 0, len = tab.length; i < len; i++) {
+                    if (tab[i] == '-') {
+                        mapInt = tab.substring(i+1, tab.length);
+                        break;
+                    }
+                }
+
+                // important!! resizes google map div when user selects tab
+                google.maps.event.trigger(window['map_'+mapInt], 'resize');
+                window['map_'+mapInt].setCenter(kelowna);
+                window['map_'+mapInt].setZoom(10);
+            });
+
+        });
+
+
+    }
+
+    // Creates an array of waypoints (driver and passengers) for this route, sends route to Google Maps
+    // if successful displays results on map
+    // API details can be found at https://developers.google.com/maps/documentation/javascript/directions
+    function calcRoute(directionsDisplay, directionsService, routeNum) {
+
+        var waypointsArray = [];
+        var passengersArray = routeArray["passengers"];
+
+        for (var i=0; i<passengersArray.length; i++) {
+            waypointsArray.push({
+                location:passengersArray[i].address,
+                stopover:true
+            });
+        }
+
+        var driverName = routeArray.driver.name;
+        var driverAddress = routeArray.driver.address;
+        var driverPhone = routeArray.driver.email;
+
+        var request = {
+            origin: routeArray.driver.address,
+            destination: tripDestination,
+            waypoints:waypointsArray,
+            optimizeWaypoints: true,
+            travelMode: google.maps.TravelMode.DRIVING
+        };
+
+        directionsService.route(request, function(response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                directionsDisplay.setDirections(response);
+
+                var travellersDiv = document.createElement('div');
+                travellersDiv.setAttribute("class", "travellers-container");
+
+                var driverP = document.createElement('p');
+                var driverPText = document.createTextNode("Driver: " + driverName);
+
+                driverP.appendChild(driverPText);
+                travellersDiv.appendChild(driverP);
+                var passengersListHeader = document.createElement('p');
+                passengersListHeader.appendChild(document.createTextNode('Passengers: '));
+                travellersDiv.appendChild(passengersListHeader);
+                var ul = document.createElement('ul');
+
+                var waypointsOrder = response.routes[0].waypoint_order;
+
+                for (var i=0; i<waypointsOrder.length; i++) {
+                    var passString = passengersArray[waypointsOrder[i]].name + ", " + passengersArray[waypointsOrder[i]].address;
+                    var passengerli = document.createElement('li');
+                    var passengerP = document.createElement('p');
+                    var passengerNode = document.createTextNode(passString);
+                    passengerP.appendChild(passengerNode);
+                    passengerli.appendChild(passengerP)
+                    ul.appendChild(passengerli);
+                }
+
+                travellersDiv.appendChild(ul);
+
+                document.getElementById('routeDistance-'+routeNum).appendChild(travellersDiv);
+
+            }
+        });
+    }
+
+    // Computes total distance and time of the trip
+    // Outputs it to the page
+    // Total changes when user drags the route on the map
+    function computeTotalDistance(result, routeNum) {
+        var total = 0;
+        var totalTime = 0;
+        var myroute = result.routes[0];
+
+        for (var i = 0; i < myroute.legs.length; i++) {
+            total += myroute.legs[i].distance.value;
+        }
+
+        for (var i = 0; i < myroute.legs.length; i++) {
+            totalTime += myroute.legs[i].duration.value;
+        }
+
+        total = total / 1000;
+        total = total.toFixed(1);
+
+        totalTime = totalTime/60;
+        totalTime = Math.round(totalTime);
+
+        var totalText = document.createTextNode(total + " km");
+
+        document.getElementById('routeTotal-'+routeNum).innerHTML = total + " km";
+
+        var totalTimeNode = document.createElement('div');
+        var totalTimeNodeP = document.createElement('p').appendChild(document.createTextNode("Your trip will take approximately " + totalTime + " minutes."));
+        totalTimeNode.appendChild(totalTimeNodeP);
+
+
+    //    var departTime = arrivalTime.getMinutes() - totalTime;
+    //    var departureTimeNode = document.createElement('div');
+    //    var departTimeNodeP = document.createElement('p').appendChild(document.createTextNode("You should leave at " + departTime + " ."));
+    //    departureTimeNode.appendChild(departTimeNodeP);
+
+    //  .appendChild(departureTimeNode)
+
+        document.getElementById('routeTotal-'+routeNum).appendChild(totalTimeNode);
+
+    }
+
+    // does not start executing until page is loaded only if page is map page
 }
 
 google.maps.event.addDomListener(window, 'load', loadTrip);

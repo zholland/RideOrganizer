@@ -16,23 +16,23 @@
       <div class="col-lg-12">
         <h2>Edit Trip</h2>
         <%= form_for :trip, url: trip_plan_path(@trip), method: :patch do |f| %>
-            <p>
+            <p class="trip-form">
               <%= label_tag 'Upload a list of travellers' %>
               <%= f.file_field :traveller_csv %>
             </p>
 
-            <p>
+            <p class="trip-form">
               <%= f.label :destination_address %>
               <%= f.text_field :destination_address %>
             </p>
 
-            <p>
+            <p class="trip-form">
               <%= f.label 'Arrival Time' %>
               <%= f.datetime_select :arrival_time %>
             </p>
 
             <p>
-              <%= f.submit 'Save Changes' %>
+              <%= f.submit 'Save Changes', :class=> "btn btn-default save-button"%>
             </p>
         <% end %>
         <p>

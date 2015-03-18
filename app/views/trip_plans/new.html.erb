@@ -9,21 +9,21 @@
       <div class="col-lg-12">
         <h2>New Trip</h2>
         <%= form_for :trip, url: trip_plans_path do |f| %>
-            <p>
-              <%= label_tag 'Upload a list of travellers:' %>
+            <p class="trip-form">
+              <%= label_tag 'Upload list of travellers' %>
               <%= f.file_field :traveller_csv %>
             </p>
-            <p>
-              <%= f.label :destination_address %>
+            <p class="trip-form">
+              <%= f.label :destination_address %><br>
               <%= f.text_field :destination_address %>
             </p>
 
-            <p>
-              <%= f.label 'Arrival Time' %>
+            <p class="trip-form">
+              <%= f.label 'Arrival Time' %><br>
               <%= f.datetime_select :arrival_time %>
             </p>
             <p>
-              <%= f.submit 'Create Trip'%>
+              <%= f.submit 'Create Trip', :class=>"btn btn-default submit-button"%>
             </p>
         <% end %>
       </div>
