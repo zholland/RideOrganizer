@@ -23,7 +23,7 @@ class Trip < ActiveRecord::Base
   end
 
   def to_object_container
-    trip = TripContainer.new(self.destination_address, self.date_time)
+    trip = TripContainer.new(self.destination_address, self.arrival_time)
 
     # Add routes to trip
     self.routes.each do |r|
@@ -39,5 +39,18 @@ class Trip < ActiveRecord::Base
       end
     end
     return trip
+  end
+
+  def travellers_ids_to_json
+    json = {drivers: [], passengers: []}
+    self.travellers.each do |t|
+      if t.type == 'Driver'
+        json[:drivers] << t.id
+      else
+        json[:passengers] << t.id
+      end
+    end
+    puts json.to_json
+    json.to_json
   end
 end

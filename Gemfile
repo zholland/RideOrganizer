@@ -32,6 +32,9 @@ gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 # offical rails geocoder
 gem 'geocoder'
 
+# Ajax file upload submission
+gem 'remotipart'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

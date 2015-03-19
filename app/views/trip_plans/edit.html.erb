@@ -15,10 +15,20 @@
     <div class="row">
       <div class="col-lg-12">
         <h2>Edit Trip</h2>
+
+        <p>
+          <%= link_to('Back To Trips', trip_plans_choose_path, class: 'btn btn-default') %>
+        </p>
+
+        <p>
+          <%= link_to('Delete Trip', trip_plan_path(@trip),
+                      method: :delete, class: 'btn btn-danger',
+                      data: {confirm: 'Are you sure?'}) %>
+          <%= link_to('Optimize Trip', planner_output_trip_plan_path(@trip), class: 'btn btn-default') %>
+        </p>
         <%= form_for :trip, url: trip_plan_path(@trip), method: :patch do |f| %>
-            <p class="trip-form">
-              <%= label_tag 'Upload a list of travellers' %>
-              <%= f.file_field :traveller_csv %>
+            <p>
+              <%= f.submit 'Save Changes', :class => 'btn btn-default save-button' %>
             </p>
 
             <p class="trip-form">
@@ -30,21 +40,65 @@
               <%= f.label 'Arrival Time' %>
               <%= f.datetime_select :arrival_time %>
             </p>
-
-            <p>
-              <%= f.submit 'Save Changes', :class=> "btn btn-default save-button"%>
-            </p>
         <% end %>
-        <p>
-        <%= link_to('Delete Trip', trip_plan_path(@trip),
-                    method: :delete, class: 'btn btn-danger',
-                    data: {confirm: 'Are you sure?'}) %>
-        <%= link_to('Optimize Trip', planner_output_trip_plan_path(@trip), class: 'btn btn-default') %>
-        </p>
-        <p>
-        <%= link_to('Back To Trips', trip_plans_choose_path, class: 'btn btn-default')%>
-        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <%= form_for :trip, :html => {:class => 'trip-form', :multipart => true}, :remote => true do |f| %>
+            <%= f.label 'Upload list of travellers' %>
+            <%= f.file_field :traveller_csv, id: 'csv-field' %>
+            <%= f.submit 'Upload', class: 'btn btn-default submit-button' %>
+        <% end %>
+
+        <h3>Drivers</h3>
+        <table id="drivers-table" class="table">
+          <thead>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Address</th>
+          <th>Vehicle Capacity</th>
+          </thead>
+          <tbody>
+          <% @trip.travellers.each do |t| %>
+              <% if t.type == 'Driver' %>
+                  <tr id="traveller-<%= t.id %>">
+                    <td><a href="#" id="name-<%= t.id %>"> <%= t.name %> </a></td>
+                    <td><a href="#" id="email-<%= t.id %>"> <%= t.email %> </a></td>
+                    <td><a href="#" id="address-<%= t.id %>"> <%= t.address %> </a></td>
+                    <td><a href="#" id="number_of_passengers-<%= t.id %>"> <%= t.number_of_passengers %> </a></td>
+                    <td>
+                      <a href="destroy_traveller/<%= t.id %>" data-remote="true" data-method="delete" onclick="removeRow(<%= t.id %>)">Delete</a>
+                    </td>
+                  </tr>
+              <% end %>
+          <% end %>
+          </tbody>
+        </table>
+        <h3>Passengers</h3>
+        <table id="passengers-table" class="table">
+          <thead>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Address</th>
+          </thead>
+          <tbody>
+          <% @trip.travellers.each do |t| %>
+              <% if t.type == 'Passenger' %>
+                  <tr id="traveller-<%= t.id %>">
+                    <td><a href="#" id="name-<%= t.id %>"> <%= t.name %> </a></td>
+                    <td><a href="#" id="email-<%= t.id %>"> <%= t.email %> </a></td>
+                    <td><a href="#" id="address-<%= t.id %>"> <%= t.address %> </a></td>
+                    <td>
+                      <a href="destroy_traveller/<%= t.id %>" data-remote="true" data-method="delete" onclick="removeRow(<%= t.id %>)">Delete</a>
+                    </td>
+                  </tr>
+              <% end %>
+          <% end %>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 </div>
+<%= javascript_tag 'initEditable('+ @trip.travellers_ids_to_json + ')' %>

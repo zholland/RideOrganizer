@@ -13,6 +13,7 @@
  *= require_tree .
  *= require landing-page
  *= require bootstrap
+ *= require bootstrap-editable
  *= require general
  *= require tablesorter
  *= require_self

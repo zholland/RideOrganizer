@@ -4,14 +4,13 @@
 
 <div class="content-pages">
   <div class="container">
+    <h2>New Trip</h2>
 
     <div class="row">
       <div class="col-lg-12">
-        <h2>New Trip</h2>
-        <%= form_for :trip, url: trip_plans_path do |f| %>
-            <p class="trip-form">
-              <%= label_tag 'Upload list of travellers' %>
-              <%= f.file_field :traveller_csv %>
+        <%= form_for :trip, url: trip_plans_path, html: {id: 'new-trip-form'} do |f| %>
+            <p>
+              <%= f.submit 'Create Trip', :class => 'btn btn-default submit-button' %>
             </p>
             <p class="trip-form">
               <%= f.label :destination_address %><br>
@@ -22,10 +21,40 @@
               <%= f.label 'Arrival Time' %><br>
               <%= f.datetime_select :arrival_time %>
             </p>
-            <p>
-              <%= f.submit 'Create Trip', :class=>"btn btn-default submit-button"%>
-            </p>
         <% end %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <%= form_for :trip, :html => {:class => 'trip-form', :multipart => true}, :remote => true do |f| %>
+            <%= f.label 'Upload list of travellers' %>
+            <%= f.file_field :traveller_csv, id: 'csv-field' %>
+            <%= f.submit 'Upload', class: 'btn btn-default submit-button' %>
+        <% end %>
+
+        <h3>Drivers</h3>
+        <table id="drivers-table" class="table">
+          <thead>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Address</th>
+          <th>Vehicle Capacity</th>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+        <h3>Passengers</h3>
+        <table id="passengers-table" class="table">
+          <thead>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Address</th>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

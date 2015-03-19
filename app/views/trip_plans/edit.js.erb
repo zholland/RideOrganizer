@@ -1,0 +1,3 @@
+var travellers = <%= @trip.travellers.to_json %>;
+var travellerIds = updateTravellers(travellers);
+initEditable(travellerIds);

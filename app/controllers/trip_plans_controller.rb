@@ -15,11 +15,52 @@ class TripPlansController < ApplicationController
 
   def new
     @trip = Trip.new
+
+    if remotipart_submitted?
+      process_trip_travellers(params[:trip][:traveller_csv])
+    else
+      session[:travellers] = nil
+    end
+  end
+
+  def new_driver
+    driver = Driver.create(name: params[:newdrivername],
+                           email: params[:newdriveremail],
+                           address: params[:newdriveraddress],
+                           number_of_passengers: params[:newdrivernumber_of_passengers])
+
+    unless session[:travellers].nil?()
+      session[:travellers] << driver
+    else
+      travellers = []
+      travellers << driver
+      session[:travellers] = travellers
+    end
+
+    render json: session[:travellers].to_json
+  end
+
+  def new_passenger
+    passenger = Passenger.create(name: params[:newpassengername],
+                           email: params[:newpassengeremail],
+                           address: params[:newpassengeraddress])
+
+    unless session[:travellers].nil?()
+      session[:travellers] << passenger
+    else
+      travellers = []
+      travellers << passenger
+      session[:travellers] = travellers
+    end
+
+    render json: session[:travellers].to_json
   end
 
   def edit
     if current_user != nil
       @trip = Trip.find(params[:id])
+      @travellers = @trip.travellers
+      session[:travellers] = @travellers
     else
       redirect_to trip_plans_guest_edit_path
     end
@@ -36,7 +77,12 @@ class TripPlansController < ApplicationController
   def create
     @trip = Trip.new(trip_params)
 
-    process_trip_travellers(@trip, params[:trip][:traveller_csv])
+    travellers = session[:travellers]
+    if travellers != nil
+      travellers.each do |t|
+        @trip.travellers << t
+      end
+    end
 
     if current_user != nil
       @trip.user_id = current_user.id
@@ -76,6 +122,16 @@ class TripPlansController < ApplicationController
     redirect_to trip_plans_choose_path
   end
 
+  def destroy_traveller
+    @traveller = Traveller.find(params[:traveller_id])
+    @traveller.destroy
+
+    if session[:travellers] != nil && session[:travellers].include?(@traveller)
+      session[:travellers].delete(@traveller)
+    end
+    render json: {message: 'success'}
+  end
+
   def get_travellers
     if current_user != nil
       @trip = Trip.find(params[:id])
@@ -109,6 +165,30 @@ class TripPlansController < ApplicationController
     @trip.trip_json = trip_json
 
     session[:trip] = @trip
+  end
+
+  def edit_name
+    traveller = Traveller.find(params[:pk])
+    traveller.update(name: params[:value])
+    render json: {success: 'name updated successfully'}
+  end
+
+  def edit_email
+    traveller = Traveller.find(params[:pk])
+    traveller.update(email: params[:value])
+    render json: {success: 'email updated successfully'}
+  end
+
+  def edit_address
+    traveller = Traveller.find(params[:pk])
+    traveller.update(address: params[:value])
+    render json: {success: 'address updated successfully'}
+  end
+
+  def edit_number_of_passengers
+    traveller = Traveller.find(params[:pk])
+    traveller.update(number_of_passengers: params[:value])
+    render json: {success: 'number of passengers updated successfully'}
   end
 
   private

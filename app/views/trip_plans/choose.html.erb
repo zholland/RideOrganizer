@@ -30,7 +30,7 @@
                             <td class="button-column"><%= link_to('Edit', edit_trip_plan_path(trip), class: 'btn btn-primary table-button') %></td>
                             <td class="button-column"><%= link_to('Delete', trip_plan_path(trip),
                                                                   method: :delete, class: 'btn btn-danger table-button',
-                                                                  data: {confirm: 'Are you sure you want to delete the trip to' + trip.destination_address + '?'}) %></td>
+                                                                  data: {confirm: 'Are you sure you want to delete the trip to: ' + trip.destination_address + '?'}) %></td>
                           </tr>
                       <% end %>
                       </tbody>

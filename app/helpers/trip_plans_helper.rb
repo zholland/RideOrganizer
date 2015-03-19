@@ -13,7 +13,7 @@ module TripPlansHelper
   # where 0 is name, 1 is email, 2 is address, 3 is isDriver, 4 is Passengers
   # Size of persons[] is dynamic based on number of rows in .csv
   # If .csv has a header, add true to head when calling load_csv.
-  def load_csv(file, head = false)
+  def get_travellers_from_csv(file, head = false)
     #Check that file name ends with .csv
     #if path[path.to_s.length-4,4].to_s != ".csv"
     # puts "Error: File is not a .csv"
@@ -59,16 +59,20 @@ module TripPlansHelper
     #end
   end
 
-  def process_trip_travellers(trip, csv_file)
+  def process_trip_travellers(csv_file)
 
-    persons = load_csv(csv_file)
+    persons = get_travellers_from_csv(csv_file)
+
+    travellers = []
 
     persons.each() do |person|
       if (person[3] == "TRUE")
-        trip.travellers << Driver.create(name: person[0], email: person[1], address: person[2], number_of_passengers: person[4].to_i)
+        travellers << Driver.create(name: person[0], email: person[1], address: person[2], number_of_passengers: person[4].to_i)
       else
-        trip.travellers << Passenger.create(name: person[0], email: person[1], address: person[2])
+        travellers << Passenger.create(name: person[0], email: person[1], address: person[2])
       end
     end
+
+    session[:travellers] = travellers
   end
 end
