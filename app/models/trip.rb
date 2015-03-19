@@ -3,7 +3,7 @@ class Trip < ActiveRecord::Base
   has_many :routes
 
   def to_object_container
-    trip = TripContainer.new(self.destination_address, self.date_time)
+    trip = TripContainer.new(self.destination_address, self.arrival_time)
 
     # Add routes to trip
     self.routes.each do |r|
