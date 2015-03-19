@@ -2,6 +2,26 @@ class Trip < ActiveRecord::Base
   has_and_belongs_to_many :travellers
   has_many :routes
 
+  def num_drivers
+    i = 0;
+    self.travellers.each do |t|
+      if t.type == 'Driver'
+        i += 1
+      end
+    end
+    return i
+  end
+
+  def num_passengers
+    i = 0;
+    self.travellers.each do |t|
+      if t.type == 'Passenger'
+        i += 1
+      end
+    end
+    return i
+  end
+
   def to_object_container
     trip = TripContainer.new(self.destination_address, self.arrival_time)
 
