@@ -14,6 +14,20 @@ class TripPlansController < ApplicationController
   end
 
   def new
+    # Run traveller table cleanup
+    puts Time.now
+    puts Time.now - 48.hours
+    travellers = Traveller.joins('LEFT OUTER JOIN travellers_trips ON travellers.id = travellers_trips.traveller_id')
+                     .where('travellers_trips.traveller_id is NULL AND travellers.created_at < ?', Time.now - 48.hours)
+
+      travellers.each do |t|
+        t.destroy
+      end
+
+
+    # records_array = ActiveRecord::Base.connection.execute(sql)
+
+    # New trip logic
     @trip = Trip.new
 
     if remotipart_submitted?
@@ -42,8 +56,8 @@ class TripPlansController < ApplicationController
 
   def new_passenger
     passenger = Passenger.create(name: params[:newpassengername],
-                           email: params[:newpassengeremail],
-                           address: params[:newpassengeraddress])
+                                 email: params[:newpassengeremail],
+                                 address: params[:newpassengeraddress])
 
     unless session[:travellers].nil?()
       session[:travellers] << passenger

@@ -5,6 +5,8 @@ class CreateTravellers < ActiveRecord::Migration
       t.string :email
       t.string :address
       t.integer :number_of_passengers
+
+      t.timestamps null: false
     end
     add_column :travellers, :type, :string
   end
