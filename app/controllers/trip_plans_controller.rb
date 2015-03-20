@@ -51,6 +51,10 @@ class TripPlansController < ApplicationController
       session[:travellers] = travellers
     end
 
+    if current_user.nil?
+      session[:trip].travellers << driver
+    end
+
     render json: session[:travellers].to_json
   end
 
@@ -65,6 +69,10 @@ class TripPlansController < ApplicationController
       travellers = []
       travellers << passenger
       session[:travellers] = travellers
+    end
+
+    if current_user.nil?
+      session[:trip].travellers << passenger
     end
 
     render json: session[:travellers].to_json
@@ -143,6 +151,11 @@ class TripPlansController < ApplicationController
     if session[:travellers] != nil && session[:travellers].include?(@traveller)
       session[:travellers].delete(@traveller)
     end
+
+    if current_user.nil?
+      session[:trip].travellers.delete(@traveller)
+    end
+
     render json: {message: 'success'}
   end
 
@@ -184,24 +197,48 @@ class TripPlansController < ApplicationController
   def edit_name
     traveller = Traveller.find(params[:pk])
     traveller.update(name: params[:value])
+
+    if current_user.nil?
+      travellers = session[:trip].travellers
+      travellers[travellers.index(traveller)].name = params[:value]
+    end
+
     render json: {success: 'name updated successfully'}
   end
 
   def edit_email
     traveller = Traveller.find(params[:pk])
     traveller.update(email: params[:value])
+
+    if current_user.nil?
+      travellers = session[:trip].travellers
+      travellers[travellers.index(traveller)].email = params[:value]
+    end
+
     render json: {success: 'email updated successfully'}
   end
 
   def edit_address
     traveller = Traveller.find(params[:pk])
     traveller.update(address: params[:value])
+
+    if current_user.nil?
+      travellers = session[:trip].travellers
+      travellers[travellers.index(traveller)].address = params[:value]
+    end
+
     render json: {success: 'address updated successfully'}
   end
 
   def edit_number_of_passengers
     traveller = Traveller.find(params[:pk])
     traveller.update(number_of_passengers: params[:value])
+
+    if current_user.nil?
+      travellers = session[:trip].travellers
+      travellers[travellers.index(traveller)].number_of_passengers = params[:value]
+    end
+
     render json: {success: 'number of passengers updated successfully'}
   end
 
