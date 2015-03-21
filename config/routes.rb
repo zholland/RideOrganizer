@@ -4,7 +4,6 @@ Rails.application.routes.draw do
   root 'pages#home'
   get 'pages/home'
   get 'pages/about'
-  # get 'trip_plans/:id/planner_output/', to: 'trip_plans#planner_output(:id)', as: 'planner_output'
   get 'trip_plans/choose'
   get 'trip_plans/new'
   get 'trip_plans/guest_edit', to: 'trip_plans#guest_edit'
@@ -22,9 +21,12 @@ Rails.application.routes.draw do
   post 'trip_plans/:id/new_passenger', to: 'trip_plans#new_passenger'
   post 'trip_plans/edit_name', to: 'trip_plans#edit_name'
   post 'trip_plans/:id/edit_name', to: 'trip_plans#edit_name'
-  post 'trip_plans/edit_email', to: 'trip_plans#edit_email', as: 'edit_email'
-  post 'trip_plans/edit_address', to: 'trip_plans#edit_address', as: 'edit_address'
-  post 'trip_plans/edit_number_of_passengers', to: 'trip_plans#edit_number_of_passengers', as: 'edit_number_of_passengers'
+  post 'trip_plans/edit_email', to: 'trip_plans#edit_email'
+  post 'trip_plans/:id/edit_email', to: 'trip_plans#edit_email'
+  post 'trip_plans/edit_address', to: 'trip_plans#edit_address'
+  post 'trip_plans/:id/edit_address', to: 'trip_plans#edit_address'
+  post 'trip_plans/edit_number_of_passengers', to: 'trip_plans#edit_number_of_passengers'
+  post 'trip_plans/:id/edit_number_of_passengers', to: 'trip_plans#edit_number_of_passengers'
 
 
   resources :trip_plans do
