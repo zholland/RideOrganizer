@@ -20,9 +20,9 @@ class TripPlansController < ApplicationController
     travellers = Traveller.joins('LEFT OUTER JOIN travellers_trips ON travellers.id = travellers_trips.traveller_id')
                      .where('travellers_trips.traveller_id is NULL AND travellers.created_at < ?', Time.now - 48.hours)
 
-      travellers.each do |t|
-        t.destroy
-      end
+    travellers.each do |t|
+      t.destroy
+    end
 
 
     # records_array = ActiveRecord::Base.connection.execute(sql)
@@ -31,7 +31,11 @@ class TripPlansController < ApplicationController
     @trip = Trip.new
 
     if remotipart_submitted?
-      process_trip_travellers(params[:trip][:traveller_csv])
+      unless session[:travellers].nil?
+        session[:travellers] < process_trip_travellers(params[:trip][:traveller_csv])
+      else
+        session[:travellers] = process_trip_travellers(params[:trip][:traveller_csv])
+      end
     else
       session[:travellers] = nil
     end
@@ -81,8 +85,15 @@ class TripPlansController < ApplicationController
   def edit
     if current_user != nil
       @trip = Trip.find(params[:id])
-      @travellers = @trip.travellers
-      session[:travellers] = @travellers
+
+      if remotipart_submitted?
+        travellers = process_trip_travellers(params[:trip][:traveller_csv])
+        travellers.each do |t|
+          @trip.travellers << t
+        end
+      end
+
+      session[:travellers] = @trip.travellers
     else
       redirect_to trip_plans_guest_edit_path
     end
@@ -91,6 +102,15 @@ class TripPlansController < ApplicationController
   def guest_edit
     if current_user == nil && session[:trip] != nil
       @trip = session[:trip]
+
+      if remotipart_submitted?
+        travellers = process_trip_travellers(params[:trip][:traveller_csv])
+        travellers.each do |t|
+          @trip.travellers << t
+        end
+      end
+
+      session[:trip] = @trip
     else
       redirect_to pages_home_path
     end
@@ -146,7 +166,6 @@ class TripPlansController < ApplicationController
 
   def destroy_traveller
     @traveller = Traveller.find(params[:traveller_id])
-    @traveller.destroy
 
     if session[:travellers] != nil && session[:travellers].include?(@traveller)
       session[:travellers].delete(@traveller)
@@ -155,6 +174,8 @@ class TripPlansController < ApplicationController
     if current_user.nil?
       session[:trip].travellers.delete(@traveller)
     end
+
+    @traveller.destroy
 
     render json: {message: 'success'}
   end

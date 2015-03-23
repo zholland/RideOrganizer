@@ -73,6 +73,6 @@ module TripPlansHelper
       end
     end
 
-    session[:travellers] = travellers
+    return travellers
   end
 end
