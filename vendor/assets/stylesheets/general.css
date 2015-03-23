@@ -160,7 +160,6 @@ table.trips-table {
 .edit-trip-button {
     float: right;
     margin-bottom: 7px;
-    border-radius: 0;
     border-color: #cccccc;
 }
 
