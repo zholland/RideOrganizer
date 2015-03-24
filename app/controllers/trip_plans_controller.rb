@@ -263,6 +263,11 @@ class TripPlansController < ApplicationController
     render json: {success: 'number of passengers updated successfully'}
   end
 
+  def notify_travellers
+
+    render json: {message: 'success'}
+  end
+
   private
   def trip_params
     params.require(:trip).permit(:destination_address, :arrival_time)
