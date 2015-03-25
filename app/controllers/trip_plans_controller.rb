@@ -264,6 +264,19 @@ class TripPlansController < ApplicationController
   end
 
   def notify_travellers
+    if current_user.nil?
+      trip = session[:trip]
+    else
+      trip = Trip.find(params[:id])
+    end
+
+    driver = Traveller.find(29)
+    passenger = Traveller.find(29)
+
+    trip_output_data = {}
+
+    DriverMailer.trip_email(trip, driver, trip_output_data).deliver_now
+    PassengerMailer.trip_email(trip, passenger, trip_output_data).deliver_now
 
     render json: {message: 'success'}
   end
