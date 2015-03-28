@@ -269,7 +269,8 @@ function computeTotalDistance(result, routeNum) {
 }
 
 function notifyTravellers() {
-    $.post('notify_travellers', function(data) {
+    var tripData = {driver: 'data'};
+    $.post('notify_travellers', {data: tripData}, function (data) {
         alert(data.message);
     });
 }

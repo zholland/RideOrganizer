@@ -6,6 +6,7 @@ include Geocoder
 
 # Matches passengers to drivers.
 class TravellerMatching
+  attr_reader :trip
 
   # Initializes the variables needed and geocodes the addresses for the travellers and the destinations.
   #
@@ -19,6 +20,7 @@ class TravellerMatching
     @passenger_coordinates = []
     @destination_coordinates = geocode_address(@trip.destination_address)
     geocode_traveller_addresses
+    group_travellers
   end
 
   # Takes an address and gets the latitude and longitude of it.
@@ -77,7 +79,7 @@ class TravellerMatching
   #
   # * *Returns* :
   #   - the trip with the routes added
-  public
+  private
   def group_travellers
     min_pq_lambda = lambda{|x, y| (x <=> y) == -1}
     nearest_passengers_to_drivers = Hash.new
@@ -124,7 +126,7 @@ class TravellerMatching
 
     pairing.each do |passenger, driver|
       if driver_routes[driver].nil?
-        driver_routes[driver] = RouteContainer.new(driver)
+        driver_routes[driver] = RouteContainer.new(nil, driver)
         @trip.add_route(driver_routes[driver])
       end
 

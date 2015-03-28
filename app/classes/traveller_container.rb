@@ -1,13 +1,14 @@
 class TravellerContainer
-  attr_accessor :name, :email, :address
+  attr_accessor :id, :name, :email, :address
 
-  def initialize(name, email, address)
+  def initialize(id, name, email, address)
+    @id = id
     @name = name
     @email = email
     @address = address
   end
 
   def to_s
-    "Name: #{@name}, Email: #{@email}, Address: #{@address}"
+    "ID: #{@id}, Name: #{@name}, Email: #{@email}, Address: #{@address}"
   end
 end

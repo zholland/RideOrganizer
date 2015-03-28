@@ -1,6 +1,6 @@
 class PassengerContainer < TravellerContainer
-  def initialize(name, email, address)
-    super(name, email, address)
+  def initialize(id, name, email, address)
+    super(id, name, email, address)
   end
 
   def to_s

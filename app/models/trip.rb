@@ -22,20 +22,15 @@ class Trip < ActiveRecord::Base
     return i
   end
 
-  def to_object_container
+  def to_object_container_no_routes
     trip = TripContainer.new(self.destination_address, self.arrival_time)
-
-    # Add routes to trip
-    self.routes.each do |r|
-      trip.add_route(r.to_object_container)
-    end
 
     # Add drivers and passengers to trip
     self.travellers.each do |t|
       if t.type == 'Driver'
-        trip.add_driver(DriverContainer.new(t.name, t.email, t.address, t.number_of_passengers))
+        trip.add_driver(DriverContainer.new(t.id, t.name, t.email, t.address, t.number_of_passengers))
       else
-        trip.add_passenger(PassengerContainer.new(t.name, t.email, t.address))
+        trip.add_passenger(PassengerContainer.new(t.id, t.name, t.email, t.address))
       end
     end
     return trip
@@ -53,4 +48,17 @@ class Trip < ActiveRecord::Base
     puts json.to_json
     json.to_json
   end
+
+  # Create the trip routes from a given trip object container
+  def create_routes_from_trip_object(trip_object)
+    trip_object.routes.each do |r|
+      driver = Driver.find(r.driver.id)
+      route = Route.create(driver: driver)
+      r.passengers.each do |p|
+            route.travellers << Traveller.find(p.id)
+      end
+      self.routes << route
+    end
+  end
+
 end
