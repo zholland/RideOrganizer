@@ -6,8 +6,13 @@
 <body>
 <p>Hi <%= @passenger.name %>,</p>
 
-<p>You are receiving this email because you are signed up as to go on the upcoming trip
+<p>You are receiving this email because you are signed up to go on the upcoming trip
   to <%= @trip.destination_address %>.</p>
+
+<p>Your driver will be <%= @route.driver.name %>. Their email address is <%= @route.driver.email %>.
+  They will pick you up at approximately ___.</p>
+
+<p>If you have any questions about the trip please contact the trip organizer at <%= @user.email %>.</p>
 
 <p>Sincerely, <br><br> The RideOrganizer Team</p>
 </body>

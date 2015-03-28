@@ -274,15 +274,23 @@ class TripPlansController < ApplicationController
       trip = Trip.find(params[:id])
     end
 
-    driver = Traveller.find(29)
-    passenger = Traveller.find(29)
+    drivers = []
+    passengers = []
+
+    trip.travellers.each do |t|
+      if t.type == 'Driver'
+        drivers << t
+      else
+        passengers << t
+      end
+    end
 
     trip_output_data = params[:data]
 
-    DriverMailer.trip_email(trip, driver, trip_output_data).deliver_now
-    PassengerMailer.trip_email(trip, passenger, trip_output_data).deliver_now
+    drivers.each { |driver| DriverMailer.trip_email(trip, driver, trip_output_data, current_user).deliver_now }
+    passengers.each { |passenger| PassengerMailer.trip_email(trip, passenger, trip_output_data, current_user).deliver_now }
 
-    render json: {message: 'success'}
+    render json: { message: 'success'}
   end
 
   private

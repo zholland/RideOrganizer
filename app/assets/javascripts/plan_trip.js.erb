@@ -268,14 +268,25 @@ function computeTotalDistance(result, routeNum) {
 
 }
 
-function notifyTravellers() {
+function notifyTravellers($btn) {
     var tripData = {driver: 'data'};
     $.post('notify_travellers', {data: tripData}, function (data) {
+        $btn.button('reset');
         alert(data.message);
-    });
+    })
+            .fail(function() {
+                $btn.button('reset');
+                alert('Internal Server Error. Please try again later.');
+            });
 }
 
 // does not start executing until page is loaded
-google.maps.event.addDomListener(window, 'load', loadTrip);
-
+google.maps.event.addDomListener(window, 'load', function() {
+    loadTrip();
+    $('#notify-travellers-button').click(function() {
+        var $btn = $(this)
+        $btn.button('loading');
+        notifyTravellers($btn);
+    });
+});
 
