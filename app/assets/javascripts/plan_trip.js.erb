@@ -195,6 +195,9 @@ function calcRoute(directionsDisplay, directionsService, routeNum) {
         if (status == google.maps.DirectionsStatus.OK) {
             directionsDisplay.setDirections(response);
 
+            // store the response globally
+            window['route_' + routeNum] = directionsDisplay.getDirections().routes[0];
+
             var travellersDiv = document.createElement('div');
             travellersDiv.setAttribute("class", "travellers-container");
 
@@ -224,8 +227,12 @@ function calcRoute(directionsDisplay, directionsService, routeNum) {
 
             document.getElementById('routeDistance-' + routeNum).appendChild(travellersDiv);
 
+            //after total distance is computed must prepare/redo directions for driver and passengers
+            prepareEmailJsons(routeNum);
+
         }
     });
+
 }
 
 // Computes total distance and time of the trip
@@ -258,13 +265,73 @@ function computeTotalDistance(result, routeNum) {
     var totalTimeNodeP = document.createElement('p').appendChild(document.createTextNode("Your trip will take approximately " + totalTime + " minutes."));
     totalTimeNode.appendChild(totalTimeNodeP);
 
-    var departureTime = new Date(tripDate.setMinutes(tripDate.getMinutes() - totalTime)).toLocaleTimeString();
+    window["departureTime"] = new Date(tripDate.setMinutes(tripDate.getMinutes() - totalTime)).toLocaleTimeString();
 
     var departureTimeNode = document.createElement('div');
     var departureTimeNodeP = document.createElement('p').appendChild(document.createTextNode("To arrive by your scheduled arrival time you should depart at " + departureTime + "."));
     departureTimeNode.appendChild(departureTimeNodeP);
 
     document.getElementById('routeTotal-' + routeNum).appendChild(totalTimeNode).appendChild(departureTimeNode);
+
+}
+
+function prepareEmailJsons(routeNum) {
+//    var emailJson = new Object();
+//    var passengersJson = new Object();
+//    var driversJson = new Object();
+
+    var passengerTime = new Object();
+    var pickupOrder = new Object();
+    var emailJson = new Object();
+
+//    for (var i=0; i<window['route_' + routeNum].length; i++) {
+//        for (var j=0; j<window['route_' + routeNum][i].steps.length; j++) {
+//            var instruction = window['route_' + routeNum][i].steps[j].instructions;
+//            directionsObject["step"+j] = instruction;
+//        }
+//    }
+
+//    for (var i= 0, i<window['route_'+routeNum].legs.length; i++) {
+//        passengersArray[]
+//
+//        pickupOrder.push({
+//            pickupPos: passengersArray[waypointsOrder[i]].name
+//
+//            waypointsOrder[i].indexOf()
+//        });
+//    }
+
+
+//
+//    for (var i = 0; i < waypointsOrder.length; i++) {
+//        var passString = passengersArray[waypointsOrder[i]].name + ", " + passengersArray[waypointsOrder[i]].address;
+//        var passengerli = document.createElement('li');
+//    }
+//
+//    for (var i = 0; i < window['route_' + routeNum].waypoint_order.length; i++) {
+//        var passengerObject = [];
+//        passengerObject.push({
+//            wayPtPos: tripsArray.passengers[]
+//        })
+//    }
+
+    emailJson["waypointsOrder"] = window['route_' + routeNum].waypoint_order;
+    console.log(emailJson);
+
+//    var directionsJson = JSON.stringify(directionsObject);
+//    driversJson.directions = directionsJson;
+//    console.log(driversJson);
+
+//    var waypointsArray = [];
+//    var passengersArray = routeArray["passengers"];
+//
+//    for (var i = 0; i < passengersArray.length; i++) {
+//        waypointsArray.push({
+//            location: passengersArray[i].address,
+//            stopover: true
+//        });
+//    }
+
 
 }
 
