@@ -157,8 +157,9 @@ table.trips-table {
     font-size: 1.3em;
 }
 
-.edit-trip-button {
+.edit-trip-button, .notify-travellers-button {
     float: right;
+    margin-left: 8px;
     margin-bottom: 7px;
     border-color: #cccccc;
 }

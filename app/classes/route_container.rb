@@ -1,8 +1,9 @@
 class RouteContainer
-  attr_accessor :passengers, :driver
+  attr_accessor :id, :passengers, :driver
 
-  def initialize(driver)
+  def initialize(id, driver)
     @driver = driver
+    @id = id
     @passengers = []
   end
 

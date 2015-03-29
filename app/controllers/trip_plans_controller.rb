@@ -197,8 +197,12 @@ class TripPlansController < ApplicationController
       redirect_to new_user_session_path
     end
 
-    traveller_matching = TravellerMatching.new(@trip.to_object_container)
-    trip_json = traveller_matching.group_travellers.to_json
+    @trip.routes.each { |r| r.destroy }
+
+    traveller_matching = TravellerMatching.new(@trip.to_object_container_no_routes)
+    trip_json = traveller_matching.trip.to_json
+
+    @trip.create_routes_from_trip_object(traveller_matching.trip)
 
     @trip.trip_json = trip_json
     @trip.save
@@ -207,8 +211,8 @@ class TripPlansController < ApplicationController
   def guest_planner_output
     @trip = session[:trip]
 
-    traveller_matching = TravellerMatching.new(@trip.to_object_container)
-    trip_json = traveller_matching.group_travellers.to_json
+    traveller_matching = TravellerMatching.new(@trip.to_object_container_no_routes)
+    trip_json = traveller_matching.trip.to_json
 
     @trip.trip_json = trip_json
 
@@ -261,6 +265,32 @@ class TripPlansController < ApplicationController
     end
 
     render json: {success: 'number of passengers updated successfully'}
+  end
+
+  def notify_travellers
+    if current_user.nil?
+      trip = session[:trip]
+    else
+      trip = Trip.find(params[:id])
+    end
+
+    drivers = []
+    passengers = []
+
+    trip.travellers.each do |t|
+      if t.type == 'Driver'
+        drivers << t
+      else
+        passengers << t
+      end
+    end
+
+    trip_output_data = params[:data]
+
+    drivers.each { |driver| DriverMailer.trip_email(trip, driver, trip_output_data, current_user).deliver_now }
+    passengers.each { |passenger| PassengerMailer.trip_email(trip, passenger, trip_output_data, current_user).deliver_now }
+
+    render json: { message: 'success'}
   end
 
   private

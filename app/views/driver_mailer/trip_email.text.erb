@@ -1,0 +1,16 @@
+Hi <%= @driver.name %>,
+
+You are receiving this email because you are signed up as to go on the upcoming trip to <%= @trip.destination_address %>.
+
+Your passengers will be:
+<% @route.travellers.each do |t| %>
+Name: <%= t.name %>, Address: <%= t.address %>, Email: <%= t.email %>
+<% end %>
+
+The optimal route to pick up your passengers can be found here: <%= @map_url %>
+
+If you have any questions about the trip please contact the trip organizer at <%= @user.email %>.
+
+Sincerely,
+
+The RideOrganizer Team

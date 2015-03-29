@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+</head>
+<body>
+<p>Hi <%= @driver.name %>,</p>
+
+<p>You are receiving this email because you are signed up as a driver to go on the upcoming trip
+  to <%= @trip.destination_address %>.</p>
+
+<p>Your passengers will be:</p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+      <th>Email</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @route.travellers.each do |t| %>
+      <tr>
+        <td><%= t.name %></td>
+        <td><%= t.address %></td>
+        <td><%= t.email %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<p>The optimal route to pick up your passengers can be found here: <a href="<%= @map_url %>">Google Maps</a></p>
+
+<p>If you have any questions about the trip please contact the trip organizer at <%= @user.email %>.</p>
+
+<p>Sincerely, <br><br> The RideOrganizer Team</p>
+</body>
+</html>
