@@ -12,6 +12,8 @@ var routeArray = [];
 var tripDestination;
 var tripDate;
 
+var emailJson = new Object();
+
 var kelowna = new google.maps.LatLng(49.887952, -119.496011);
 
 // create an initial map, more will be potentially added later
@@ -265,78 +267,58 @@ function computeTotalDistance(result, routeNum) {
     var totalTimeNodeP = document.createElement('p').appendChild(document.createTextNode("Your trip will take approximately " + totalTime + " minutes."));
     totalTimeNode.appendChild(totalTimeNodeP);
 
-    window["departureTime"] = new Date(tripDate.setMinutes(tripDate.getMinutes() - totalTime)).toLocaleTimeString();
+    window["departureTime"] = new Date(tripDate.setMinutes(tripDate.getMinutes() - totalTime));
 
     var departureTimeNode = document.createElement('div');
-    var departureTimeNodeP = document.createElement('p').appendChild(document.createTextNode("To arrive by your scheduled arrival time you should depart at " + departureTime + "."));
+    var departureTimeNodeP = document.createElement('p').appendChild(document.createTextNode("Based on your scheduled arrival time you should depart at " + departureTime.toLocaleTimeString() + "."));
     departureTimeNode.appendChild(departureTimeNodeP);
 
     document.getElementById('routeTotal-' + routeNum).appendChild(totalTimeNode).appendChild(departureTimeNode);
 
 }
 
+// prepares passengers information for sending to email
+// at the end of the function call sets emailJson to contain a Json with
+// route id: {passengerId: [pickupPos, pickupTime]}
+// to view the output of this function in developer's console emailJson
 function prepareEmailJsons(routeNum) {
-//    var emailJson = new Object();
-//    var passengersJson = new Object();
-//    var driversJson = new Object();
 
-    var passengerTime = new Object();
-    var pickupOrder = new Object();
-    var emailJson = new Object();
+    var passengersJson = new Object();
 
-//    for (var i=0; i<window['route_' + routeNum].length; i++) {
-//        for (var j=0; j<window['route_' + routeNum][i].steps.length; j++) {
-//            var instruction = window['route_' + routeNum][i].steps[j].instructions;
-//            directionsObject["step"+j] = instruction;
-//        }
-//    }
+    //keep a running sum of all pickup times
+    var sumTime = 0;
 
-//    for (var i= 0, i<window['route_'+routeNum].legs.length; i++) {
-//        passengersArray[]
-//
-//        pickupOrder.push({
-//            pickupPos: passengersArray[waypointsOrder[i]].name
-//
-//            waypointsOrder[i].indexOf()
-//        });
-//    }
+    var passengersArray = tripsArray.routes[routeNum-1].passengers;
 
+    for (var j=0; j<passengersArray.length; j++) {
 
-//
-//    for (var i = 0; i < waypointsOrder.length; i++) {
-//        var passString = passengersArray[waypointsOrder[i]].name + ", " + passengersArray[waypointsOrder[i]].address;
-//        var passengerli = document.createElement('li');
-//    }
-//
-//    for (var i = 0; i < window['route_' + routeNum].waypoint_order.length; i++) {
-//        var passengerObject = [];
-//        passengerObject.push({
-//            wayPtPos: tripsArray.passengers[]
-//        })
-//    }
+        var passengersJsonDetails = [];
 
-    emailJson["waypointsOrder"] = window['route_' + routeNum].waypoint_order;
-    console.log(emailJson);
+        var time = window['route_' + routeNum].legs[j].duration.value;
 
-//    var directionsJson = JSON.stringify(directionsObject);
-//    driversJson.directions = directionsJson;
-//    console.log(driversJson);
+        time = Math.round(time/60);
+        sumTime += time;
 
-//    var waypointsArray = [];
-//    var passengersArray = routeArray["passengers"];
-//
-//    for (var i = 0; i < passengersArray.length; i++) {
-//        waypointsArray.push({
-//            location: passengersArray[i].address,
-//            stopover: true
-//        });
-//    }
+        var tempDepartureTime = departureTime;
+        tempDepartureTime = new Date(tempDepartureTime.setMinutes(tempDepartureTime.getMinutes() + time));
 
+        passengersJsonDetails.push({
+            pickupPos: j+1,
+            pickupTime: tempDepartureTime.toLocaleTimeString()
+        });
+
+        passengersJson[passengersArray[[window['route_' + routeNum].waypoint_order[j]]].id] = passengersJsonDetails;
+
+    }
+
+    emailJson[routeNum] = passengersJson;
 
 }
 
+// called when the user clicks the notify travellers button
+// posts the data to be used to create email to notify all travellers of their trip details
 function notifyTravellers($btn) {
-    var tripData = {driver: 'data'};
+    var tripData = emailJson;
     $.post('notify_travellers', {data: tripData}, function (data) {
         $btn.button('reset');
         alert(data.message);
