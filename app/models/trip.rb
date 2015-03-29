@@ -54,6 +54,7 @@ class Trip < ActiveRecord::Base
     trip_object.routes.each do |r|
       driver = Driver.find(r.driver.id)
       route = Route.create(driver: driver)
+      r.id = route.id
       r.passengers.each do |p|
             route.travellers << Traveller.find(p.id)
       end

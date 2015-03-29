@@ -3,7 +3,7 @@ Hi <%= @driver.name %>,
 You are receiving this email because you are signed up as to go on the upcoming trip to <%= @trip.destination_address %>.
 
 Your passengers will be:
-<% @route.travellers.each do |t| %>
+<% @travellers.each do |t| %>
 Name: <%= t.name %>, Address: <%= t.address %>, Email: <%= t.email %>
 <% end %>
 

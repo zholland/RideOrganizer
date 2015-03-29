@@ -7,13 +7,21 @@ class DriverMailer < ApplicationMailer
     @trip_output_data = trip_output_data
     @route = @trip.routes.select { |r| r.driver == @driver }.first
     @user = user
-    @map_url = build_maps_url
+    traveller_data = trip_output_data[@route.id.to_s]
+    @travellers = sort_travellers(traveller_data)
+    @map_url = build_maps_url(@travellers)
     mail(to: @driver.email, subject: "RideOrganizer: Trip to #{@trip.destination_address}")
   end
 
   private
-  def build_maps_url
-    travellers = @route.travellers
+  def sort_travellers(traveller_data)
+    sorted_travellers = Array.new(traveller_data.size)
+    traveller_data.each { |id, data| sorted_travellers[data['0']['pickupPos'].to_i - 1] = Traveller.find(id) }
+    return sorted_travellers
+  end
+
+  private
+  def build_maps_url(travellers)
     url = "http://maps.google.com/maps?saddr=#{escape(@driver.address)}&daddr=#{escape(travellers[0].address)}"
     for i in 1..travellers.length - 1
       url += "+to:#{escape(travellers[i].address)}"

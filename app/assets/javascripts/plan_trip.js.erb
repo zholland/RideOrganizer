@@ -290,6 +290,8 @@ function prepareEmailJsons(routeNum) {
 
     var passengersArray = tripsArray.routes[routeNum-1].passengers;
 
+    var routeId = tripsArray.routes[routeNum-1].id;
+
     for (var j=0; j<passengersArray.length; j++) {
 
         var passengersJsonDetails = [];
@@ -311,7 +313,7 @@ function prepareEmailJsons(routeNum) {
 
     }
 
-    emailJson[routeNum] = passengersJson;
+    emailJson[routeId] = passengersJson;
 
 }
 

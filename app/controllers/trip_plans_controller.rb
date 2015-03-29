@@ -200,9 +200,11 @@ class TripPlansController < ApplicationController
     @trip.routes.each { |r| r.destroy }
 
     traveller_matching = TravellerMatching.new(@trip.to_object_container_no_routes)
+    @trip.create_routes_from_trip_object(traveller_matching.trip)
+
     trip_json = traveller_matching.trip.to_json
 
-    @trip.create_routes_from_trip_object(traveller_matching.trip)
+
 
     @trip.trip_json = trip_json
     @trip.save
@@ -290,7 +292,7 @@ class TripPlansController < ApplicationController
     drivers.each { |driver| DriverMailer.trip_email(trip, driver, trip_output_data, current_user).deliver_now }
     passengers.each { |passenger| PassengerMailer.trip_email(trip, passenger, trip_output_data, current_user).deliver_now }
 
-    render json: { message: 'success'}
+    render json: { message: 'Emails were successfully sent.'}
   end
 
   private
