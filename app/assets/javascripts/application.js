@@ -14,6 +14,7 @@
 //= require turbolinks
 //= require google_maps_api
 //= require plan_trip.js.erb
+//= require trip_address.erb.js
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
