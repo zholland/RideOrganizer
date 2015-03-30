@@ -200,3 +200,8 @@ table.trips-table {
     margin-top: 1em;
 }
 
+input#trip_destination_address {
+    width: 325px;
+}
+
+

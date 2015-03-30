@@ -2,7 +2,7 @@
 <%= render 'shared/nav' %>
 
 
-<div class="content-pages">
+<div class="content-pages" id="edit-trip-page">
   <div class="container">
     <div class="row">
       <div class="col-lg-12">
@@ -18,12 +18,12 @@
             </p>
 
             <p class="trip-form">
-              <%= f.label :destination_address %>
+              <%= f.label :destination_address %><br>
               <%= f.text_field :destination_address %>
             </p>
 
             <p class="trip-form">
-              <%= f.label 'Arrival Time' %>
+              <%= f.label 'Arrival Time' %><br>
               <%= f.datetime_select :arrival_time %>
             </p>
         <% end %>
