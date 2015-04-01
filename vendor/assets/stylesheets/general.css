@@ -197,4 +197,9 @@ input#trip_destination_address {
     width: 325px;
 }
 
+/* For about page */
+p.description-paragraph {
+    font-weight: normal;
+}
+
 
