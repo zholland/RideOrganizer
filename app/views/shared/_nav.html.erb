@@ -20,17 +20,20 @@
         <li>
           <%= nav_link 'trips', trip_plans_path %>
         </li>
+        <li>
+          <%= nav_link 'help', pages_help_path%>
+        </li>
 
         <% if user_signed_in? %>
             <li>
-              <%= link_to('account', edit_user_registration_path) %>
+              <%= nav_link 'account', edit_user_registration_path %>
             </li>
             <li>
-              <%= link_to('logout', destroy_user_session_path, :method => :delete) %>
+              <%= link_to 'logout', destroy_user_session_path, :method => :delete  %>
             </li>
         <% else %>
             <li>
-              <%= link_to('login', new_user_session_path) %>
+              <%= nav_link 'login', new_user_session_path %>
             </li>
         <% end %>
       </ul>

@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   root 'pages#home'
   get 'pages/home'
   get 'pages/about'
+  get 'pages/help'
   get 'trip_plans/choose'
   get 'trip_plans/new'
   get 'trip_plans/guest_edit', to: 'trip_plans#guest_edit'

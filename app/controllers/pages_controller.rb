@@ -13,6 +13,9 @@ class PagesController < ApplicationController
   def login
   end
 
+  def help
+  end
+
   def get_travellers
     # render json: session[:trip].to_json
     render json: create_travellers

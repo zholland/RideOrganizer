@@ -35,6 +35,12 @@ gem 'geocoder'
 # Ajax file upload submission
 gem 'remotipart'
 
+# For user accounts
+gem 'devise'
+
+# For local environment variables
+gem 'figaro'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -63,11 +69,5 @@ group :development, :test do
   gem 'mocha'
 
   gem 'tzinfo-data'
-
-  # For user accounts
-  gem 'devise'
-
-  # For local environment variables
-  gem 'figaro'
 end
 
