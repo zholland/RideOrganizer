@@ -24,7 +24,6 @@ class TripPlansController < ApplicationController
       t.destroy
     end
 
-
     # records_array = ActiveRecord::Base.connection.execute(sql)
 
     # New trip logic
@@ -32,7 +31,7 @@ class TripPlansController < ApplicationController
 
     if remotipart_submitted?
       unless session[:travellers].nil?
-        session[:travellers] < process_trip_travellers(params[:trip][:traveller_csv])
+        session[:travellers] << process_trip_travellers(params[:trip][:traveller_csv])
       else
         session[:travellers] = process_trip_travellers(params[:trip][:traveller_csv])
       end
