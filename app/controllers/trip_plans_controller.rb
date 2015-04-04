@@ -23,7 +23,7 @@ class TripPlansController < ApplicationController
     travellers.each do |t|
       t.destroy
     end
-
+    
     # New trip logic
     @trip = Trip.new
 
@@ -300,7 +300,7 @@ class TripPlansController < ApplicationController
     drivers.each { |driver| DriverMailer.trip_email(trip, driver, trip_output_data, current_user).deliver_now }
     passengers.each { |passenger| PassengerMailer.trip_email(trip, passenger, trip_output_data, current_user).deliver_now }
 
-    render json: {message: 'Emails were successfully sent.'}
+    render json: { message: 'Emails were successfully sent.'}
   end
 
   private
