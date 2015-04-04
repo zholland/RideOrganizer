@@ -207,4 +207,10 @@ $(document).on('ready page:load', function () {
     $.fn.editable.defaults.mode = 'popup';
     initNewTravellerRows();
     initEditable({});
+    $(window).keydown(function(event){
+        if(event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
 });
