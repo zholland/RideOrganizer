@@ -1,3 +1,8 @@
 var travellers = <%= session[:travellers].to_json %>;
 var travellerIds = updateTravellers(travellers);
 initEditable(travellerIds);
+<% if @error_msg != nil %>
+    $('#error-box').remove();
+    $('#main-content').prepend('<div id="error-box" class="alert alert-danger" role="alert"><%= escape_javascript(@error_msg.to_s)%></div>');
+    $("html, body").animate({scrollTop: 0}, 'fast');
+<% end %>
