@@ -59,34 +59,3 @@
     </div>
   </div>
 </div>
-
-<%= javascript_tag do %>
-    $(function(){
-        $("#new-trip-form").submit(function(e){
-
-            if (!$("#trip_destination_address").val()) {
-                e.preventDefault();
-                alert('Destination address cannot be empty!');
-            }
-            else {
-                var pattern = /[a-zA-Z 0-9 -]/;
-
-                if (pattern.test($("#trip_destination_address").val())) {
-                    <%  #coordinate_array = Geocoder.do_geocode(trip_address)
-                        coordinate_array = nil
-                        if coordinate_array == nil %>
-                        e.preventDefault();
-                        alert('You have entered an invalid destination address, please enter a different address.');
-                    <% else %>
-                        $("#new-trip-form").submit();
-                    <% end %>
-                }
-                else {
-                    alert('You have entered an invalid destination address, please enter a different address.');
-                }
-
-            }
-        });
-    });
-
-<% end %>

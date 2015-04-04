@@ -204,4 +204,8 @@ input#trip_destination_address {
     width: 325px;
 }
 
+.input-error {
+    border-color: #a94442;
+}
+
 

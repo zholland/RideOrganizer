@@ -208,3 +208,67 @@ $(document).on('ready page:load', function () {
     initNewTravellerRows();
     initEditable({});
 });
+
+
+// for validation of trip address on, new, guest_edit, edit
+$(function(){
+    // initiates when the user clicks the submit button -->
+    $("#new-trip-form").submit(function(e){
+
+        // if there is no value in destination address
+        if (!$("#trip_destination_address").val()) {
+            e.preventDefault();
+
+            // create div to display error message
+            var prependDiv = document.createElement('div');
+            prependDiv.setAttribute('class', 'alert alert-danger container');
+            var prependMsg = document.createTextNode('Destination address cannot be empty!');
+            prependDiv.appendChild(prependMsg);
+            $('body').prepend(prependDiv);
+
+            // add class to show user which input field needs to be fixed
+            document.getElementById("trip_destination_address").className = "input-error";
+        }
+        else {
+            var pattern = /[a-zA-Z 0-9-]/;
+            // if passes regex test
+            if (pattern.test($("#trip_destination_address").val())) {
+
+                // try to get geocoded value of destintation address
+                <%  #coordinate_array = Geocoder.do_geocode(trip_address)
+                    coordinate_array = []
+                    if coordinate_array == nil %>
+
+                e.preventDefault();
+
+                // create div and message to prepend to body
+                var prependDiv = document.createElement('div');
+                prependDiv.setAttribute('class', 'alert alert-danger container');
+                var prependMsg = document.createTextNode('You have entered an invalid destination address, please enter a different address.');
+                prependDiv.appendChild(prependMsg);
+                $('body').prepend(prependDiv);
+
+                // add class to show user which input field needs to be fixed
+                document.getElementById("trip_destination_address").className = "input-error";
+
+                // otherwise submit the trip form
+                <% else %>
+                    $("#new-trip-form").submit();
+            <% end %>
+            }
+
+            // else there is no value in the input address
+            else {
+                e.preventDefault();
+                var prependDiv = document.createElement('div');
+                prependDiv.setAttribute('class', 'alert alert-danger container');
+                var prependMsg = document.createTextNode('You have entered an invalid destination address, please enter a different address.');
+                prependDiv.appendChild(prependMsg);
+                $('body').prepend(prependDiv);
+
+                // add class to show user which input field needs to be fixed
+                document.getElementById("trip_destination_address").className = "input-error";
+            }
+        }
+    });
+});

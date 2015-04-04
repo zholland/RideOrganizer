@@ -21,6 +21,6 @@
 //= require bootstrap-editable.min
 //= require jquery.tablesorter.min
 //= require choose_trips_page
-//= require new_trip_page
+//= require new_trip_page.js.erb
 //= require jquery.remotipart.js
 //= require_tree .
