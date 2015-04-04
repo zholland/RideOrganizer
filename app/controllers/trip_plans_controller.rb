@@ -23,18 +23,19 @@ class TripPlansController < ApplicationController
     travellers.each do |t|
       t.destroy
     end
-
-
-    # records_array = ActiveRecord::Base.connection.execute(sql)
-
+    
     # New trip logic
     @trip = Trip.new
 
     if remotipart_submitted?
-      unless session[:travellers].nil?
-        session[:travellers] < process_trip_travellers(params[:trip][:traveller_csv])
-      else
-        session[:travellers] = process_trip_travellers(params[:trip][:traveller_csv])
+      begin
+        unless session[:travellers].nil?
+          session[:travellers] << process_trip_travellers(params[:trip][:traveller_csv])
+        else
+          session[:travellers] = process_trip_travellers(params[:trip][:traveller_csv])
+        end
+      rescue ArgumentError => e
+        @error_msg = e.message
       end
     else
       session[:travellers] = nil
@@ -87,9 +88,13 @@ class TripPlansController < ApplicationController
       @trip = Trip.find(params[:id])
 
       if remotipart_submitted?
-        travellers = process_trip_travellers(params[:trip][:traveller_csv])
-        travellers.each do |t|
-          @trip.travellers << t
+        begin
+          travellers = process_trip_travellers(params[:trip][:traveller_csv])
+          travellers.each do |t|
+            @trip.travellers << t
+          end
+        rescue ArgumentError => e
+          @error_msg = e.message
         end
       end
 
@@ -104,9 +109,13 @@ class TripPlansController < ApplicationController
       @trip = session[:trip]
 
       if remotipart_submitted?
-        travellers = process_trip_travellers(params[:trip][:traveller_csv])
-        travellers.each do |t|
-          @trip.travellers << t
+        begin
+          travellers = process_trip_travellers(params[:trip][:traveller_csv])
+          travellers.each do |t|
+            @trip.travellers << t
+          end
+        rescue ArgumentError => e
+          @error_msg = e.message
         end
       end
 
@@ -203,7 +212,6 @@ class TripPlansController < ApplicationController
     @trip.create_routes_from_trip_object(traveller_matching.trip)
 
     trip_json = traveller_matching.trip.to_json
-
 
 
     @trip.trip_json = trip_json
