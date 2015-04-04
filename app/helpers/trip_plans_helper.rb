@@ -46,10 +46,10 @@ module TripPlansHelper
       #Check if isDriver has a value other than true or false
       if persons[i][3] != 'TRUE' && persons[i][3] != 'FALSE'
         puts 'Error: isDriver isnt a boolean value'
-        raise ArgumentError.new("Error detected with 'isDriver' field in row #{i+1}. 'isDriver' must be a Boolean value.")
+        raise ArgumentError.new("Error detected with 'isDriver' field in row #{i+1}. 'isDriver' must be true or false.")
       elsif persons[i][2] == nil
         puts "Error: #{persons[i]} isDriver is nil"
-        raise ArgumentError.new("Empty 'isDriver' field in row #{i+1}. 'isDriver' must contain a Boolean value.")
+        raise ArgumentError.new("Empty 'isDriver' field in row #{i+1}. 'isDriver' must be true or false.")
       end
       #Check if isDriver is false but is allowed to have passengers
       if persons[i][3] == 'FALSE' && persons[i][4] != '0'
@@ -61,12 +61,12 @@ module TripPlansHelper
       end
 
       #Check if isDriver is True but error with number of passengers
-      if persons[i][3] == 'TRUE' # && /0-7/.match(persons[i][4].to_i) == nil
-        puts 'Error: isDriver is true but has too many passengers'
-        raise ArgumentError.new("Error detected with 'num_of_passengers' field in row #{i+1}. RideOrganizer does not currently support more than 7 passengers.")
-      elsif persons[i][3] == 'TRUE' && persons[i][4].to_i > 7
+      if persons[i][3] == 'TRUE' && !(persons[i][4] =~ /\A[-+]?[0-9]*\.?[0-9]+\Z/)
         puts "Error: 'num_of_passengers' field doesn't contain a number"
         raise ArgumentError.new("Error detected with 'num_of_passengers' field in row #{i+1}. Field must contain a number.")
+      elsif persons[i][3] == 'TRUE' && persons[i][4].to_i > 7
+        puts 'Error: isDriver is true but has too many passengers'
+        raise ArgumentError.new("Error detected with 'num_of_passengers' field in row #{i+1}. RideOrganizer does not currently support more than 7 passengers.")
       end
       i += 1
     end
