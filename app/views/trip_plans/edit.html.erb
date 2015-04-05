@@ -17,7 +17,7 @@
           <%= link_to('Delete Trip', trip_plan_path(@trip),
                       method: :delete, class: 'btn btn-danger',
                       data: {confirm: 'Are you sure?'}) %>
-          <%= link_to('Optimize Trip', planner_output_trip_plan_path(@trip), class: 'btn btn-default') %>
+          <%= link_to('Optimize Trip', planner_output_trip_plan_path(@trip), class: 'btn btn-default', id: 'optimize-button') %>
         </p>
         <%= form_for :trip, url: trip_plan_path(@trip), html: {id: 'new-trip-form'}, method: :patch do |f| %>
             <p>
