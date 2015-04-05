@@ -10,9 +10,9 @@
 
         <p>
           <%= link_to('New Trip', trip_plans_new_path, class: 'btn btn-default submit-button') %>
-          <%= link_to('Optimize Trip', trip_plans_guest_planner_output_path, class: 'btn btn-default') %>
+          <%= link_to('Optimize Trip', trip_plans_guest_planner_output_path, class: 'btn btn-default', id: 'optimize-button') %>
         </p>
-        <%= form_for :trip, url: trip_plans_guest_update_path, method: :patch do |f| %>
+        <%= form_for :trip, url: trip_plans_guest_update_path, html: {id: 'new-trip-form'}, method: :patch do |f| %>
             <p>
               <%= f.submit 'Save Changes', :class => 'btn btn-default save-button' %>
             </p>
