@@ -29,7 +29,7 @@ gem 'algorithms'
 
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 
-gem 'rest-client'
+gem 'json'
 
 # Ajax file upload submission
 gem 'remotipart'
