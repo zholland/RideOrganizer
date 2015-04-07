@@ -1,13 +1,19 @@
-require 'rest_client'
+require 'net/http'
+require 'json'
 
 class GoogleAPIGeocoder
   API_KEY = 'AIzaSyC6qUy4aKjMOkd8ffdu6rBa44TuhfR3hOA'
   HOST_URL = 'https://maps.googleapis.com/maps/api/geocode/json?key=' + API_KEY + '&address='
-  BATCH_SIZE = 5
 
   def self.do_geocode(address)
-    response = RestClient.get(HOST_URL + address)
-    data = JSON.parse(response)
+    # response = RestClient.get(HOST_URL + address)
+
+    url = URI.parse(HOST_URL + address)
+    req = Net::HTTP::Get.new(url.to_s)
+    res = Net::HTTP.start(url.host, url.port, :use_ssl => true) {|http|
+      http.request(req)
+    }
+    data = JSON.parse(res.body)
 
     if data["status"] != "OK"
       nil
