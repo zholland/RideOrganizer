@@ -1,16 +1,16 @@
 function initNewTravellerRows() {
     $('<tr id="new-driver-row">').appendTo('#drivers-table tbody')
-        .append($('<td>').html('<a class="new-driver" href="#" id="newdrivername" data-title="Enter name"></a>'))
-        .append($('<td>').html('<a class="new-driver" href="#" id="newdriveremail" data-title="Enter email"></a>'))
-        .append($('<td>').html('<a class="new-driver" href="#" id="newdriveraddress" data-title="Enter address"></a>'))
-        .append($('<td>').html('<a class="new-driver" href="#" id="newdrivernumber_of_passengers" data-title="Enter vehicle capacity"></a>'))
-        .append($('<td>').html('<button class="btn btn-primary table-button" id="save-new-driver">Save</button>'));
+            .append($('<td>').html('<a class="new-driver" href="#" id="newdrivername" data-title="Enter name"></a>'))
+            .append($('<td>').html('<a class="new-driver" href="#" id="newdriveremail" data-title="Enter email"></a>'))
+            .append($('<td>').html('<a class="new-driver" href="#" id="newdriveraddress" data-title="Enter address"></a>'))
+            .append($('<td>').html('<a class="new-driver" href="#" id="newdrivernumber_of_passengers" data-title="Enter vehicle capacity"></a>'))
+            .append($('<td>').html('<button class="btn btn-primary table-button" id="save-new-driver">Save</button>'));
 
     $('<tr id="new-passenger-row">').appendTo('#passengers-table tbody')
-        .append($('<td>').html('<a class="new-passenger" href="#" id="newpassengername" data-title="Enter name"></a>'))
-        .append($('<td>').html('<a class="new-passenger" href="#" id="newpassengeremail" data-title="Enter email"></a>'))
-        .append($('<td>').html('<a class="new-passenger" href="#" id="newpassengeraddress" data-title="Enter address"></a>'))
-        .append($('<td>').html('<button class="btn btn-primary table-button" id="save-new-passenger">Save</button>'));
+            .append($('<td>').html('<a class="new-passenger" href="#" id="newpassengername" data-title="Enter name"></a>'))
+            .append($('<td>').html('<a class="new-passenger" href="#" id="newpassengeremail" data-title="Enter email"></a>'))
+            .append($('<td>').html('<a class="new-passenger" href="#" id="newpassengeraddress" data-title="Enter address"></a>'))
+            .append($('<td>').html('<button class="btn btn-primary table-button" id="save-new-passenger">Save</button>'));
 }
 
 function updateTravellers(travellers) {
@@ -24,18 +24,18 @@ function updateTravellers(travellers) {
     for (i = 0; i < travellers.length; i++) {
         if (travellers[i].number_of_passengers != null) {
             $('<tr id="traveller-' + travellers[i].id + '">').appendTo('#drivers-table tbody')
-                .append($('<td>').html('<a href="#" id="name-' + travellers[i].id + '">' + travellers[i].name + '</a>'))
-                .append($('<td>').html('<a href="#" id="email-' + travellers[i].id + '">' + travellers[i].email + '</a>'))
-                .append($('<td>').html('<a href="#" id="address-' + travellers[i].id + '">' + travellers[i].address + '</a>'))
-                .append($('<td>').html('<a href="#" id="number_of_passengers-' + travellers[i].id + '">' + travellers[i].number_of_passengers + '</a>'))
-                .append($('<td>').html('<a href="destroy_traveller/' + travellers[i].id + '" data-remote="true" data-method="delete" onclick="removeRow(' + travellers[i].id + ')">Delete</a>'));
+                    .append($('<td>').html('<a href="#" id="name-' + travellers[i].id + '">' + travellers[i].name + '</a>'))
+                    .append($('<td>').html('<a href="#" id="email-' + travellers[i].id + '">' + travellers[i].email + '</a>'))
+                    .append($('<td>').html('<a href="#" id="address-' + travellers[i].id + '">' + travellers[i].address + '</a>'))
+                    .append($('<td>').html('<a href="#" id="number_of_passengers-' + travellers[i].id + '">' + travellers[i].number_of_passengers + '</a>'))
+                    .append($('<td>').html('<a href="destroy_traveller/' + travellers[i].id + '" data-remote="true" data-method="delete" onclick="removeRow(' + travellers[i].id + ')">Delete</a>'));
             driverIds[driverIds.length] = travellers[i].id
         } else {
             $('<tr id="traveller-' + travellers[i].id + '">').appendTo('#passengers-table tbody')
-                .append($('<td>').html('<a href="#" id="name-' + travellers[i].id + '">' + travellers[i].name + '</a>'))
-                .append($('<td>').html('<a href="#" id="email-' + travellers[i].id + '">' + travellers[i].email + '</a>'))
-                .append($('<td>').html('<a href="#" id="address-' + travellers[i].id + '">' + travellers[i].address + '</a>'))
-                .append($('<td>').html('<a href="destroy_traveller/' + travellers[i].id + '" data-remote="true" data-method="delete" onclick="removeRow(' + travellers[i].id + ')">Delete</a>'));
+                    .append($('<td>').html('<a href="#" id="name-' + travellers[i].id + '">' + travellers[i].name + '</a>'))
+                    .append($('<td>').html('<a href="#" id="email-' + travellers[i].id + '">' + travellers[i].email + '</a>'))
+                    .append($('<td>').html('<a href="#" id="address-' + travellers[i].id + '">' + travellers[i].address + '</a>'))
+                    .append($('<td>').html('<a href="destroy_traveller/' + travellers[i].id + '" data-remote="true" data-method="delete" onclick="removeRow(' + travellers[i].id + ')">Delete</a>'));
             passengerIds[passengerIds.length] = travellers[i].id
         }
     }
@@ -53,7 +53,11 @@ function getEditNameOptions(id) {
         name: 'name',
         url: 'edit_name',
         pk: id,
-        title: 'Enter name'
+        title: 'Enter name',
+        validate: function (arg) {
+            if ($.trim(arg) == '') return 'Required field: Please enter a name!';
+            if (arg.match(/^[A-Z-' ]+$/i) == null) return "Invalid name format, only (letters), (-), ('), and (space) permitted!";
+        }
     }
 }
 
@@ -63,7 +67,11 @@ function getEditEmailOptions(id) {
         name: 'email',
         url: 'edit_email',
         pk: id,
-        title: 'Enter email'
+        title: 'Enter email',
+        validate: function (arg) {
+            if ($.trim(arg) == '') return 'Required field: Please enter a valid email!';
+            if (arg.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i) == null) return 'Invalid Email: Required field!';
+        }
     }
 }
 
@@ -73,7 +81,13 @@ function getEditAddressOptions(id) {
         name: 'address',
         url: 'edit_address',
         pk: id,
-        title: 'Enter address'
+        title: 'Enter address',
+        validate: function (arg) {
+            if ($.trim(arg) == '') return 'Required field: Please enter a valid address!';
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~not validating yet
+            checkVaildAddress()
+
+        }
     }
 }
 
@@ -83,7 +97,12 @@ function getEditNumPassengersOptions(id) {
         name: 'number_of_passengers',
         url: 'edit_number_of_passengers',
         pk: id,
-        title: 'Enter vehicle capacity'
+        title: 'Enter vehicle capacity',
+        validate: function (arg) {
+            if ($.trim(arg) == '') return 'Required field: Please enter a number 0-7!';
+            if (arg.match(/^\d+$/) != null) return 'Not a valid number: please enter a number 0-7!';
+            if (arg.match(/^[0-7]$/) == null) return "Number error: Program cannot handle '# of passengers' greater than 7!";
+        }
     }
 }
 
@@ -116,85 +135,93 @@ function initEditable(travellerIds) {
         url: '/post'
     });
 
-    $('#new-driver-name').editable('option', 'validate', function(v) {
-        if(!v) return 'Required field!';
+    $('#newdrivername').editable('option', 'validate', function (v) {
+        if (!v) return 'Required field!';
+        if (v.match(/^[A-Z-' ]+$/i) == null) return "Invalid name format, only (letters), (-), ('), and (space) permitted!";
     });
 
-    $('#new-driver-email').editable('option', 'validate', function(v) {
-        if(!v) return 'Required field!';
+    $('#newdriveremail').editable('option', 'validate', function (v) {
+        if (!v) return 'Required field!';
+        if (v.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i) == null) return "Invalid email format!";
     });
 
-    $('#new-driver-address').editable('option', 'validate', function(v) {
-        if(!v) return 'Required field!';
+    $('#newdriveraddress').editable('option', 'validate', function (v) { //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~not validating yet
+        if (!v) return 'Required field!';
     });
 
-    $('#new-driver-number_of_passengers').editable('option', 'validate', function(v) {
-        if(!v) return 'Required field!';
+    $('#newdrivernumber_of_passengers').editable('option', 'validate', function (v) {
+        if (!v) return 'Required field!';
+        if (v.match(/^\d+$/) == null) return 'Not a valid number: please enter a number 0-7!';
+        if (v.match(/^[0-7]$/) == null) return "Number error: Program cannot handle a '# of passengers' greater than 7!";
     });
 
-    $('#new-passenger-name').editable('option', 'validate', function(v) {
-        if(!v) return 'Required field!';
+    $('#newpassengername').editable('option', 'validate', function (v) {
+        if (!v) return 'Required field!';
+        if (v.match(/^[A-Z-' ]+$/i) == null) return "Invalid name format, only (letters), (-), ('), and (space) permitted!"
     });
 
-    $('#new-passenger-email').editable('option', 'validate', function(v) {
-        if(!v) return 'Required field!';
+    $('#newpassengeremail').editable('option', 'validate', function (v) {
+        if (!v) return 'Required field!';
+        if (v.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i) == null) return "Invalid email format!";
     });
 
-    $('#new-passenger-address').editable('option', 'validate', function(v) {
-        if(!v) return 'Required field!';
+    $('#newpassengeraddress').editable('option', 'validate', function (v) { //~~~~~~~~~~~~~~~~~~~~~~~~~~~~not validating yet
+        if (!v) return 'Required field!';
     });
 
     //automatically show next editable
-    $('.new-driver').on('save.newuser', function(){
+    $('.new-driver').on('save.newuser', function () {
         var that = this;
-        setTimeout(function() {
+        setTimeout(function () {
             $(that).closest('td').next().find('.new-driver').editable('show');
         }, 200);
     });
 
     //automatically show next editable
-    $('.new-passenger').on('save.newuser', function(){
+    $('.new-passenger').on('save.newuser', function () {
         var that = this;
-        setTimeout(function() {
+        setTimeout(function () {
             $(that).closest('td').next().find('.new-passenger').editable('show');
         }, 200);
     });
 
-    $('#save-new-driver').click(function() {
+    $('#save-new-driver').click(function () {
         $('.new-driver').editable('submit', {
             url: 'new_driver',
             ajaxOptions: {
                 method: 'POST',
                 dataType: 'json' //assuming json response
             },
-            success: function(travellers) {
+            success: function (travellers) {
                 var travellerIds = updateTravellers(travellers);
                 initEditable(travellerIds);
             },
-            error: function() {
-                alert('error');
+            error: function () {
+                alert('error saving new driver');
             }
         });
     });
 
-    $('#save-new-passenger').click(function() {
+    $('#save-new-passenger').click(function () {
         $('.new-passenger').editable('submit', {
             url: 'new_passenger',
             ajaxOptions: {
                 method: 'POST',
                 dataType: 'json' //assuming json response
             },
-            success: function(travellers) {
+            success: function (travellers) {
                 var travellerIds = updateTravellers(travellers);
                 initEditable(travellerIds);
             },
-            error: function(errors) {
-                alert('error');
+            error: function (errors) {
+                alert('error saving new passenger');
                 var msg = '';
-                if(errors && errors.responseText) { //ajax error, errors = xhr object
+                if (errors && errors.responseText) { //ajax error, errors = xhr object
                     msg = errors.responseText;
                 } else { //validation error (client-side or server-side)
-                    $.each(errors, function(k, v) { msg += k+": "+v+"<br>"; });
+                    $.each(errors, function (k, v) {
+                        msg += k + ": " + v + "<br>";
+                    });
                 }
                 $('#msg').removeClass('alert-success').addClass('alert-error').html(msg).show();
             }
@@ -207,8 +234,8 @@ $(document).on('ready page:load', function () {
     $.fn.editable.defaults.mode = 'popup';
     initNewTravellerRows();
     initEditable({});
-    $(window).keydown(function(event){
-        if(event.keyCode == 13) {
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
             event.preventDefault();
             return false;
         }
@@ -217,9 +244,9 @@ $(document).on('ready page:load', function () {
 
 
 // for validation of trip address on, new, guest_edit, edit
-$(function(){
+$(function () {
     // initiates when the user clicks the submit button -->
-    $("#new-trip-form").submit(function(e){
+    $("#new-trip-form").submit(function (e) {
         var validAddress = checkVaildAddress();
         var enoughDrivers = checkNumDrivers();
 
@@ -233,8 +260,8 @@ $(function(){
     });
 });
 
-$(function(){
-    $("#optimize-button").click(function(e) {
+$(function () {
+    $("#optimize-button").click(function (e) {
         var validAddress = checkVaildAddress();
         var enoughDrivers = checkNumDrivers();
 
@@ -283,7 +310,7 @@ function checkVaildAddress() {
             return false;
             // otherwise submit the trip form
             <% else %>
-                return true;
+            return true;
             <% end %>
         }
 
