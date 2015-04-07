@@ -219,5 +219,11 @@ input#trip_destination_address {
     border-color: #a94442;
 }
 
+.alert-danger-no-margin {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
 
 

@@ -12,6 +12,7 @@
             <p>
               <%= f.submit 'Create Trip', :class => 'btn btn-default submit-button' %>
             </p>
+
             <p class="trip-form">
               <%= f.label :destination_address %><br>
               <%= f.text_field :destination_address %>
@@ -31,7 +32,11 @@
             <%= f.file_field :traveller_csv, id: 'csv-field' %>
             <%= f.submit 'Upload', class: 'btn btn-default submit-button' %>
         <% end %>
-
+      </div>
+    </div>
+    <div id="driver-message" class="alert" style="display: none"></div>
+    <div class="row">
+      <div class="col-lg-12">
         <h3>Drivers</h3>
         <table id="drivers-table" class="table">
           <thead>
@@ -44,6 +49,11 @@
 
           </tbody>
         </table>
+      </div>
+    </div>
+    <div id="passenger-message" class="alert" style="display: none"></div>
+    <div class="row">
+      <div class="col-lg-12">
         <h3>Passengers</h3>
         <table id="passengers-table" class="table">
           <thead>

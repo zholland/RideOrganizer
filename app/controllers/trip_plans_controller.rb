@@ -56,7 +56,7 @@ class TripPlansController < ApplicationController
       session[:travellers] = travellers
     end
 
-    if current_user.nil?
+    if current_user.nil? && !session[:trip].nil?
       session[:trip].travellers << driver
     end
 
@@ -76,7 +76,7 @@ class TripPlansController < ApplicationController
       session[:travellers] = travellers
     end
 
-    if current_user.nil?
+    if current_user.nil? && !session[:trip].nil?
       session[:trip].travellers << passenger
     end
 

@@ -116,36 +116,36 @@ function initEditable(travellerIds) {
         url: '/post'
     });
 
-    $('#new-driver-name').editable('option', 'validate', function(v) {
+    $('#newdrivername').editable('option', 'validate', function(v) {
         if(!v) return 'Required field!';
     });
 
-    $('#new-driver-email').editable('option', 'validate', function(v) {
+    $('#newdriveremail').editable('option', 'validate', function(v) {
         if(!v) return 'Required field!';
     });
 
-    $('#new-driver-address').editable('option', 'validate', function(v) {
+    $('#newdriveraddress').editable('option', 'validate', function(v) {
         if(!v) return 'Required field!';
     });
 
-    $('#new-driver-number_of_passengers').editable('option', 'validate', function(v) {
+    $('#newdrivernumber_of_passengers').editable('option', 'validate', function(v) {
         if(!v) return 'Required field!';
     });
 
-    $('#new-passenger-name').editable('option', 'validate', function(v) {
+    $('#newpassengername').editable('option', 'validate', function(v) {
         if(!v) return 'Required field!';
     });
 
-    $('#new-passenger-email').editable('option', 'validate', function(v) {
+    $('#newpassengeremail').editable('option', 'validate', function(v) {
         if(!v) return 'Required field!';
     });
 
-    $('#new-passenger-address').editable('option', 'validate', function(v) {
+    $('#newpassengeraddress').editable('option', 'validate', function(v) {
         if(!v) return 'Required field!';
     });
 
     //automatically show next editable
-    $('.new-driver').on('save.newuser', function(){
+    $('.new-driver').on('save.new-driver', function(){
         var that = this;
         setTimeout(function() {
             $(that).closest('td').next().find('.new-driver').editable('show');
@@ -153,7 +153,7 @@ function initEditable(travellerIds) {
     });
 
     //automatically show next editable
-    $('.new-passenger').on('save.newuser', function(){
+    $('.new-passenger').on('save.new-passenger', function(){
         var that = this;
         setTimeout(function() {
             $(that).closest('td').next().find('.new-passenger').editable('show');
@@ -170,9 +170,17 @@ function initEditable(travellerIds) {
             success: function(travellers) {
                 var travellerIds = updateTravellers(travellers);
                 initEditable(travellerIds);
+                var msg = 'New driver created successfully.';
+                $('#driver-message').addClass('alert-success').removeClass('alert-danger-no-margin').html(msg).show();
             },
-            error: function() {
-                alert('error');
+            error: function(errors) {
+                var msg = '';
+                if(errors && errors.responseText) { //ajax error, errors = xhr object
+                    msg = errors.responseText;
+                } else { //validation error (client-side or server-side)
+                    $.each(errors, function(k, v) { msg += v+"<br>"; });
+                }
+                $('#driver-message').removeClass('alert-success').addClass('alert-danger-no-margin').html(msg).show();
             }
         });
     });
@@ -187,16 +195,17 @@ function initEditable(travellerIds) {
             success: function(travellers) {
                 var travellerIds = updateTravellers(travellers);
                 initEditable(travellerIds);
+                var msg = 'New passenger created successfully.';
+                $('#passenger-message').addClass('alert-success').removeClass('alert-danger-no-margin').html(msg).show();
             },
             error: function(errors) {
-                alert('error');
                 var msg = '';
                 if(errors && errors.responseText) { //ajax error, errors = xhr object
                     msg = errors.responseText;
                 } else { //validation error (client-side or server-side)
-                    $.each(errors, function(k, v) { msg += k+": "+v+"<br>"; });
+                    $.each(errors, function(k, v) { msg += v+"<br>"; });
                 }
-                $('#msg').removeClass('alert-success').addClass('alert-error').html(msg).show();
+                $('#passenger-message').removeClass('alert-success').addClass('alert-danger-no-margin').html(msg).show();
             }
         });
     });
