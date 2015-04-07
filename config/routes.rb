@@ -32,6 +32,7 @@ Rails.application.routes.draw do
   post 'trip_plans/guest_edit', to: 'trip_plans#guest_edit'
   post 'trip_plans/:id/notify_travellers', to: 'trip_plans#notify_travellers'
   post 'trip_plans/notify_travellers', to: 'trip_plans#notify_travellers'
+  post 'trip_plans/validate_address', to: 'trip_plans#validate_address'
 
 
   resources :trip_plans do

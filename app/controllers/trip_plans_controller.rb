@@ -303,6 +303,19 @@ class TripPlansController < ApplicationController
     render json: { message: 'Emails were successfully sent.'}
   end
 
+  def validate_address
+    trip_address = params[:data]
+    coordinate_array = nil
+    coordinate_array = GoogleAPIGeocoder.do_geocode(trip_address)
+
+    if coordinate_array == nil
+      render json: {response: "1"}
+    else
+      render json: {response: "-1"}
+    end
+
+  end
+
   private
   def trip_params
     params.require(:trip).permit(:destination_address, :arrival_time)

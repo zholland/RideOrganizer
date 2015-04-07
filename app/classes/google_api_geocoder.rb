@@ -3,9 +3,9 @@ require 'rest_client'
 class GoogleAPIGeocoder
   API_KEY = 'AIzaSyC6qUy4aKjMOkd8ffdu6rBa44TuhfR3hOA'
   HOST_URL = 'https://maps.googleapis.com/maps/api/geocode/json?key=' + API_KEY + '&address='
-  BATCH_SIZE = 5
 
   def self.do_geocode(address)
+    # address_to_send = address.downcase.tr(" ", "+")
     response = RestClient.get(HOST_URL + address)
     data = JSON.parse(response)
 
