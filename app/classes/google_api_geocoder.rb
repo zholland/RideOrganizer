@@ -6,9 +6,7 @@ class GoogleAPIGeocoder
   HOST_URL = 'https://maps.googleapis.com/maps/api/geocode/json?key=' + API_KEY + '&address='
 
   def self.do_geocode(address)
-    # response = RestClient.get(HOST_URL + address)
-
-    url = URI.parse(HOST_URL + address)
+    url = URI.parse(URI.encode((HOST_URL + address).strip))
     req = Net::HTTP::Get.new(url.to_s)
     res = Net::HTTP.start(url.host, url.port, :use_ssl => true) {|http|
       http.request(req)
