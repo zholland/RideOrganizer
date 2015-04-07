@@ -133,37 +133,37 @@ function initEditable(travellerIds) {
     });
 
     $('#newdrivername').editable('option', 'validate', function (v) {
-        if (!v) return 'Required field!';
+        if (!v) return 'Name is a required field!';
         if (v.match(/^[A-Z-' ]+$/i) == null) return "Invalid name format, only (letters), (-), ('), and (space) permitted!";
     });
 
     $('#newdriveremail').editable('option', 'validate', function (v) {
-        if (!v) return 'Required field!';
+        if (!v) return 'Email is a required required field!';
         if (v.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i) == null) return "Invalid email format!";
     });
 
     $('#newdriveraddress').editable('option', 'validate', function (v) { //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~not validating yet
-        if (!v) return 'Required field!';
+        if (!v) return 'Address is a required field!';
     });
 
     $('#newdrivernumber_of_passengers').editable('option', 'validate', function (v) {
-        if (!v) return 'Required field!';
+        if (!v) return 'Vehicle capacity is a required field!';
         if (v.match(/^\d+$/) == null) return 'Not a valid number: please enter a number 0-7!';
         if (v.match(/^[0-7]$/) == null) return "Number error: Program cannot handle a '# of passengers' greater than 7!";
     });
 
     $('#newpassengername').editable('option', 'validate', function (v) {
-        if (!v) return 'Required field!';
+        if (!v) return 'Name is a required field!';
         if (v.match(/^[A-Z-' ]+$/i) == null) return "Invalid name format, only (letters), (-), ('), and (space) permitted!"
     });
 
     $('#newpassengeremail').editable('option', 'validate', function (v) {
-        if (!v) return 'Required field!';
+        if (!v) return 'Email is a required field!';
         if (v.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i) == null) return "Invalid email format!";
     });
 
     $('#newpassengeraddress').editable('option', 'validate', function (v) { //~~~~~~~~~~~~~~~~~~~~~~~~~~~~not validating yet
-        if (!v) return 'Required field!';
+        if (!v) return 'Address is a required field!';
     });
 
     //automatically show next editable
@@ -195,7 +195,7 @@ function initEditable(travellerIds) {
                 var msg = 'New driver created successfully.';
                 $('#driver-message').addClass('alert-success').removeClass('alert-danger-no-margin').html(msg).show();
             },
-            error: function() {
+            error: function(errors) {
                 var msg = '';
                 if(errors && errors.responseText) { //ajax error, errors = xhr object
                     msg = errors.responseText;
