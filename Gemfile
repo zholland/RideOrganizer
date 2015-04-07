@@ -29,8 +29,7 @@ gem 'algorithms'
 
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 
-# offical rails geocoder
-gem 'geocoder'
+gem 'rest-client'
 
 # Ajax file upload submission
 gem 'remotipart'
