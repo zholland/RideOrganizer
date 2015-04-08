@@ -1,5 +1,6 @@
 var validAddress = null;
 
+// Initialize the new driver and passenger rows in the table.
 function initNewTravellerRows() {
     $('<tr id="new-driver-row">').appendTo('#drivers-table tbody')
             .append($('<td>').html('<a class="new-driver" href="#" id="newdrivername" data-title="Enter name"></a>'))
@@ -15,6 +16,7 @@ function initNewTravellerRows() {
             .append($('<td>').html('<button class="btn btn-primary table-button" id="save-new-passenger">Save</button>'));
 }
 
+// Update the driver and passenger tables.
 function updateTravellers(travellers) {
     // Remove existing rows
     $('#drivers-table tbody').children().remove();
@@ -99,18 +101,20 @@ function getEditNumPassengersOptions(id) {
         title: 'Enter vehicle capacity',
         validate: function (arg) {
             if ($.trim(arg) == '') return 'Required field: Please enter a number 0-7!';
-            if (arg.match(/^\d+$/) != null) return 'Not a valid number: please enter a number 0-7!';
+            if (arg.match(/^\d+$/) == null) return 'Not a valid number: please enter a number 0-7!';
             if (arg.match(/^[0-7]$/) == null) return "Number error: Program cannot handle '# of passengers' greater than 7!";
         }
     }
 }
 
+// Initialize x-editable on all the driver and passenger fields.
 function initEditable(travellerIds) {
     if (!$.isEmptyObject(travellerIds)) {
         var i;
         var driverIds = travellerIds.drivers;
         var passengerIds = travellerIds.passengers;
 
+        // Init the driver editables.
         for (i = 0; i < driverIds.length; i++) {
             $('#name-' + driverIds[i]).editable(getEditNameOptions(driverIds[i]));
             $('#email-' + driverIds[i]).editable(getEditEmailOptions(driverIds[i]));
@@ -118,6 +122,7 @@ function initEditable(travellerIds) {
             $('#number_of_passengers-' + driverIds[i]).editable(getEditNumPassengersOptions(driverIds[i]));
         }
 
+        // Init the passenger editables
         for (i = 0; i < passengerIds.length; i++) {
             $('#name-' + passengerIds[i]).editable(getEditNameOptions(passengerIds[i]));
             $('#email-' + passengerIds[i]).editable(getEditEmailOptions(passengerIds[i]));
@@ -125,7 +130,6 @@ function initEditable(travellerIds) {
         }
     }
 
-    //init editables
     $('.new-driver').editable({
         url: '/post'
     });
@@ -144,7 +148,7 @@ function initEditable(travellerIds) {
         if (v.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i) == null) return "Invalid email format!";
     });
 
-    $('#newdriveraddress').editable('option', 'validate', function (v) { //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~not validating yet
+    $('#newdriveraddress').editable('option', 'validate', function (v) {
         if (!v) return 'Address is a required field!';
     });
 
@@ -164,7 +168,7 @@ function initEditable(travellerIds) {
         if (v.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i) == null) return "Invalid email format!";
     });
 
-    $('#newpassengeraddress').editable('option', 'validate', function (v) { //~~~~~~~~~~~~~~~~~~~~~~~~~~~~not validating yet
+    $('#newpassengeraddress').editable('option', 'validate', function (v) {
         if (!v) return 'Address is a required field!';
     });
 
@@ -176,7 +180,7 @@ function initEditable(travellerIds) {
         }, 200);
     });
 
-    //automatically show next editable
+    // Automatically show next editable
     $('.new-passenger').on('save.new-passenger', function(){
         var that = this;
         setTimeout(function () {
