@@ -249,7 +249,8 @@ $(document).on('ready page:load', function () {
 });
 
 
-// for validation of trip address on, new, guest_edit, edit
+// for validation of trip address on, new, guest_edit, edit runs when user clicks the new trip button of the create page
+// or the save changes button on the edit pages
 $(function(){
     $("#submit-button").click(function(e) {
         e.preventDefault();
@@ -257,6 +258,8 @@ $(function(){
     });
 });
 
+// for validation of address on the guest_edit and edit pages
+// runs when user clicks the optimize button
 $(function(){
     $("#optimize-button").click(function(e) {
         e.preventDefault();
@@ -265,6 +268,7 @@ $(function(){
 });
 
 
+// validates the trip destination address
 function checkVaildAddress(e) {
     // if there is no value in destination address
     if (!$("#trip_destination_address").val()) {
@@ -278,19 +282,21 @@ function checkVaildAddress(e) {
 
         // add class to show user which input field needs to be fixed
         document.getElementById("trip_destination_address").className = "input-error";
-
-        validAddress = false;
-        e.preventDefault();
-
-    } else {
+    }
+    // else there is a value in the destination address
+    else {
         var pattern = /[a-zA-Z 0-9-]/;
-        // if passes regex test
+
+        // if the value passes regex test
         if (pattern.test($("#trip_destination_address").val())) {
+
             var trip_address = $("#trip_destination_address").val();
 
+            // send a post request to trip_plans_controller to validate the address
             $.post('validate_address', {data: trip_address}, function (data) {
+                // response of -1 means that the address is invalid
+                // display an error message
                 if (data.response == "-1") {
-                    e.preventDefault();
                     var prependDiv = document.createElement('div');
                     prependDiv.setAttribute('class', 'alert alert-danger container');
                     var prependMsg = document.createTextNode('You have entered an invalid destination address, please enter a different address.');
@@ -299,21 +305,23 @@ function checkVaildAddress(e) {
 
                     // add class to show user which input field needs to be fixed
                     document.getElementById("trip_destination_address").className = "input-error";
-                    validAddress = false;
 
-                } else {
+                }
+                // else we know that the address is valid
+                // check to see if the number driver's seats avaliable is valid
+                // if yes, submit the form
+                else {
                     if (checkNumDrivers()) {
                        $('#new-trip-form').submit();
                     }
                 }
             }).fail(function() {
                 alert('Internal Server Error. Please try again later.');
-                validAddress = false;
-                e.preventDefault();
             });
 
-        } else {
-            e.preventDefault();
+        }
+        // else the regex failed, must be an invalid address, alert the user
+        else {
             var prependDiv = document.createElement('div');
             prependDiv.setAttribute('class', 'alert alert-danger container');
             var prependMsg = document.createTextNode('You have entered an invalid destination address, please enter a different address.');
@@ -322,11 +330,11 @@ function checkVaildAddress(e) {
 
             // add class to show user which input field needs to be fixed
             document.getElementById("trip_destination_address").className = "input-error";
-            validAddress = false;
         }
     }
 }
 
+// verify that the number of passengers does not exceed the number of seats
 function checkNumDrivers() {
     var driversSum = 0;
     $("[id*='number_of_passengers-']").each(function () {
@@ -338,6 +346,7 @@ function checkNumDrivers() {
     // get the number of rows in the passenger table - take away 2 b/c one row for headers, one row for new input
     var numPassengers = document.getElementById("passengers-table").rows.length - 2;
 
+    // if there are more passengers than seats, create an error message
     if (driversSum < numPassengers) {
         var prependDiv = document.createElement('div');
         prependDiv.setAttribute('class', 'alert alert-danger container');
@@ -345,8 +354,8 @@ function checkNumDrivers() {
         prependDiv.appendChild(prependMsg);
         $('body').prepend(prependDiv);
         return false;
-
     }
+    // otherwise there are enough seats for passengers, return true
     else {
         return true;
     }

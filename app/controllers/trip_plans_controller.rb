@@ -303,9 +303,13 @@ class TripPlansController < ApplicationController
     render json: { message: 'Emails were successfully sent.'}
   end
 
+
+  # validate the trip destination address
   def validate_address
     trip_address = params[:data]
     coordinate_array = nil
+
+    # call to the geocoder API returns nil if the address cannot be geocoded
     coordinate_array = GoogleAPIGeocoder.do_geocode(trip_address)
 
     if coordinate_array.nil?
