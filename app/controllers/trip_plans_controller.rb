@@ -309,9 +309,9 @@ class TripPlansController < ApplicationController
     coordinate_array = GoogleAPIGeocoder.do_geocode(trip_address)
 
     if coordinate_array.nil?
-      render json: {response: "1"}
-    else
       render json: {response: "-1"}
+    else
+      render json: {response: "1"}
     end
 
   end
