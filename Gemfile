@@ -29,7 +29,7 @@ gem 'algorithms'
 
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 
-gem 'rest-client', '~> 1.7.3'
+gem 'json'
 
 # Ajax file upload submission
 gem 'remotipart'
@@ -39,6 +39,8 @@ gem 'devise'
 
 # For local environment variables
 gem 'figaro'
+
+gem 'geocoder'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
