@@ -1,24 +1,24 @@
 <%= render 'shared/nav' %>
 <%= render 'shared/header' %>
 
-
-<div class="content-section-b">
+<div class="content-section-b content-pages">
   <div class="container">
     <div class="row">
-      <div class="col-lg-6 col-md-6 col-sm-8">
+      <div class="col-lg-8 col-md-8 col-sm-8">
+        <h2 class="section-heading">Getting Started with RideOrganizer</h2>
         <div class="clearfix"></div>
-        <h1>Getting started with RideOrganizer</h1>
         <hr class="section-heading-spacer">
         <div class="clearfix"></div>
-        <h2 class="section-heading">Beginning your Session</h2>
+        <h2 class="section-heading">Beginning Your Session</h2>
         <p class="lead">Whether it's creating a trip for a club or setting up a trip for school, RideOrganizer makes it easy to co-ordinate and plan trips accordingly.</p>
-        <p class="lead instruction">Navigate to the trips page by clicking the <strong>GET STARTED</strong> button on the homepage, or <strong>trips</strong> in your navigation bar.</p>
-        <p class="lead instruction">You will be forwarded to a page with three instructions:</p>
+        <p class="lead">Navigate to the trips page by clicking the <strong>GET STARTED</strong> button on the homepage, or <strong>trips</strong> in your navigation bar.</p>
+        <p class="lead">You will be forwarded to a page with three instructions:</p>
         <%= image_tag 'help/GetStarted.png', :alt => 'Get Started', :class => 'img-responsive help-image' %>
-        <p class="description-paragraph"><strong>Login</strong>, allows you to login to a created account and access any saved trips </p>
+        <p class="description-paragraph"><strong>Login</strong> will allow you to login to a created account and access any trips you have saved.</p>
         <ul>
           <li><p class="lead">Forgotten passwords can be retrieved on the login page using the <strong>Forgot your password?</strong> link.</p></li>
         </ul>
+        <p class="description-paragraph"><strong>Create Account</strong> directs you to the account creation page. Upon completion of creating an account you will be automatically logged in.</p>
         <p class="lead">If you chose to login you will be presented with the option to <strong>Edit</strong> or <strong>Delete</strong> existing trips, or create a <strong>New Trip</strong>. Otherwise you will be presented only with the option to create a <strong>New Trip</strong>.</p>
         <%= image_tag 'help/new-trip.png', :alt => 'Trips Page', :class => 'img-responsive help-image' %>
       </div>
@@ -29,15 +29,15 @@
 <div class="content-section-a">
   <div class="container">
     <div class="row">
-      <div class="col-lg-6 col-md-6 col-sm-8">
+      <div class="col-lg-8 col-md-8 col-sm-8">
         <div class="clearfix"></div>
         <hr class="section-heading-spacer">
         <div class="clearfix"></div>
         <h2 class="section-heading">Adding Your Trip Data</h2>
         <p class="lead">All trips must contain a valid <strong>Destination Address</strong> and <strong>Arrival Time</strong>.</p>
-        <p class="description-paragraph">Trips must also contain a valid sets of <strong>Drivers</strong> and <strong>Passengers</strong>. Drivers and passengers can be added to a trip in two ways:</p>
+        <p class="description-paragraph">Trips must also contain valid sets of <strong>Drivers</strong> and <strong>Passengers</strong>. Drivers and passengers can be added to a trip in two ways:</p>
         <ol>
-          <li><p class="description-paragraph">Through a comma separated values (csv) file <strong>Upload</strong>. An example of the required format for the csv is as follows: </p></li>
+          <li><p class="description-paragraph">Through a comma separated values (csv) file <strong>Upload</strong>, an example of the required format for the csv is as follows: </p></li>
           <%= image_tag 'help/sample-csv.png', :alt => 'Sample CSV', :class => 'img-responsive help-image csv-image' %>
           <li><p class="description-paragraph">Manual entry</p></li>
           <ul>
@@ -55,88 +55,62 @@
 <div class="content-section-b">
   <div class="container">
     <div class="row">
-      <div class="col-lg-6 col-md-6 col-sm-8">
+      <div class="col-lg-8 col-md-8  col-sm-8">
         <div class="clearfix"></div>
         <hr class="section-heading-spacer">
         <div class="clearfix"></div>
         <h2 class="section-heading">Interpreting Your Optimized Output</h2>
         <p class="lead">The output from your optimized trip will look similar to the following:</p>
-        <%= image_tag 'help/planner-output.png', :alt => 'Get Started', :class => 'img-responsive help-image' %>
-
+        <%= image_tag 'help/trip-output.png', :alt => 'Get Started', :class => 'img-responsive help-image' %>
+        <p class="lead">Every planner output page contains the basic details of your trip including; trip destination, travel day, and arrival time.</p>
+        <p class="lead">The page also contains an optimized route for every driver. Routes specific to each driver can be viewed by clicking the tab along the map container with the driver's name.</p>
+        <p class="description-paragraph">Details specific to each driver's route include:</p>
+        <ul>
+          <li><p class="description-paragraph">A customized map specific to the driver's route with each green map marker indicating a passenger to be picked up and the red marker indicating the trip's destination.</p></li>
+          <li><p class="description-paragraph">A list of passengers the driver is required to pick up.</p></li>
+          <li><p class="description-paragraph">Turn by turn directions for each step of the driver's route.</p></li>
+        </ul>
+        <p class="lead">Routes on the map can be modified by clicking on the route and dragging it to the desired location.</p>
+        <p class="lead">The location of map markers can also be altered by dragging them to their desired location.</p>
+        <p class="lead">If a route or the location of a map marker is altered the route's directions will be dynamically updated.</p>
+        <p class="lead">Should you decide that your trip needs to be edited, clicking the <strong>Edit Trip</strong> button will take you back to the previous page where you may alter your trip's details.</p>
       </div>
     </div>
   </div>
 </div>
 
 
-<div class="content-pages">
-  <div class="content-section-a">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <h2>Help</h2>
-          <p>Guide to creating a trip
-            <p><b>Step 1: Welcome to Ride Organizer (<i>http://104.236.213.155:3000</i>)</b><p>
-
-            <p><b>NEXT: STEP 2: CREATINING A TRIP</b></p>
-            <p>&nbsp&nbsp&nbsp&nbsp Whether the user is creating a trip for a club or setting up a trip for school, Ride Organizer makes it easy to co-ordinate and plan trips accordingly.</p>
-
-            <p><b> CLICK ON 'GET STARTED'</b></p>
-            <p>&nbsp&nbsp&nbsp&nbsp User will be forwarded to a page where they have three options:</p>
-              <%= image_tag 'help/GetStarted.png', :alt => 'Get Started', :class => 'img-responsive' %>
-                <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 1: Login (will allow the user to access a previously made account and access any existing carpools being planned)</p>
-              <ul style="list-style-type:circle">
-                <li>Click Login -> Login using 'Email' and 'Password'. If the user does not have an account, they may press on 'Create Account',
-                  furthermore, if the user already has an account yet forgets their details, they may click on 'Forget Your Password' and follow the required steps to retrieve their password by email. </li>
-                <li>Once the user has logged in, if no trips have yet been created, they would click on 'New Trip', otherwise, they may either click on 'Edit' if they would like to edit their trip, or
-                'Delete' if they would like to remove the trip from their account.</li>
-                <%= image_tag 'help/loggedin.png', :alt => 'How the page looks once logged in', :class => 'img-responsive' %>
-                <li>If the user clicks on 'New Trip', they would now have to enter all the trip details. To begin with, the user would have to enter a valid Destination Address and Arrival Time. Now the user has a option of either
-                uploading a csv file they have on their computer that has all the details of their drivers and passengers, or they can manually add all the details.
-                  <%= image_tag 'help/csvexample.png', :alt => 'Example of CSV file', :class => 'img-responsive' %>
-                  If the user would like to add details manually,they can click on the 'Empty' sign under Name, Email, Address, Capacity respectively and fill out the information and then click Save. The user would have to do the same for the Passenger section.</li>
-                <%= image_tag 'help/newtrip.png', :alt => 'Creating New Trip', :class => 'img-responsive' %>
-                <%= image_tag 'help/editinfo.png', :alt => 'Input new Data and Update Old Info', :class => 'img-responsive' %>
-
-
-                <li>Now, once all the data is in, the user would now have to click on Create Trip, this would now create the trip but for the user to be able to see the map, the user would have to click on 'Optimize Trip' for the system to print out the map and detailed directions.
-                  Underneath the map, Total Distance, time, and estimated departure time are also shown. If the user would like to further edit the trip without deleting any of the previous details, just click on 'Edit Trip'. Also, right beside the 'Edit Trip' button, there is a 'Notify Travellers' button.
-                  This option will send out an email to each passenger and driver notifying them about the trip. Once the user is done with their account, they may click on 'logout' to logoff their account. </li>
-                <%= image_tag 'help/destination.png', :alt => 'Once Trip is Generated', :class => 'img-responsive' %>
-                <%= image_tag 'help/turnbyturn.png', :alt => 'Turn by Turn Directions', :class => 'img-responsive' %>
-              </ul>
-                <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 2: Create Account (will store an email and a password, allowing a user to save and retrieve carpools they create)</p>
-              <ul style="list-style-type:circle">
-                <li>Once the user has clicked on 'Create Account', they will be directed to a page where the user would have to input his/her details. Here their details such as Email, Password, and Password Confirmation would need to be put in.
-                  Once that is complete, the user would now go through the same process as creating new trip under 'Login' above.</li>
-              </ul>
-                <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 3: Continue as Guest (allows user to create a carpool without storing any data)</p>
-              <ul style="list-style-type:circle">
-                <li>Once the user clicks on 'Continue as Guest', the user would have to follow the same steps as 'Login' or 'Create Account' to print out a new trip.</li>
-              </ul>
-              <p><b>NEXT: STEP 3: MODIFYING A TRIP</b></p>
-              <ul style="list-style-type:circle">
-                <li>After the user's trip has been generated, the user will see a series of tabs, each containing a route and the routes tab consists a map with turn by turn directions.</li>
-                <li>Right above the routes on the right hand side, there is a 'Edit Trip' button, which will allow the user to go back and edit trip details.</li>
-                <li>There is one route for each driver on the trip (drivers are selected based on optimality from the list of drivers provided)</li>
-                <li>Routes can be modified by dragging a segment of the route to the desired location on the map</li>
-              </ul>
-
-
-
-                <p><b>Edit Account Details/Password:</b></p>
-                <p>Once a user is logged on, they may click on 'account' at the top right of the page, the user will be forwarded to a page with all their details. Here the user may update their Email, Password, and if
-                  they are unhappy with the service, they may also click on 'Cancel my account'.</p>
-              <%= image_tag 'help/accountedit.png', :alt => 'Edit Account', :class => 'img-responsive' %>
-
-                <p><b>Navigation Bar Explained Further</b> </p>
-                <p>There are a few options at the top, firstly we have the 'about' option. The about page is where the user can get a description of what Ride Organizer is and what it entails.
-                  Furthermore, the trips option is the same as clicking on 'Get Started' on the home page of the website. Here, the user would have the opportunity to login, create an account or continue as guest.
-                  Next, the 'login' option, here if the user already has an account, they may go straight to logging into their account and creating or editing their trip.</p>
-            </p>
-        </div>
+<div class="content-section-a">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-8  col-sm-8">
+        <div class="clearfix"></div>
+        <hr class="section-heading-spacer">
+        <div class="clearfix"></div>
+        <h2 class="section-heading">Notifying Travellers</h2>
+        <p class="lead">Once you are happy with your trip's output you may now send your travellers the details of their trip. <strong>NOTE: This feature is only available to users who have created and logged into an account!</strong></p>
+        <p class="lead">Clicking the <strong>Notify Travellers</strong> button on your trip's output page will send an email to all drivers and passengers outlining the relevant details of their trip. The email sent to your drivers will look similar to the following:</p>
+        <%= image_tag 'help/email-output.png', :alt => 'Email Output', :class => 'img-responsive help-image' %>
       </div>
     </div>
   </div>
 </div>
 
+<div class="content-section-b">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-8  col-sm-8">
+        <div class="clearfix"></div>
+        <hr class="section-heading-spacer">
+        <div class="clearfix"></div>
+        <h2 class="section-heading">Account Management</h2>
+        <p class="description-paragraph">The details of your account can be edited anytime by clicking the <strong>account</strong> link in the navigation bar. On the account page you may:</p>
+        <ul>
+          <li><p class="description-paragraph">Change your email</p></li>
+          <li><p class="description-paragraph">Update your password</p></li>
+          <li><p class="description-paragraph">Close your account</p></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

@@ -83,7 +83,9 @@ function getRoutes(tripData) {
         var liNode = document.createElement("li");
         var hrefNode = document.createElement("a");
         hrefNode.setAttribute('href', "#tab-" + currRoute);
-        var routeNumNode = document.createTextNode("Route " + currRoute + ": ");
+        var driverName = routeArray.driver.name;
+        var firstName = driverName.split(' ');
+        var routeNumNode = document.createTextNode(firstName[0] + '\'s Route');
 
         if (i == 0) {
             liNode.setAttribute("class", "current");
