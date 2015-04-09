@@ -135,15 +135,47 @@ class TripPlansController < ApplicationController
       end
     end
 
+    destination_coordinates = GoogleAPIGeocoder.do_geocode(@trip.destination_address)
+
+    if destination_coordinates.nil?
+      @trip.delete
+      redirect_to trip_plan_path, :alert => 'Invalid destination'
+    end
+
+    @trip.update(destination_latitude: destination_coordinates[0])
+    @trip.update(destination_longitude: destination_coordinates[1])
+
+    traveller_coordinates = []
+    @trip.travellers.each do |t|
+      traveller_coordinates << GoogleAPIGeocoder.do_geocode(t.address)
+    end
+
+    deleted_travellers = []
+    @trip.travellers.each_with_index() do |traveller, i|
+      if traveller_coordinates[i].nil?
+        traveller.delete
+        deleted_travellers << traveller.name
+      else
+        traveller.update(latitude: traveller_coordinates[i][0])
+        traveller.update(longitude: traveller_coordinates[i][1])
+      end
+    end
+
+    if deleted_travellers.length == 0
+      deleted_travellers = nil
+    else
+      deleted_travellers = deleted_travellers.to_json
+    end
+
+
     if current_user != nil
       @trip.user_id = current_user.id
       @trip.save
-      redirect_to edit_trip_plan_path(@trip)
+      redirect_to edit_trip_plan_path(@trip), :flash => {:drivers_not_added => deleted_travellers}
     else
       session[:trip] = @trip
-      redirect_to trip_plans_guest_edit_path
+      redirect_to trip_plans_guest_edit_path, :flash => {:drivers_not_added => deleted_travellers}
     end
-
   end
 
   def update

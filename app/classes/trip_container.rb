@@ -1,5 +1,5 @@
 class TripContainer
-  attr_accessor :routes, :passengers, :drivers, :date_time, :destination_address
+  attr_accessor :routes, :passengers, :drivers, :date_time, :destination_address, :destination_latitude, :destination_longitude, :driver_passenger_whitelist, :driver_passenger_blacklist
 
   def initialize(destination_address, date_time)
     @destination_address = destination_address
@@ -7,6 +7,8 @@ class TripContainer
     @routes = []
     @passengers = []
     @drivers = []
+    @driver_passenger_whitelist = []
+    @driver_passenger_blacklist = []
   end
 
   def add_route(route)
@@ -19,6 +21,14 @@ class TripContainer
 
   def add_driver(driver)
     @drivers << driver
+  end
+
+  def add_to_whitelist(driver, passenger)
+    @driver_passenger_whitelist << [driver, passenger]
+  end
+
+  def add_to_blacklist(driver, passenger)
+    @driver_passenger_blacklist << [driver, passenger]
   end
 
   def to_s

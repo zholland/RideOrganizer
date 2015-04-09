@@ -24,15 +24,24 @@ class Trip < ActiveRecord::Base
 
   def to_object_container_no_routes
     trip = TripContainer.new(self.destination_address, self.arrival_time)
+    trip.destination_latitude = destination_latitude
+    trip.destination_longitude = destination_longitude
 
     # Add drivers and passengers to trip
     self.travellers.each do |t|
       if t.type == 'Driver'
-        trip.add_driver(DriverContainer.new(t.id, t.name, t.email, t.address, t.number_of_passengers))
+        driver = DriverContainer.new(t.id, t.name, t.email, t.address, t.number_of_passengers)
+        driver.latitude = t.latitude
+        driver.longitude = t.longitude
+        trip.add_driver(driver)
       else
-        trip.add_passenger(PassengerContainer.new(t.id, t.name, t.email, t.address))
+        passenger = PassengerContainer.new(t.id, t.name, t.email, t.address)
+        passenger.latitude = t.latitude
+        passenger.longitude = t.longitude
+        trip.add_passenger(passenger)
       end
     end
+
     return trip
   end
 

@@ -1,14 +1,13 @@
 require 'algorithms'
-require 'geocoder'
-
 include Containers
-include Geocoder
 
-# Matches passengers to drivers.
+##
+# Matches passengers to drivers for a given trip object without routes.
 class TravellerMatching
   attr_reader :trip
 
-  # Initializes the variables needed and geocodes the addresses for the travellers and the destinations.
+  ##
+  # Initializes the variables needed and runs calls the method to group the travellers.
   #
   # * *Args*    :
   #   - +trip+ -> the trip with the inputted information from the user
@@ -16,140 +15,215 @@ class TravellerMatching
     @trip = trip
     @drivers = @trip.drivers
     @passengers = @trip.passengers
-    @driver_coordinates = []
-    @passenger_coordinates = []
-    @destination_coordinates = geocode_address(@trip.destination_address)
-    geocode_traveller_addresses
+    @destination_latitude = @trip.destination_latitude
+    @destination_longitude = @trip.destination_longitude
     group_travellers
   end
 
-  # Takes an address and gets the latitude and longitude of it.
-  #
-  # * *Args*    :
-  #   - +address+ -> an address
-  # * *Returns* :
-  #   - an array with the latitude and longitude
   private
-  def geocode_address(address)
-    #Geocoder.config_for_lookup(:geocoder_ca)
-    Geocoder.configure({:lookup => :esri, :units => :km, :timeout => 5})
-    results = Geocoder.coordinates(address)
-    [results[0], results[1]]
-  end
-
-  # Geocodes the drivers and passengers addresses.
-  private
-  def geocode_traveller_addresses
-    @drivers.each do |driver|
-      @driver_coordinates << geocode_address(driver.address)
-    end
-
-    @passengers.each do |passenger|
-      @passenger_coordinates << geocode_address(passenger.address)
-    end
-  end
-
-  # Debugging methods to show the corresponding coordinates to the given addresses for the destinations and travellers.
-  #
-  # * *Returns* :
-  #   - a string of the addresses and coordinates
-  private
-  def get_lat_and_long_of_travellers
-    return_string = "--Destination--\n"
-    return_string << "#{@trip.destination_address}\n"
-    return_string << @destination_coordinates.to_s
-    return_string << "\n--Drivers--\n"
-
-    @driver_coordinates.each_with_index do |coordinates, index|
-      return_string << @drivers[index].to_s << "\n"
-      return_string << coordinates.to_s << "\n"
-    end
-
-    return_string << "\n--Passengers--\n"
-
-    @passenger_coordinates.each_with_index do |coordinates, index|
-      return_string << @passengers[index].to_s << "\n"
-      return_string << coordinates.to_s << "\n"
-    end
-
-    return_string
-  end
-
-  # Finds the matching of drivers and passengers and adds them to route objects.
+  ##
+  # Finds the matching of drivers and passengers and adds them to route objects. Points are considered to be in a polar
+  # coordinate system with the destination as the pole.
   #
   # * *Returns* :
   #   - the trip with the routes added
-  private
   def group_travellers
-    min_pq_lambda = lambda{|x, y| (x <=> y) == -1}
-    nearest_passengers_to_drivers = Hash.new
-    drivers_with_seats_left = []
+    #-------------------------------------------------------------------------------------------------------------------
+    # If drivers are going by themselves, remove them from the algorithm and give them a route later.
+    #-------------------------------------------------------------------------------------------------------------------
 
-    @drivers.each_with_index do |driver, d_index|
-      drivers_with_seats_left << driver
-      nearest_passengers_to_drivers[driver] = PriorityQueue.new(&min_pq_lambda)
+    drivers = []
+    drivers_going_alone = []
 
-      @passengers.each_with_index do |passenger, p_index|
-        nearest_passengers_to_drivers[driver].push(passenger, deviated_distance_from_path(@driver_coordinates[d_index], @passenger_coordinates[p_index]))
+    total_capacity = 0
+
+    @drivers.each do |driver|
+      total_capacity += driver.number_of_passengers
+
+      if driver.number_of_passengers == 0
+        drivers_going_alone << driver
+      else
+        drivers << driver
       end
     end
 
-    pairing = Hash.new
-    current_driver_capacity = Hash.new(0)
+    if @passengers.length > total_capacity
+        raise "Too many passengers for the number of seats. Over by #{@passengers.length - total_capacity} seat(s)}."
+    end
 
-    until drivers_with_seats_left.empty? do
-      drivers_with_seats_left.each_with_index do |driver, index|
-        if current_driver_capacity[driver] >= driver.number_of_passengers || nearest_passengers_to_drivers[driver].empty?
-          drivers_with_seats_left.delete_at(index)
+    #-------------------------------------------------------------------------------------------------------------------
+    # Remove passengers from the algorithm who have a preference of going with somebody.
+    #-------------------------------------------------------------------------------------------------------------------
+
+    passengers = []
+    driver_passenger_whitelist = Hash.new
+
+    @passengers.each do |passenger|
+      passenger_has_preference = false
+
+      @trip.driver_passenger_whitelist.each do |preference|
+        if passenger.to_s == preference[1].to_s
+          if driver_passenger_whitelist[preference[0]].nil?
+            driver_passenger_whitelist[preference[0]] = []
+          end
+
+          driver_passenger_whitelist[preference[0]] << preference[1]
+          passenger_has_preference = true
+        end
+      end
+
+      unless passenger_has_preference
+        passengers << passenger
+      end
+    end
+
+    #-------------------------------------------------------------------------------------------------------------------
+    # Pair the passengers and drivers
+    #-------------------------------------------------------------------------------------------------------------------
+
+    pairing = Hash.new
+
+    drivers.each do |driver|
+      pairing[driver] = []
+    end
+
+    passengers.each do |passenger|
+      min_deviation = 1000000
+      min_deviation_pair = nil
+
+      drivers.each do |driver|
+        deviation = deviated_distance_from_path(driver.longitude, driver.latitude, @destination_longitude, @destination_latitude, passenger.longitude, passenger.latitude)
+
+        if deviation < min_deviation
+          min_deviation = deviation
+          min_deviation_pair = [driver, passenger]
+        end
+      end
+
+      if pairing[min_deviation_pair[0]].nil?
+        pairing[min_deviation_pair[0]] = []
+      end
+
+      pairing[min_deviation_pair[0]] << min_deviation_pair[1]
+    end
+
+    #-------------------------------------------------------------------------------------------------------------------
+    # Re-allocate passengers for vehicles that are over capacity.
+    #-------------------------------------------------------------------------------------------------------------------
+
+    # Add passengers to the drivers that were in the whitelist
+    driver_passenger_whitelist.each do |driver, passengers|
+      pairing[driver].concat passengers
+    end
+
+    # Create a hash that stores the drivers and their corresponding capacities
+    driver_capacities = Hash.new
+    drivers.each do |driver|
+      driver_capacities[driver] = driver.number_of_passengers
+    end
+
+    # Determine which drivers are over capacity and have extra seats
+    drivers_over_capacity = []
+    drivers_with_extra_seats = []
+
+    pairing.each do |driver, passengers|
+      if !driver_passenger_whitelist[driver].nil? && driver_passenger_whitelist[driver].length > driver_capacities[driver]
+        raise "Too many passengers in the whitelist for #{driver.name}"
+      end
+
+      if passengers.length > driver_capacities[driver]
+        drivers_over_capacity << driver
+      elsif passengers.length < driver_capacities[driver]
+        drivers_with_extra_seats << driver
+      end
+    end
+
+    # Move passenger from over capacity vehicles to ones that have extra seats
+    until drivers_over_capacity.empty?
+      shortest_distances = PriorityQueue.new(&lambda{|x, y| (x <=> y) == -1})
+
+      pairing[drivers_over_capacity[-1]].each do |passenger|
+        # Ignore passengers in whitelist
+        passenger_in_whitelist = false
+
+        unless driver_passenger_whitelist[drivers_over_capacity[-1]].nil?
+          driver_passenger_whitelist[drivers_over_capacity[-1]].each do |whitelist_passenger|
+            if passenger.to_s == whitelist_passenger.to_s
+              passenger_in_whitelist = true
+              break
+            end
+          end
+        end
+
+        if passenger_in_whitelist
           next
         end
 
-        until nearest_passengers_to_drivers[driver].empty? do
-          passenger = nearest_passengers_to_drivers[driver].pop
-
-          unless pairing.has_key?(passenger)
-            pairing[passenger] = driver
-            current_driver_capacity[driver] += 1
-            break
-          end
+        # Add distances to queue
+        drivers_with_extra_seats.each do |driver_with_extra_seats|
+          deviated_distance = deviated_distance_from_path(@destination_longitude, @destination_latitude, driver_with_extra_seats.longitude, driver_with_extra_seats.latitude, passenger.longitude, passenger.latitude)
+          shortest_distances.push([driver_with_extra_seats, drivers_over_capacity[-1], passenger], deviated_distance)
         end
       end
-    end
 
-    @passengers.each do |passenger|
-      unless pairing.has_key?(passenger)
-        puts "Passenger [#{passenger}] could not find a ride"
+      match = shortest_distances.pop
+      pairing[match[1]].delete(match[2])
+      pairing[match[0]] << match[2]
+
+      if pairing[match[1]].length <= driver_capacities[match[1]]
+        drivers_over_capacity.pop
+      end
+
+      if pairing[match[0]].length >= driver_capacities[match[0]]
+        drivers_with_extra_seats.delete(match[0])
       end
     end
 
-    driver_routes = Hash.new
+    #-------------------------------------------------------------------------------------------------------------------
+    # Create the trip object with the routes (they won't have a path).
+    #-------------------------------------------------------------------------------------------------------------------
 
-    pairing.each do |passenger, driver|
-      if driver_routes[driver].nil?
-        driver_routes[driver] = RouteContainer.new(nil, driver)
-        @trip.add_route(driver_routes[driver])
+    pairing.each do |driver, passengers|
+      route = RouteContainer.new(nil, driver)
+
+      passengers.each do |passenger|
+        route.add_passenger(passenger)
       end
 
-      driver_routes[driver].add_passenger(passenger)
+      @trip.add_route(route)
+    end
+
+    drivers_going_alone.each do |driver|
+      route = RouteContainer.new(nil, driver)
+      @trip.add_route(route)
     end
 
     @trip
   end
 
-  # Finds the distance from driver to the passenger to the destinations subtract the straight line distance
-  # from the driver to the destinations.
+  ##
+  # Finds the difference of distance of two sides of a triangle subtract the distance of the third side of the triangle.
+  # The first two points make up the third line that is the straight line distance and the last point makes up two
+  # lines with the first and second vertices.
   #
   # * *Args*    :
-  #   - +driver_coordinates+ -> the drivers coordinates as a two element array in the format [latitude, longitude]
-  #   - +passenger_coordinates+ -> the passengers coordinates as a two element array in the format [latitude, longitude]
+  #   - +point1_x+ -> x value for the first point
+  #   - +point1_y+ -> y value for the first point
+  #   - +point2_x+ -> x value for the second point
+  #   - +point2_y+ -> y value for the second point
+  #   - +point3_x+ -> x value for the third point
+  #   - +point3_y+ -> y value for the third point
   # * *Returns* :
   #   - the difference in distance
-  private
-  def deviated_distance_from_path(driver_coordinates, passenger_coordinates)
-    driver_destination_distance = Math.sqrt((driver_coordinates[0] - @destination_coordinates[0]) ** 2 + (driver_coordinates[1] - @destination_coordinates[1]) ** 2)
-    driver_passenger_distance = Math.sqrt((driver_coordinates[0] - passenger_coordinates[0]) ** 2 + (driver_coordinates[1] - passenger_coordinates[1]) ** 2)
-    passenger_destination_distance = Math.sqrt((passenger_coordinates[0] - @destination_coordinates[0]) ** 2 + (passenger_coordinates[1] - @destination_coordinates[1]) ** 2)
+  def deviated_distance_from_path(point1_x, point1_y, point2_x, point2_y, point3_x, point3_y)
+    straight_line_distance = Math.sqrt((point1_x - point2_x) ** 2 + (point1_y - point2_y) ** 2)
+    line1_distance = Math.sqrt((point1_x - point3_x) ** 2 + (point1_y - point3_y) ** 2)
+    line2_distance = Math.sqrt((point2_x - point3_x) ** 2 + (point2_y - point3_y) ** 2)
 
-    driver_passenger_distance + passenger_destination_distance - driver_destination_distance
+    line1_distance + line2_distance - straight_line_distance
+  end
+
+  def straight_line_distance(point1_x, point1_y, point2_x, point2_y)
+    Math.sqrt((point1_x - point2_x) ** 2 + (point1_y - point2_y) ** 2)
   end
 end
