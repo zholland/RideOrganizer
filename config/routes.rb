@@ -33,7 +33,7 @@ Rails.application.routes.draw do
   post 'trip_plans/:id/notify_travellers', to: 'trip_plans#notify_travellers'
   post 'trip_plans/notify_travellers', to: 'trip_plans#notify_travellers'
   post 'trip_plans/validate_address', to: 'trip_plans#validate_address'
-
+  post 'trip_plans/:id/validate_address', to: 'trip_plans#validate_address'
 
   resources :trip_plans do
     member do

@@ -1,4 +1,4 @@
-var validAddress = null;
+var optimizeClicked = false;
 
 // Initialize the new driver and passenger rows in the table.
 function initNewTravellerRows() {
@@ -266,7 +266,7 @@ $(function(){
 // runs when user clicks the optimize button
 $(function(){
     $("#optimize-button").click(function(e) {
-        e.preventDefault();
+        optimizeClicked = true;
         checkVaildAddress(e);
     });
 });
@@ -276,7 +276,7 @@ $(function(){
 function checkVaildAddress(e) {
     // if there is no value in destination address
     if (!$("#trip_destination_address").val()) {
-
+        e.preventDefault();
         // create div to display error message
         var prependDiv = document.createElement('div');
         prependDiv.setAttribute('class', 'alert alert-danger container');
@@ -301,6 +301,7 @@ function checkVaildAddress(e) {
                 // response of -1 means that the address is invalid
                 // display an error message
                 if (data.response == "-1") {
+                    e.preventDefault();
                     var prependDiv = document.createElement('div');
                     prependDiv.setAttribute('class', 'alert alert-danger container');
                     var prependMsg = document.createTextNode('You have entered an invalid destination address, please enter a different address.');
@@ -316,16 +317,24 @@ function checkVaildAddress(e) {
                 // if yes, submit the form
                 else {
                     if (checkNumDrivers()) {
-                       $('#new-trip-form').submit();
+                        if (optimizeClicked) {
+
+                        }
+                        else {
+                            $('#new-trip-form').submit();
+                        }
+
                     }
                 }
             }).fail(function() {
+                e.preventDefault();
                 alert('Internal Server Error. Please try again later.');
             });
 
         }
         // else the regex failed, must be an invalid address, alert the user
         else {
+            e.preventDefault();
             var prependDiv = document.createElement('div');
             prependDiv.setAttribute('class', 'alert alert-danger container');
             var prependMsg = document.createTextNode('You have entered an invalid destination address, please enter a different address.');
