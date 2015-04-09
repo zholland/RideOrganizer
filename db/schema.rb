@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150313180325) do
+ActiveRecord::Schema.define(version: 20150319070856) do
 
   create_table "routes", force: :cascade do |t|
     t.integer "trip_id"
@@ -44,6 +44,8 @@ ActiveRecord::Schema.define(version: 20150313180325) do
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
     t.string   "type"
+    t.float    "latitude"
+    t.float    "longitude"
   end
 
   create_table "travellers_trips", id: false, force: :cascade do |t|
@@ -54,10 +56,12 @@ ActiveRecord::Schema.define(version: 20150313180325) do
   create_table "trips", force: :cascade do |t|
     t.string   "destination_address"
     t.datetime "arrival_time"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
     t.integer  "user_id"
     t.string   "trip_json"
+    t.decimal  "destination_latitude"
+    t.decimal  "destination_longitude"
   end
 
   add_index "trips", ["user_id"], name: "index_trips_on_user_id"

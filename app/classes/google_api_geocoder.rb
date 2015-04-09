@@ -13,10 +13,10 @@ class GoogleAPIGeocoder
     }
     data = JSON.parse(res.body)
 
-    if data["status"] != "OK"
+    if data['status'] != 'OK'
       nil
     else
-      [data["results"][0]["geometry"]["location"]["lat"], data["results"][0]["geometry"]["location"]["lng"]]
+      [data['results'][0]['geometry']['location']['lat'], data['results'][0]['geometry']['location']['lng']]
     end
   end
 end
