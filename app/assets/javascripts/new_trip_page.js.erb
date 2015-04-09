@@ -266,6 +266,7 @@ $(function(){
 // runs when user clicks the optimize button
 $(function(){
     $("#optimize-button").click(function(e) {
+        e.preventDefault();
         optimizeClicked = true;
         checkVaildAddress(e);
     });
@@ -319,17 +320,19 @@ function checkVaildAddress(e) {
 
                 }
                 // else we know that the address is valid
-                // check to see if the number driver's seats avaliable is valid
+                // check to see if the number driver's seats available is valid
                 // if yes, submit the form
                 else {
-                    if (checkNumDrivers()) {
+                    if (checkNumDrivers(e)) {
                         if (optimizeClicked) {
-
+                            window.location.assign("/trip_plans/12/planner_output");
                         }
                         else {
                             $('#new-trip-form').submit();
                         }
 
+                    } else {
+                        e.preventDefault();
                     }
                 }
             }).fail(function() {
@@ -360,7 +363,7 @@ function checkVaildAddress(e) {
 }
 
 // verify that the number of passengers does not exceed the number of seats
-function checkNumDrivers() {
+function checkNumDrivers(e) {
     var driversSum = 0;
     $("[id*='number_of_passengers-']").each(function () {
         var currId = this.id;
@@ -373,6 +376,7 @@ function checkNumDrivers() {
 
     // if there are more passengers than seats, create an error message
     if (driversSum < numPassengers) {
+        e.preventDefault();
         var prependDiv = document.createElement('div');
         prependDiv.setAttribute('class', 'alert alert-danger container');
         prependDiv.setAttribute('id', 'input-alert');

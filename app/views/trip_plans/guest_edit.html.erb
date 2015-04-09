@@ -24,7 +24,7 @@
         </p>
         <%= form_for :trip, url: trip_plans_guest_update_path, html: {id: 'new-trip-form'}, method: :patch do |f| %>
             <p>
-              <%= f.submit 'Save Changes', :class => 'btn btn-default save-button' %>
+              <%= f.submit 'Save Changes', :id => 'submit-button', :class => 'btn btn-default save-button' %>
             </p>
 
             <p class="trip-form">
