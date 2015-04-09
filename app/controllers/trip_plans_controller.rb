@@ -23,7 +23,7 @@ class TripPlansController < ApplicationController
     travellers.each do |t|
       t.destroy
     end
-    
+
     # New trip logic
     @trip = Trip.new
 
@@ -43,44 +43,64 @@ class TripPlansController < ApplicationController
   end
 
   def new_driver
-    driver = Driver.create(name: params[:newdrivername],
-                           email: params[:newdriveremail],
-                           address: params[:newdriveraddress],
-                           number_of_passengers: params[:newdrivernumber_of_passengers])
+    address = params[:newdriveraddress]
 
-    unless session[:travellers].nil?()
-      session[:travellers] << driver
+    coordinates = GoogleAPIGeocoder.do_geocode(address)
+
+    if coordinates.nil?
+      render json: {success: false, travellers: session[:travellers].to_json, msg: 'Unable to find the location of the given address for the new driver. Please check that it is correct.'}
     else
-      travellers = []
-      travellers << driver
-      session[:travellers] = travellers
-    end
+      driver = Driver.create(name: params[:newdrivername],
+                             email: params[:newdriveremail],
+                             address: address,
+                             number_of_passengers: params[:newdrivernumber_of_passengers],
+                             latitude: coordinates[0],
+                             longitude: coordinates[1])
 
-    if current_user.nil? && !session[:trip].nil?
-      session[:trip].travellers << driver
-    end
+      unless session[:travellers].nil?
+        session[:travellers] << driver
+      else
+        travellers = []
+        travellers << driver
+        session[:travellers] = travellers
+      end
 
-    render json: session[:travellers].to_json
+      if current_user.nil? && !session[:trip].nil?
+        session[:trip].travellers << driver
+      end
+
+      render json: session[:travellers].to_json
+    end
   end
 
   def new_passenger
-    passenger = Passenger.create(name: params[:newpassengername],
-                                 email: params[:newpassengeremail],
-                                 address: params[:newpassengeraddress])
+    address = params[:newpassengeraddress]
 
-    unless session[:travellers].nil?()
-      session[:travellers] << passenger
+    coordinates = GoogleAPIGeocoder.do_geocode(address)
+
+    if coordinates.nil?
+      render json: {success: false, travellers: session[:travellers].to_json, msg: 'Unable to find the location of the given address for the new driver. Please check that it is correct.'}
     else
-      travellers = []
-      travellers << passenger
-      session[:travellers] = travellers
-    end
+      passenger = Passenger.create(name: params[:newpassengername],
+                                   email: params[:newpassengeremail],
+                                   address: address,
+                                   latitude: coordinates[0],
+                                   longitude: coordinates[1])
 
-    if current_user.nil? && !session[:trip].nil?
-      session[:trip].travellers << passenger
-    end
+      unless session[:travellers].nil?
+        session[:travellers] << passenger
+      else
+        travellers = []
+        travellers << passenger
+        session[:travellers] = travellers
+      end
 
-    render json: session[:travellers].to_json
+      if current_user.nil? && !session[:trip].nil?
+        session[:trip].travellers << passenger
+      end
+
+      render json: session[:travellers].to_json
+    end
   end
 
   def edit
@@ -145,36 +165,14 @@ class TripPlansController < ApplicationController
     @trip.update(destination_latitude: destination_coordinates[0])
     @trip.update(destination_longitude: destination_coordinates[1])
 
-    traveller_coordinates = []
-    @trip.travellers.each do |t|
-      traveller_coordinates << GoogleAPIGeocoder.do_geocode(t.address)
-    end
-
-    deleted_travellers = []
-    @trip.travellers.each_with_index() do |traveller, i|
-      if traveller_coordinates[i].nil?
-        traveller.delete
-        deleted_travellers << traveller.name
-      else
-        traveller.update(latitude: traveller_coordinates[i][0])
-        traveller.update(longitude: traveller_coordinates[i][1])
-      end
-    end
-
-    if deleted_travellers.length == 0
-      deleted_travellers = nil
-    else
-      deleted_travellers = deleted_travellers.to_json
-    end
-
 
     if current_user != nil
       @trip.user_id = current_user.id
       @trip.save
-      redirect_to edit_trip_plan_path(@trip), :flash => {:drivers_not_added => deleted_travellers}
+      redirect_to edit_trip_plan_path(@trip)
     else
       session[:trip] = @trip
-      redirect_to trip_plans_guest_edit_path, :flash => {:drivers_not_added => deleted_travellers}
+      redirect_to trip_plans_guest_edit_path
     end
   end
 
@@ -287,14 +285,22 @@ class TripPlansController < ApplicationController
 
   def edit_address
     traveller = Traveller.find(params[:pk])
-    traveller.update(address: params[:value])
+    address = params[:value]
 
-    if current_user.nil?
-      travellers = session[:trip].travellers
-      travellers[travellers.index(traveller)].address = params[:value]
+    coordinates = GoogleAPIGeocoder.do_geocode(address)
+
+    if coordinates.nil?
+      render json: {success: false, msg: 'Unable to find the location of the given address. Please check that it is correct.'}
+    else
+      traveller.update(address: address, latitude: coordinates[0], longitude: coordinates[1])
+
+      if current_user.nil?
+        travellers = session[:trip].travellers
+        travellers[travellers.index(traveller)].address = params[:value]
+      end
+
+      render json: {success: true}
     end
-
-    render json: {success: 'address updated successfully'}
   end
 
   def edit_number_of_passengers
@@ -332,7 +338,7 @@ class TripPlansController < ApplicationController
     drivers.each { |driver| DriverMailer.trip_email(trip, driver, trip_output_data, current_user).deliver_now }
     passengers.each { |passenger| PassengerMailer.trip_email(trip, passenger, trip_output_data, current_user).deliver_now }
 
-    render json: { message: 'Emails were successfully sent.'}
+    render json: {message: 'Emails were successfully sent.'}
   end
 
 

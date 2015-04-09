@@ -9,7 +9,9 @@
 <body>
 
 <% flash.each do |name, msg| %>
+    <% if !msg.nil? && msg.length > 0 %>
     <%= content_tag(:div, msg, class: "alert alert-danger container") %>
+    <% end %>
 <% end %>
 
 <%= yield %>

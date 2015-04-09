@@ -80,11 +80,17 @@ module TripPlansHelper
 
     travellers = []
 
-    persons.each do |person|
+    persons.each_with_index do |person, i|
+      coordinates = GoogleAPIGeocoder.do_geocode(person[2])
+      if coordinates.nil?
+        raise ArgumentError.new("Unable to find the location of the address in row #{i+1}. Please check that it is correct.")
+      end
+      latitude = coordinates[0]
+      longitude = coordinates[1]
       if person[3] == 'TRUE'
-        travellers << Driver.create(name: person[0], email: person[1], address: person[2], number_of_passengers: person[4].to_i)
+        travellers << Driver.create(name: person[0], email: person[1], address: person[2], number_of_passengers: person[4].to_i, latitude: latitude, longitude: longitude)
       else
-        travellers << Passenger.create(name: person[0], email: person[1], address: person[2])
+        travellers << Passenger.create(name: person[0], email: person[1], address: person[2], latitude: latitude, longitude: longitude)
       end
     end
 

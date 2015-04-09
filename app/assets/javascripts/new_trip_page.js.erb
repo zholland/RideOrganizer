@@ -88,6 +88,9 @@ function getEditAddressOptions(id) {
         title: 'Enter address',
         validate: function (arg) {
             if ($.trim(arg) == '') return 'Required field: Please enter a valid address!';
+        },
+        success: function(response, newValue) {
+            if(!response.success) return response.msg;
         }
     }
 }
@@ -102,7 +105,7 @@ function getEditNumPassengersOptions(id) {
         validate: function (arg) {
             if ($.trim(arg) == '') return 'Required field: Please enter a number 0-7!';
             if (arg.match(/^\d+$/) == null) return 'Not a valid number: please enter a number 0-7!';
-            if (arg.match(/^[0-7]$/) == null) return "Number error: Program cannot handle '# of passengers' greater than 7!";
+            if (arg.match(/^[0-7]$/) == null) return "Number error: RideOrganizer only supports up to 7 passengers per driver at this time.";
         }
     }
 }
@@ -155,7 +158,7 @@ function initEditable(travellerIds) {
     $('#newdrivernumber_of_passengers').editable('option', 'validate', function (v) {
         if (!v) return 'Vehicle capacity is a required field!';
         if (v.match(/^\d+$/) == null) return 'Not a valid number: please enter a number 0-7!';
-        if (v.match(/^[0-7]$/) == null) return "Number error: Program cannot handle a '# of passengers' greater than 7!";
+        if (v.match(/^[0-7]$/) == null) return "Number error: RideOrganizer only supports up to 7 passengers per driver at this time.";
     });
 
     $('#newpassengername').editable('option', 'validate', function (v) {
@@ -195,11 +198,15 @@ function initEditable(travellerIds) {
                 method: 'POST',
                 dataType: 'json' //assuming json response
             },
-            success: function (travellers) {
-                var travellerIds = updateTravellers(travellers);
-                initEditable(travellerIds);
-                var msg = 'New driver created successfully.';
-                $('#driver-message').addClass('alert-success').removeClass('alert-danger-no-margin').html(msg).show();
+            success: function (response) {
+                if(response.success != null && !response.success){
+                    $('#driver-message').removeClass('alert-success').addClass('alert-danger-no-margin').html(response.msg).show();
+                } else {
+                    var travellerIds = updateTravellers(response);
+                    initEditable(travellerIds);
+                    var msg = 'New driver created successfully.';
+                    $('#driver-message').addClass('alert-success').removeClass('alert-danger-no-margin').html(msg).show();
+                }
             },
             error: function(errors) {
                 var msg = '';
@@ -220,11 +227,15 @@ function initEditable(travellerIds) {
                 method: 'POST',
                 dataType: 'json' //assuming json response
             },
-            success: function (travellers) {
-                var travellerIds = updateTravellers(travellers);
-                initEditable(travellerIds);
-                var msg = 'New passenger created successfully.';
-                $('#passenger-message').addClass('alert-success').removeClass('alert-danger-no-margin').html(msg).show();
+            success: function (response) {
+                if(response.success != null && !response.success){
+                    $('#passenger-message').removeClass('alert-success').addClass('alert-danger-no-margin').html(response.msg).show();
+                } else {
+                    var travellerIds = updateTravellers(response);
+                    initEditable(travellerIds);
+                    var msg = 'New passenger created successfully.';
+                    $('#passenger-message').addClass('alert-success').removeClass('alert-danger-no-margin').html(msg).show();
+                }
             },
             error: function(errors) {
                 var msg = '';
