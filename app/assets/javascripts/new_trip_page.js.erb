@@ -88,6 +88,9 @@ function getEditAddressOptions(id) {
         title: 'Enter address',
         validate: function (arg) {
             if ($.trim(arg) == '') return 'Required field: Please enter a valid address!';
+        },
+        success: function(response, newValue) {
+            if(!response.success) return response.msg;
         }
     }
 }
@@ -195,11 +198,15 @@ function initEditable(travellerIds) {
                 method: 'POST',
                 dataType: 'json' //assuming json response
             },
-            success: function (travellers) {
-                var travellerIds = updateTravellers(travellers);
-                initEditable(travellerIds);
-                var msg = 'New driver created successfully.';
-                $('#driver-message').addClass('alert-success').removeClass('alert-danger-no-margin').html(msg).show();
+            success: function (response) {
+                if(response.success != null && !response.success){
+                    $('#driver-message').removeClass('alert-success').addClass('alert-danger-no-margin').html(response.msg).show();
+                } else {
+                    var travellerIds = updateTravellers(response);
+                    initEditable(travellerIds);
+                    var msg = 'New driver created successfully.';
+                    $('#driver-message').addClass('alert-success').removeClass('alert-danger-no-margin').html(msg).show();
+                }
             },
             error: function(errors) {
                 var msg = '';
@@ -220,11 +227,15 @@ function initEditable(travellerIds) {
                 method: 'POST',
                 dataType: 'json' //assuming json response
             },
-            success: function (travellers) {
-                var travellerIds = updateTravellers(travellers);
-                initEditable(travellerIds);
-                var msg = 'New passenger created successfully.';
-                $('#passenger-message').addClass('alert-success').removeClass('alert-danger-no-margin').html(msg).show();
+            success: function (response) {
+                if(response.success != null && !response.success){
+                    $('#passenger-message').removeClass('alert-success').addClass('alert-danger-no-margin').html(response.msg).show();
+                } else {
+                    var travellerIds = updateTravellers(response);
+                    initEditable(travellerIds);
+                    var msg = 'New passenger created successfully.';
+                    $('#passenger-message').addClass('alert-success').removeClass('alert-danger-no-margin').html(msg).show();
+                }
             },
             error: function(errors) {
                 var msg = '';
