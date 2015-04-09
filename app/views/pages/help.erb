@@ -8,15 +8,15 @@
         <div class="col-lg-12">
           <h2>Help</h2>
           <p>Guide to creating a trip
-            <p><b>Step 1: Welcome to Ride Organizer (<i>http://104.236.213.155:3000/trip_plans</i>)</b><pl>
+            <p><b>Step 1: Welcome to Ride Organizer (<i>http://104.236.213.155:3000</i>)</b><pl>
 
             <p><b>NEXT: STEP 2: CREATINING A TRIP</b></p>
-            <p>&nbsp&nbsp&nbsp&nbsp Whether you’re creating a trip for your club or setting up a trip for your school, Ride Organizer makes it easy to co-ordinate and plan trips accordingly.</p>
+            <p>&nbsp&nbsp&nbsp&nbsp Whether the user is creating a trip for a club or setting up a trip for school, Ride Organizer makes it easy to co-ordinate and plan trips accordingly.</p>
 
             <p><b> CLICK ON 'GET STARTED'</b></p>
-            <p>&nbsp&nbsp&nbsp&nbsp You will be forwarded to a page where you have three options:</p>
+            <p>&nbsp&nbsp&nbsp&nbsp User will be forwarded to a page where they have three options:</p>
               <%= image_tag 'help/GetStarted.png', :alt => 'Get Started', :class => 'img-responsive' %>
-                <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 1: Login (will allow you to access a previously made account and access any existing carpools being planned)</p>
+                <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 1: Login (will allow the user to access a previously made account and access any existing carpools being planned)</p>
               <ul style="list-style-type:circle">
                 <li>Click Login -> Login using 'Email' and 'Password'. If the user does not have an account, they may press on 'Create Account',
                   furthermore, if the user already has an account yet forgets their details, they may click on 'Forget Your Password' and follow the required steps to retrieve their password by email. </li>
@@ -24,19 +24,22 @@
                 'Delete' if they would like to remove the trip from their account.</li>
                 <%= image_tag 'help/loggedin.png', :alt => 'How the page looks once logged in', :class => 'img-responsive' %>
                 <li>If the user clicks on 'New Trip', they would now have to enter all the trip details. To begin with, the user would have to enter a valid Destination Address and Arrival Time. Now the user has a option of either
-                uploading a csv file they have on their computer that has all the details of their drivers and passengers, or they can manually add all the details. If the user would like to add details manually,
-                they can click on the 'Empty' sign under Name, Email, Address, Capacity respectively and fill out the information and then click Save. The user would have to do the same for the Passenger section.</li>
+                uploading a csv file they have on their computer that has all the details of their drivers and passengers, or they can manually add all the details.
+                  <%= image_tag 'help/csvexample.png', :alt => 'Example of CSV file', :class => 'img-responsive' %>
+                  If the user would like to add details manually,they can click on the 'Empty' sign under Name, Email, Address, Capacity respectively and fill out the information and then click Save. The user would have to do the same for the Passenger section.</li>
                 <%= image_tag 'help/newtrip.png', :alt => 'Creating New Trip', :class => 'img-responsive' %>
-                <%= image_tag 'help/updateinfo.png', :alt => 'Input new Data', :class => 'img-responsive' %>
+                <%= image_tag 'help/editinfo.png', :alt => 'Input new Data and Update Old Info', :class => 'img-responsive' %>
 
-                <li>Now once all the data is in, the user would now have to click on Create Trip then Optimize Trip for the system to print out the map and detailed directions. Underneath the map, Total Distance, time, and estimated departure time are also shown.
-                  If the user would like to further edit the trip without deleting any of the previous details, just click on 'Edit Trip'. Once the user is done with their account, they may click on 'logout' to logoff their account. Also, right beside the 'Edit Trip' button, there is a
-                  'Notify Travellers' button. This option will send out an email to each passenger and driver notifying them about the trip.</li>
-                <%= image_tag 'help/tripgenerated.png', :alt => 'Once Trip is Generated', :class => 'img-responsive' %>
+
+                <li>Now, once all the data is in, the user would now have to click on Create Trip, this would now create the trip but for the user to be able to see the map, the user would have to click on 'Optimize Trip' for the system to print out the map and detailed directions.
+                  Underneath the map, Total Distance, time, and estimated departure time are also shown. If the user would like to further edit the trip without deleting any of the previous details, just click on 'Edit Trip'. Also, right beside the 'Edit Trip' button, there is a 'Notify Travellers' button.
+                  This option will send out an email to each passenger and driver notifying them about the trip. Once the user is done with their account, they may click on 'logout' to logoff their account. </li>
+                <%= image_tag 'help/destination.png', :alt => 'Once Trip is Generated', :class => 'img-responsive' %>
+                <%= image_tag 'help/turnbyturn.png', :alt => 'Turn by Turn Directions', :class => 'img-responsive' %>
               </ul>
                 <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 2: Create Account (will store an email and a password, allowing a user to save and retrieve carpools they create)</p>
               <ul style="list-style-type:circle">
-                <li>Once you click on 'Create Account', you will be directed to a page where the user would have to input his/her details. Here their details such as Email, Password, and Password Confirmation would need to be put in.
+                <li>Once the user has clicked on 'Create Account', they will be directed to a page where the user would have to input his/her details. Here their details such as Email, Password, and Password Confirmation would need to be put in.
                   Once that is complete, the user would now go through the same process as creating new trip under 'Login' above.</li>
               </ul>
                 <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 3: Continue as Guest (allows user to create a carpool without storing any data)</p>
@@ -45,9 +48,9 @@
               </ul>
               <p><b>NEXT: STEP 3: MODIFYING A TRIP</b></p>
               <ul style="list-style-type:circle">
-                <li>After your trip has been generated you will see a series of tabs, each containing a route and the routes tab consists a map with turn by turn directions.</li>
+                <li>After the user's trip has been generated, the user will see a series of tabs, each containing a route and the routes tab consists a map with turn by turn directions.</li>
                 <li>Right above the routes on the right hand side, there is a 'Edit Trip' button, which will allow the user to go back and edit trip details.</li>
-                <li>There is one route for each driver on your trip (drivers are selected based on optimality from the list of drivers provided)</li>
+                <li>There is one route for each driver on the trip (drivers are selected based on optimality from the list of drivers provided)</li>
                 <li>Routes can be modified by dragging a segment of the route to the desired location on the map</li>
               </ul>
 
