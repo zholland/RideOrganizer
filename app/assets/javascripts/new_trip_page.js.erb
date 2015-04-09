@@ -102,7 +102,7 @@ function getEditNumPassengersOptions(id) {
         validate: function (arg) {
             if ($.trim(arg) == '') return 'Required field: Please enter a number 0-7!';
             if (arg.match(/^\d+$/) == null) return 'Not a valid number: please enter a number 0-7!';
-            if (arg.match(/^[0-7]$/) == null) return "Number error: Program cannot handle '# of passengers' greater than 7!";
+            if (arg.match(/^[0-7]$/) == null) return "Number error: RideOrganizer only supports up to 7 passengers per driver at this time.";
         }
     }
 }
@@ -155,7 +155,7 @@ function initEditable(travellerIds) {
     $('#newdrivernumber_of_passengers').editable('option', 'validate', function (v) {
         if (!v) return 'Vehicle capacity is a required field!';
         if (v.match(/^\d+$/) == null) return 'Not a valid number: please enter a number 0-7!';
-        if (v.match(/^[0-7]$/) == null) return "Number error: Program cannot handle a '# of passengers' greater than 7!";
+        if (v.match(/^[0-7]$/) == null) return "Number error: RideOrganizer only supports up to 7 passengers per driver at this time.";
     });
 
     $('#newpassengername').editable('option', 'validate', function (v) {
