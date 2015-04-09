@@ -1,12 +1,3 @@
-(function() {
-
-    function getScript(src) {
-        document.write('<' + 'script src="' + src + '"><' + '/script>');
-    }
-
-    getScript("http://maps.gstatic.com/maps-api-v3/api/js/20/6/places.js");
-})();
-
 function loadAutoComplete() {
 
     var input = document.getElementById('trip_destination_address');

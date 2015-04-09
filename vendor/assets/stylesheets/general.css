@@ -225,5 +225,15 @@ input#trip_destination_address {
     border-color: #ebccd1;
 }
 
+/* -- HELP page -- */
 
+.help-image {
+    border: 1px solid #e7e7e7;
+    display: block;
+    margin: 10px auto;
+}
+
+.help-image.csv-image {
+    border: 4px solid #fff;
+}
 

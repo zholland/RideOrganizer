@@ -304,6 +304,12 @@ function checkVaildAddress(e) {
                     e.preventDefault();
                     var prependDiv = document.createElement('div');
                     prependDiv.setAttribute('class', 'alert alert-danger container');
+                    prependDiv.setAttribute('id', 'input-alert');
+
+                    if (document.contains(document.getElementById("input-alert"))) {
+                        document.getElementById("input-alert").remove();
+                    }
+
                     var prependMsg = document.createTextNode('You have entered an invalid destination address, please enter a different address.');
                     prependDiv.appendChild(prependMsg);
                     $('body').prepend(prependDiv);
@@ -337,6 +343,12 @@ function checkVaildAddress(e) {
             e.preventDefault();
             var prependDiv = document.createElement('div');
             prependDiv.setAttribute('class', 'alert alert-danger container');
+            prependDiv.setAttribute('id', 'input-alert');
+
+            if (document.contains(document.getElementById("input-alert"))) {
+                document.getElementById("input-alert").remove();
+            }
+
             var prependMsg = document.createTextNode('You have entered an invalid destination address, please enter a different address.');
             prependDiv.appendChild(prependMsg);
             $('body').prepend(prependDiv);
@@ -363,6 +375,12 @@ function checkNumDrivers() {
     if (driversSum < numPassengers) {
         var prependDiv = document.createElement('div');
         prependDiv.setAttribute('class', 'alert alert-danger container');
+        prependDiv.setAttribute('id', 'input-alert');
+
+        if (document.contains(document.getElementById("input-alert"))) {
+            document.getElementById("input-alert").remove();
+        }
+
         var prependMsg = document.createTextNode("The number of passengers exceeds the number of available seats in the driver's cars. Please fix this error before proceeding.");
         prependDiv.appendChild(prependMsg);
         $('body').prepend(prependDiv);

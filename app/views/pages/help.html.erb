@@ -1,6 +1,74 @@
 <%= render 'shared/nav' %>
 <%= render 'shared/header' %>
 
+
+<div class="content-section-b">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-8">
+        <div class="clearfix"></div>
+        <h1>Getting started with RideOrganizer</h1>
+        <hr class="section-heading-spacer">
+        <div class="clearfix"></div>
+        <h2 class="section-heading">Beginning your Session</h2>
+        <p class="lead">Whether it's creating a trip for a club or setting up a trip for school, RideOrganizer makes it easy to co-ordinate and plan trips accordingly.</p>
+        <p class="lead instruction">Navigate to the trips page by clicking the <strong>GET STARTED</strong> button on the homepage, or <strong>trips</strong> in your navigation bar.</p>
+        <p class="lead instruction">You will be forwarded to a page with three instructions:</p>
+        <%= image_tag 'help/GetStarted.png', :alt => 'Get Started', :class => 'img-responsive help-image' %>
+        <p class="description-paragraph"><strong>Login</strong>, allows you to login to a created account and access any saved trips </p>
+        <ul>
+          <li><p class="lead">Forgotten passwords can be retrieved on the login page using the <strong>Forgot your password?</strong> link.</p></li>
+        </ul>
+        <p class="lead">If you chose to login you will be presented with the option to <strong>Edit</strong> or <strong>Delete</strong> existing trips, or create a <strong>New Trip</strong>. Otherwise you will be presented only with the option to create a <strong>New Trip</strong>.</p>
+        <%= image_tag 'help/new-trip.png', :alt => 'Trips Page', :class => 'img-responsive help-image' %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="content-section-a">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-8">
+        <div class="clearfix"></div>
+        <hr class="section-heading-spacer">
+        <div class="clearfix"></div>
+        <h2 class="section-heading">Adding Your Trip Data</h2>
+        <p class="lead">All trips must contain a valid <strong>Destination Address</strong> and <strong>Arrival Time</strong>.</p>
+        <p class="description-paragraph">Trips must also contain a valid sets of <strong>Drivers</strong> and <strong>Passengers</strong>. Drivers and passengers can be added to a trip in two ways:</p>
+        <ol>
+          <li><p class="description-paragraph">Through a comma separated values (csv) file <strong>Upload</strong>. An example of the required format for the csv is as follows: </p></li>
+          <%= image_tag 'help/sample-csv.png', :alt => 'Sample CSV', :class => 'img-responsive help-image csv-image' %>
+          <li><p class="description-paragraph">Manual entry</p></li>
+          <ul>
+            <li><p class="description-paragraph">Adding traveller details manually can be accomplished by clicking the <strong>Empty</strong> tag under each table header. Once all the fields have been filled clicking the <strong>Save</strong> button saves the traveller to the trip.</p></li>
+          </ul>
+        </ol>
+        <p class="lead">Once all data has been entered correctly the trip must either be created using the <strong>Create Trip</strong> button or saved using the <strong>Save Changes</strong> button.</p>
+        <p class="lead">The final step necessary prior to recieving your trip output is clicking the <strong>Optimize Trip</strong> button. Optimizing your trip will generate the best driver/passenger pairings and show you the results on a map.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="content-section-b">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-8">
+        <div class="clearfix"></div>
+        <hr class="section-heading-spacer">
+        <div class="clearfix"></div>
+        <h2 class="section-heading">Interpreting Your Optimized Output</h2>
+        <p class="lead">The output from your optimized trip will look similar to the following:</p>
+        <%= image_tag 'help/planner-output.png', :alt => 'Get Started', :class => 'img-responsive help-image' %>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div class="content-pages">
   <div class="content-section-a">
     <div class="container">
@@ -8,7 +76,7 @@
         <div class="col-lg-12">
           <h2>Help</h2>
           <p>Guide to creating a trip
-            <p><b>Step 1: Welcome to Ride Organizer (<i>http://104.236.213.155:3000</i>)</b><pl>
+            <p><b>Step 1: Welcome to Ride Organizer (<i>http://104.236.213.155:3000</i>)</b><p>
 
             <p><b>NEXT: STEP 2: CREATINING A TRIP</b></p>
             <p>&nbsp&nbsp&nbsp&nbsp Whether the user is creating a trip for a club or setting up a trip for school, Ride Organizer makes it easy to co-ordinate and plan trips accordingly.</p>
