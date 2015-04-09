@@ -15,18 +15,24 @@
 
             <p><b> CLICK ON 'GET STARTED'</b></p>
             <p>&nbsp&nbsp&nbsp&nbsp You will be forwarded to a page where you have three options:</p>
+              <%= image_tag 'help/GetStarted.png', :alt => 'Get Started', :class => 'img-responsive' %>
                 <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 1: Login (will allow you to access a previously made account and access any existing carpools being planned)</p>
               <ul style="list-style-type:circle">
                 <li>Click Login -> Login using 'Email' and 'Password'. If the user does not have an account, they may press on 'Create Account',
                   furthermore, if the user already has an account yet forgets their details, they may click on 'Forget Your Password' and follow the required steps to retrieve their password by email. </li>
                 <li>Once the user has logged in, if no trips have yet been created, they would click on 'New Trip', otherwise, they may either click on 'Edit' if they would like to edit their trip, or
                 'Delete' if they would like to remove the trip from their account.</li>
+                <%= image_tag 'help/loggedin.png', :alt => 'How the page looks once logged in', :class => 'img-responsive' %>
                 <li>If the user clicks on 'New Trip', they would now have to enter all the trip details. To begin with, the user would have to enter a valid Destination Address and Arrival Time. Now the user has a option of either
                 uploading a csv file they have on their computer that has all the details of their drivers and passengers, or they can manually add all the details. If the user would like to add details manually,
                 they can click on the 'Empty' sign under Name, Email, Address, Capacity respectively and fill out the information and then click Save. The user would have to do the same for the Passenger section.</li>
+                <%= image_tag 'help/newtrip.png', :alt => 'Creating New Trip', :class => 'img-responsive' %>
+                <%= image_tag 'help/updateinfo.png', :alt => 'Input new Data', :class => 'img-responsive' %>
+
                 <li>Now once all the data is in, the user would now have to click on Create Trip then Optimize Trip for the system to print out the map and detailed directions. Underneath the map, Total Distance, time, and estimated departure time are also shown.
                   If the user would like to further edit the trip without deleting any of the previous details, just click on 'Edit Trip'. Once the user is done with their account, they may click on 'logout' to logoff their account. Also, right beside the 'Edit Trip' button, there is a
                   'Notify Travellers' button. This option will send out an email to each passenger and driver notifying them about the trip.</li>
+                <%= image_tag 'help/tripgenerated.png', :alt => 'Once Trip is Generated', :class => 'img-responsive' %>
               </ul>
                 <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 2: Create Account (will store an email and a password, allowing a user to save and retrieve carpools they create)</p>
               <ul style="list-style-type:circle">
