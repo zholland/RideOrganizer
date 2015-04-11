@@ -332,17 +332,30 @@ function checkVaildAddress(e) {
                 }
                 // else we know that the address is valid
                 // check to see if the number driver's seats available is valid
-                // if yes, submit the form
                 else {
-                    if (checkNumDrivers(e)) {
+                    if (checkNumDrivers()) {
+                        // if the optimized button was clicked -> aka if we are on the edit page
+                        // manually redirect the user to the correct trip output page, differs depending on logged in or guest
                         if (optimizeClicked) {
-//                            window.location.assign("/trip_plans//planner_output");
+                            var pageUrl = window.location.href;
+
+                            // if the url contains guest direct to the guest output page
+                            if (pageUrl.indexOf("guest") > -1) {
+                                window.location.assign("/trip_plans/guest_planner_output");
+                            }
+                            // otherwise we have to get the id from the url to direct to the output specific to the
+                            // trip id
+                            else {
+                                var urlSplit = pageUrl.split('/');
+                                var tripId = urlSplit[4];
+                                window.location.assign("/trip_plans/"+tripId+"/planner_output");
+                            }
                         }
                         else {
                             $('#new-trip-form').submit();
                         }
-
-                    } else {
+                    }
+                    else {
                         e.preventDefault();
                     }
                 }
@@ -374,7 +387,7 @@ function checkVaildAddress(e) {
 }
 
 // verify that the number of passengers does not exceed the number of seats
-function checkNumDrivers(e) {
+function checkNumDrivers() {
     var driversSum = 0;
     $("[id*='number_of_passengers-']").each(function () {
         var currId = this.id;
@@ -387,7 +400,6 @@ function checkNumDrivers(e) {
 
     // if there are more passengers than seats, create an error message
     if (driversSum < numPassengers) {
-        e.preventDefault();
         var prependDiv = document.createElement('div');
         prependDiv.setAttribute('class', 'alert alert-danger container');
         prependDiv.setAttribute('id', 'input-alert');
