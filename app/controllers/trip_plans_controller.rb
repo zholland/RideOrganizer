@@ -27,6 +27,10 @@ class TripPlansController < ApplicationController
     # New trip logic
     @trip = Trip.new
 
+    # Clear session of trip and travellers
+    session[:trip] = nil
+    session[:travellers] = nil
+
     if remotipart_submitted?
       begin
         unless session[:travellers].nil?
@@ -210,7 +214,7 @@ class TripPlansController < ApplicationController
       session[:travellers].delete(@traveller)
     end
 
-    if current_user.nil?
+    if current_user.nil? && session[:trip] != nil
       session[:trip].travellers.delete(@traveller)
     end
 
@@ -264,8 +268,14 @@ class TripPlansController < ApplicationController
     traveller.update(name: params[:value])
 
     if current_user.nil?
-      travellers = session[:trip].travellers
-      travellers[travellers.index(traveller)].name = params[:value]
+      if session[:trip] != nil
+        travellers = session[:trip].travellers
+        travellers[travellers.index(traveller)].name = params[:value]
+      end
+
+      if session[:travellers] != nil
+        session[:travellers][session[:travellers].index(traveller)].name = params[:value]
+      end
     end
 
     render json: {success: 'name updated successfully'}
@@ -276,8 +286,14 @@ class TripPlansController < ApplicationController
     traveller.update(email: params[:value])
 
     if current_user.nil?
-      travellers = session[:trip].travellers
-      travellers[travellers.index(traveller)].email = params[:value]
+      if session[:trip] != nil
+        travellers = session[:trip].travellers
+        travellers[travellers.index(traveller)].email = params[:value]
+      end
+
+      if session[:travellers] != nil
+        session[:travellers][session[:travellers].index(traveller)].email = params[:value]
+      end
     end
 
     render json: {success: 'email updated successfully'}
@@ -295,8 +311,14 @@ class TripPlansController < ApplicationController
       traveller.update(address: address, latitude: coordinates[0], longitude: coordinates[1])
 
       if current_user.nil?
-        travellers = session[:trip].travellers
-        travellers[travellers.index(traveller)].address = params[:value]
+        if session[:trip] != nil
+          travellers = session[:trip].travellers
+          travellers[travellers.index(traveller)].address = params[:value]
+        end
+
+        if session[:travellers] != nil
+          session[:travellers][session[:travellers].index(traveller)].address = params[:value]
+        end
       end
 
       render json: {success: true}
@@ -308,8 +330,14 @@ class TripPlansController < ApplicationController
     traveller.update(number_of_passengers: params[:value])
 
     if current_user.nil?
-      travellers = session[:trip].travellers
-      travellers[travellers.index(traveller)].number_of_passengers = params[:value]
+      if session[:trip] != nil
+        travellers = session[:trip].travellers
+        travellers[travellers.index(traveller)].number_of_passengers = params[:value]
+      end
+
+      if session[:travellers] != nil
+        session[:travellers][session[:travellers].index(traveller)].number_of_passengers = params[:value]
+      end
     end
 
     render json: {success: 'number of passengers updated successfully'}
