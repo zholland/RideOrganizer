@@ -1,7 +1,9 @@
+# Represents a trip.
 class Trip < ActiveRecord::Base
   has_and_belongs_to_many :travellers
   has_many :routes
 
+  # Returns the number of drivers on the trip.
   def num_drivers
     i = 0;
     self.travellers.each do |t|
@@ -12,6 +14,7 @@ class Trip < ActiveRecord::Base
     return i
   end
 
+  # Returns the number of passenger on the trip.
   def num_passengers
     i = 0;
     self.travellers.each do |t|
@@ -22,6 +25,7 @@ class Trip < ActiveRecord::Base
     return i
   end
 
+  # Converts the model into a simple Ruby object. Does not include the existing trip routes.
   def to_object_container_no_routes
     trip = TripContainer.new(self.destination_address, self.arrival_time)
     trip.destination_latitude = destination_latitude
@@ -45,6 +49,7 @@ class Trip < ActiveRecord::Base
     return trip
   end
 
+  # Creates a json string containing the traveller ids.
   def travellers_ids_to_json
     json = {drivers: [], passengers: []}
     self.travellers.each do |t|

@@ -1,5 +1,6 @@
 include PagesHelper
 
+# Controller for static pages.
 class PagesController < ApplicationController
   def home
   end
@@ -7,17 +8,6 @@ class PagesController < ApplicationController
   def about
   end
 
-  def trip_planner
-  end
-
-  def login
-  end
-
   def help
-  end
-
-  def get_travellers
-    # render json: session[:trip].to_json
-    render json: create_travellers
   end
 end

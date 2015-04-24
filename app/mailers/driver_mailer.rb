@@ -1,5 +1,6 @@
 require 'uri'
 
+# Mailer for the driver emails
 class DriverMailer < ApplicationMailer
   def trip_email(trip, driver, trip_output_data, user)
     @driver = driver
@@ -13,6 +14,7 @@ class DriverMailer < ApplicationMailer
     mail(to: @driver.email, subject: "RideOrganizer: Trip to #{@trip.destination_address}")
   end
 
+  # Sorts the passengers to their respective drivers.
   private
   def sort_travellers(traveller_data)
     sorted_travellers = Array.new(traveller_data.size)
@@ -20,6 +22,7 @@ class DriverMailer < ApplicationMailer
     return sorted_travellers
   end
 
+  # Creates the map link url for the email.
   private
   def build_maps_url(travellers)
     url = "http://maps.google.com/maps?saddr=#{escape(@driver.address)}&daddr=#{escape(travellers[0].address)}"
@@ -30,6 +33,7 @@ class DriverMailer < ApplicationMailer
     return url
   end
 
+  # Escapes the given text to make it safe for a URL.
   private
   def escape(text)
     URI.escape(text)

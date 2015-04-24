@@ -1,18 +1,22 @@
+# Controller for all trip creation and optimization.
 class TripPlansController < ApplicationController
   include TripPlansHelper
 
+  # Render the default view.
   def index
     if current_user != nil
       redirect_to trip_plans_choose_path
     end
   end
 
+  # Choose trips page.
   def choose
     if current_user != nil
       @trips = Trip.where('user_id = ?', current_user.id)
     end
   end
 
+  # New trips page.
   def new
     # Run traveller table cleanup
     puts Time.now
@@ -31,6 +35,7 @@ class TripPlansController < ApplicationController
     session[:trip] = nil
     session[:travellers] = nil
 
+    # If a file is uploaded, process it.
     if remotipart_submitted?
       begin
         unless session[:travellers].nil?
@@ -46,6 +51,7 @@ class TripPlansController < ApplicationController
     end
   end
 
+  # Controller target to create a new driver. Has no associated view.
   def new_driver
     address = params[:newdriveraddress]
 
@@ -77,6 +83,7 @@ class TripPlansController < ApplicationController
     end
   end
 
+  # Controller target to create a new passenger. Has no associated view.
   def new_passenger
     address = params[:newpassengeraddress]
 
@@ -107,10 +114,12 @@ class TripPlansController < ApplicationController
     end
   end
 
+  # Edit trips page.
   def edit
     if current_user != nil
       @trip = Trip.find(params[:id])
 
+      # When a file is uploaded, process it.
       if remotipart_submitted?
         begin
           travellers = process_trip_travellers(params[:trip][:traveller_csv])
@@ -128,7 +137,9 @@ class TripPlansController < ApplicationController
     end
   end
 
+  # Special edit page for guest that are not logged in.
   def guest_edit
+    # If the use IS logged in, redirect them to the home page. The guest edit is only for users not logged in.
     if current_user == nil && session[:trip] != nil
       @trip = session[:trip]
 
@@ -149,9 +160,11 @@ class TripPlansController < ApplicationController
     end
   end
 
+  # Creates a new trip.
   def create
     @trip = Trip.new(trip_params)
 
+    # Retrieve the trip travellers from the session.
     travellers = session[:travellers]
     if travellers != nil
       travellers.each do |t|
@@ -166,6 +179,7 @@ class TripPlansController < ApplicationController
       redirect_to trip_plan_path, :alert => 'Invalid destination'
     end
 
+    # Update the trip destination coordinates.
     @trip.update(destination_latitude: destination_coordinates[0])
     @trip.update(destination_longitude: destination_coordinates[1])
 
@@ -180,6 +194,7 @@ class TripPlansController < ApplicationController
     end
   end
 
+  # Updates the trip for logged in users.
   def update
     if current_user != nil
       @trip = Trip.find(params[:id])
@@ -190,6 +205,7 @@ class TripPlansController < ApplicationController
     end
   end
 
+  # Updates the trip for guest users (not logged in)
   def guest_update
     @trip = session[:trip]
     if @trip != nil
@@ -200,6 +216,7 @@ class TripPlansController < ApplicationController
     end
   end
 
+  # Deletes a trip
   def destroy
     @trip = Trip.find(params[:id])
     @trip.destroy
@@ -207,6 +224,7 @@ class TripPlansController < ApplicationController
     redirect_to trip_plans_choose_path
   end
 
+  # Deletes a traveller
   def destroy_traveller
     @traveller = Traveller.find(params[:traveller_id])
 
@@ -223,6 +241,7 @@ class TripPlansController < ApplicationController
     render json: {message: 'success'}
   end
 
+  # Retrieves all the trip travellers as a json string.
   def get_travellers
     if current_user != nil
       @trip = Trip.find(params[:id])
@@ -233,6 +252,7 @@ class TripPlansController < ApplicationController
 
   end
 
+  # Target for the trip planner output page.
   def planner_output
     if current_user != nil
       @trip = Trip.find(params[:id])
@@ -252,6 +272,7 @@ class TripPlansController < ApplicationController
     @trip.save
   end
 
+  # Target for the guest trip planner output page. For users that are not logged in.
   def guest_planner_output
     @trip = session[:trip]
 
@@ -263,6 +284,7 @@ class TripPlansController < ApplicationController
     session[:trip] = @trip
   end
 
+  # Post target for editing the name of a traveller.
   def edit_name
     traveller = Traveller.find(params[:pk])
     traveller.update(name: params[:value])
@@ -281,6 +303,7 @@ class TripPlansController < ApplicationController
     render json: {success: 'name updated successfully'}
   end
 
+  # Post target for editing the email of a traveller.
   def edit_email
     traveller = Traveller.find(params[:pk])
     traveller.update(email: params[:value])
@@ -299,6 +322,7 @@ class TripPlansController < ApplicationController
     render json: {success: 'email updated successfully'}
   end
 
+  # Post target for editing the address of a traveller.
   def edit_address
     traveller = Traveller.find(params[:pk])
     address = params[:value]
@@ -325,6 +349,7 @@ class TripPlansController < ApplicationController
     end
   end
 
+  # Post target for editing the capacity of a driver's car.
   def edit_number_of_passengers
     traveller = Traveller.find(params[:pk])
     traveller.update(number_of_passengers: params[:value])
@@ -343,6 +368,7 @@ class TripPlansController < ApplicationController
     render json: {success: 'number of passengers updated successfully'}
   end
 
+  # Initiates sending emails to all the trip's drivers and passengers.
   def notify_travellers
     if current_user.nil?
       trip = session[:trip]
@@ -370,12 +396,12 @@ class TripPlansController < ApplicationController
   end
 
 
-  # validate the trip destination address
+  # Validate the trip destination address
   def validate_address
     trip_address = params[:data]
     coordinate_array = nil
 
-    # call to the geocoder API returns nil if the address cannot be geocoded
+    # Call to the geocoder API returns nil if the address cannot be geocoded
     coordinate_array = GoogleAPIGeocoder.do_geocode(trip_address)
 
     if coordinate_array.nil?

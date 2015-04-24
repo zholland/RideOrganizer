@@ -74,6 +74,7 @@ module TripPlansHelper
     return persons
   end
 
+  # Processes the csv input and creates the parsed drivers nad passengers.
   def process_trip_travellers(csv_file)
 
     persons = get_travellers_from_csv(csv_file)

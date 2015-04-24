@@ -1,3 +1,4 @@
+# Mailer for the passenger emails.
 class PassengerMailer < ApplicationMailer
   def trip_email(trip, passenger, trip_output_data, user)
     @passenger = passenger

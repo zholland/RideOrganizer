@@ -8,6 +8,7 @@ module PagesHelper
     end
   end
 
+  # Helper method for testing.
   def create_travellers
 
     t1 = Trip.new('Vernon, BC', '2015-03-29')
